@@ -2,38 +2,40 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "Game.h"
+
+Game* game = nullptr;
+
 int main(int argc, char** argv)
 {
-    GLFWwindow* window;
+    const int FPS = 60;
+    // const int frameDelay = 1000 / FPS;
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
+    // uint32_t frameStart;
+    // int frameTime;
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+    game = new Game();
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
+    double initTime = glfwGetTime();
+    double lastTime = glfwGetTime();
+    double deltaTime = 0.0f;
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
+    while (game->getRunning())
     {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        deltaTime += (glfwGetTime() - lastTime) * FPS;
+        lastTime = glfwGetTime();
+        while (deltaTime >= 1.0f) {
+            game->update();
+            --deltaTime;
+        }
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+        /* Render here */
+        game->render();
+
+        game->update();
+
+        game->handleEvents();
 
         /* Poll for and process events */
         glfwPollEvents();
