@@ -8,10 +8,9 @@
 //#include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "Sprite.h"
-
-#define Window_w_Size 1422
-#define Window_h_Size 800
+#include "textureManager.h"
+#include "GameObject.h"
+#include "Map.h"
 
 class Game
 {
@@ -28,6 +27,9 @@ private:
 	void cleanup();
 
 	Sprite* _testsprite;
+	GameObject* _gameObject;
+	Map* _map;
+	TextureManager* _textureManager;
 
 public:
 

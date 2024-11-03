@@ -133,15 +133,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="ECS\Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
+    <ClCompile Include="textureManager.cpp" />
+    <ClCompile Include="vector2\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ECS\Components.h" />
+    <ClInclude Include="ECS\ECS.h" />
+    <ClInclude Include="ECS\PositionComponent.h" />
+    <ClInclude Include="ECS\SpriteComponent.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="ECS\Sprite.h" />
+    <ClInclude Include="textureManager.h" />
+    <ClInclude Include="vector2\Vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

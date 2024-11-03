@@ -1,5 +1,11 @@
 #include "Game.h"
 
+#include "ECS/ECS.h"
+#include "ECS/Components.h"
+
+Manager manager;
+auto& player(manager.addEntity());
+
 bool Game::initFlow(const char* title, bool fullscreen)
 {
     /* Initialize the library */
@@ -67,10 +73,16 @@ Game::Game()
     }
     setupGL();
 
-    Sprite* tmpSprite = new Sprite();
-    GLint texture = tmpSprite->loadAndBufferImage("C:/Users/brit/source/repos/opengl/opengl/resourse/rocket.png");
-    _testsprite = new Sprite(texture, 50, 100);
-    delete tmpSprite;
+
+    // GLint texture = TextureManager::loadAndBufferImage("C:/Users/brit/source/repos/opengl/opengl/resourse/rocket.png");
+    /*GLint texture = TextureManager::loadMapImage("D:/dependencies/resource/PUNY_WORLD_v1/tilemap.png", 3, 0);
+    _testsprite = new Sprite(texture, 48, 48);
+    _gameObject = new GameObject(_testsprite, makeVector2(100.0f, 100.0f), makeVector2(0.0f, 0.0f));*/
+    _map = new Map();
+    player.addcomponent<PositionComponent>();
+    player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
+    
+    std::cout << player.getComponent<PositionComponent>().getPosition().x << std::endl;
 }
 
 Game::~Game()
@@ -92,7 +104,10 @@ void Game::render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    _testsprite->render(100.0f, 100.0f, 0.0f);
+    _map->DrawMap();
+    //_gameObject->render();
+    player.draw();
+    
 
     /* Swap front and back buffers */
     glfwSwapBuffers(_window);
@@ -100,4 +115,6 @@ void Game::render()
 
 void Game::update()
 {
+    // _gameObject->update();
+    player.update();
 }
