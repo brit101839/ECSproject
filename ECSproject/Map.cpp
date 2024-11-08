@@ -53,13 +53,13 @@ void Map::DrawMap()
 
 			switch (type) {
 			case 0:
-				_grass->render(makeVector2(column * 48, Window_h_Size - row * 48), 0.0f);
+				_grass->render(Vector2D(column * 48, Window_h_Size - row * 48), 0.0f);
 				break;
 			case 1:
-				_water->render(makeVector2(column * 48, Window_h_Size - row * 48), 0.0f);
+				_water->render(Vector2D(column * 48, Window_h_Size - row * 48), 0.0f);
 				break;
 			case 2:
-				_drit->render(makeVector2(column * 48, Window_h_Size - row * 48), 0.0f);
+				_drit->render(Vector2D(column * 48, Window_h_Size - row * 48), 0.0f);
 				break;
 			default:
 				break;

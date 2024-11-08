@@ -47,7 +47,7 @@ public:
 
 	void draw() override
 	{
-		_sprite->render(_position->getPosition().getVector2D(), 0.0f);
+		_sprite->render(_position->getPosition(), 0.0f);
 		//_sprite->render(makeVector2(0.0f, 0.0f), 0.0f);
 	}
 

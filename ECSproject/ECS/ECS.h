@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <bitset>
 #include <array>
-#include "../vector2/Vector2.h"
+#include "../vector2D/Vector2D.h"
 
 class Component;
 class Entity;

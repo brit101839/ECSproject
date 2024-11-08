@@ -35,7 +35,7 @@ void Sprite::setVertices(GLfloat width, GLfloat height)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Sprite::render(Vector2 position, GLfloat rotation)
+void Sprite::render(Vector2D position, GLfloat rotation)
 {
 	// std::cout << "VBO ID: " << _vertexBufferID << std::endl;
 	glLoadIdentity();

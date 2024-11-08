@@ -16,28 +16,28 @@ public:
 
 	PositionComponent()
 	{
-		//_position = makeVector2(0.0f, 0.0f);
-		_position.setVector2D(0.0f, 0.0f);
+		_position = Vector2D();
+		// _position.setVector2D(0.0f, 0.0f);
 	}
 
-	PositionComponent(Vector2 position)
+	PositionComponent(Vector2D position)
 	{
-		// _position = position;
-		_position.setVector2D(position);
+		_position = position;
+		// _position.setVector2D(position);
 	}
 
 	Vector2D getPosition() { return _position; };
 
+	void setPosition(Vector2D newPosition)
+	{
+		_position = newPosition;
+		// _position.setVector2D(newPosition);
+	}
+
 	void update() override
 	{
 		// _position = addVector2(_position, makeVector2(0.1f, 0.1f));
-		//_position.operator+=(Vector2D(0.1f, 0.1f));
-	}
-
-	void setPosition(Vector2 newPosition)
-	{
-		// _position = newPosition;
-		_position.setVector2D(newPosition);
+		_position.operator+=(Vector2D(0.1f, 0.1f));
 	}
 };
 

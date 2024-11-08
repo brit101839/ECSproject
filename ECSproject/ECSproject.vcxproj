@@ -141,7 +141,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="textureManager.cpp" />
-    <ClCompile Include="vector2\Vector2.cpp" />
+    <ClCompile Include="vector2D\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ECS\Components.h" />
@@ -153,7 +153,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="textureManager.h" />
-    <ClInclude Include="vector2\Vector2.h" />
+    <ClInclude Include="vector2D\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

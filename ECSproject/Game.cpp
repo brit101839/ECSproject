@@ -79,10 +79,10 @@ Game::Game()
     _testsprite = new Sprite(texture, 48, 48);
     _gameObject = new GameObject(_testsprite, makeVector2(100.0f, 100.0f), makeVector2(0.0f, 0.0f));*/
     _map = new Map();
-    player.addcomponent<PositionComponent>(makeVector2(500.0f, 500.0f));
+    player.addcomponent<PositionComponent>(Vector2D(500.0f, 500.0f));
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     
-    std::cout << player.getComponent<PositionComponent>().getPosition().getVector2D().x << std::endl;
+    std::cout << player.getComponent<PositionComponent>().getPosition().x << std::endl;
 }
 
 Game::~Game()
@@ -115,7 +115,7 @@ void Game::render()
 
 void Game::update()
 {
-    player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
+   //  player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
     // _gameObject->update();
     player.update();
 }

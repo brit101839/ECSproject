@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 // #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
-#include "vector2/Vector2.h"
+#include "vector2D/Vector2D.h"
 
 typedef struct {
 	GLfloat positionCoordinate[3];
@@ -34,7 +34,7 @@ public:
 	void setVertices(GLfloat width, GLfloat height);
 	
 
-	void render(Vector2 position, GLfloat rotation);
+	void render(Vector2D position, GLfloat rotation);
 };
 
 #endif // !__Sprite__

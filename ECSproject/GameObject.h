@@ -1,6 +1,6 @@
 //
 // Entity.h
-#include "vector2/Vector2.h"
+#include "vector2D/Vector2D.h"
 #include "Sprite.h"
 
 #pragma once
