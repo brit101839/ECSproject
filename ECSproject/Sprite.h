@@ -8,7 +8,7 @@
 #include <GLFW/glfw3.h>
 // #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
-#include "../vector2/Vector2.h"
+#include "vector2/Vector2.h"
 
 typedef struct {
 	GLfloat positionCoordinate[3];

@@ -3,7 +3,7 @@
 
 #ifndef __Map__
 #define __Map__
-#include "ECS/Sprite.h"
+#include "Sprite.h"
 #include "textureManager.h"
 
 #define Window_w_Size 1351

@@ -4,7 +4,7 @@
 #ifndef __TextureManager__
 #define __TextureManager__
 
-#include "ECS/Sprite.h"
+#include "Sprite.h"
 #include <vector>
 
 class TextureManager
