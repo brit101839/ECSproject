@@ -11,33 +11,37 @@ class PositionComponent : public Component
 private:
 
 	Vector2D _position;
+	Vector2D _velocity;
+
+	float _speed;
 
 public:
 
 	PositionComponent()
 	{
 		_position = Vector2D();
-		// _position.setVector2D(0.0f, 0.0f);
+		_velocity = Vector2D();
+		_speed = 0;
 	}
 
-	PositionComponent(Vector2D position)
+	PositionComponent(Vector2D position, Vector2D velocity, float speed)
 	{
 		_position = position;
-		// _position.setVector2D(position);
+		_velocity = velocity;
+		_speed = speed;
 	}
 
-	Vector2D getPosition() { return _position; };
+	Vector2D getPosition() { return _position; }
 
-	void setPosition(Vector2D newPosition)
-	{
-		_position = newPosition;
-		// _position.setVector2D(newPosition);
-	}
+	void setPosition(Vector2D newPosition) { _position = newPosition; }
+
+	void setVelocity(Vector2D newVelocity) { _velocity = newVelocity; }
 
 	void update() override
 	{
-		// _position = addVector2(_position, makeVector2(0.1f, 0.1f));
-		_position.operator+=(Vector2D(0.1f, 0.1f));
+		Vector2D tempVec = _velocity;
+		tempVec.operator*=(Vector2D(_speed, _speed));
+		_position.operator+=(tempVec);
 	}
 };
 

@@ -26,7 +26,6 @@ public:
 		if (_textureBufferID == -1) {
 			throw std::runtime_error("Failed to load texture.");
 		}
-		//init;
 	}
 
 	void init() override

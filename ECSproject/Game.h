@@ -26,6 +26,8 @@ private:
 	void handleInitFailure();
 	void cleanup();
 
+	static void mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods);
+
 	Sprite* _testsprite;
 	GameObject* _gameObject;
 	Map* _map;
@@ -39,6 +41,8 @@ public:
 	bool getRunning();
 
 	void handleEvents();
+	void onMouseButton(GLFWwindow* window, int button, int action);
+
 	void render();
 	void update();
 

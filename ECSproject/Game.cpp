@@ -31,6 +31,10 @@ bool Game::initFlow(const char* title, bool fullscreen)
         return false;
     }
 
+    glfwSetWindowUserPointer(_window, this);
+
+    glfwSetMouseButtonCallback(_window, mouseButtonCallbackDispatcher);
+
     _isRunning = true;
     return true;
 }
@@ -65,6 +69,14 @@ void Game::cleanup()
     glfwTerminate();
 }
 
+void Game::mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods)
+{
+    Game* gameInstance = static_cast<Game*>(glfwGetWindowUserPointer(window));
+    if (gameInstance) {
+        gameInstance->onMouseButton(window, button, action);
+    }
+}
+
 Game::Game()
     :_isRunning(false)
 {
@@ -73,13 +85,8 @@ Game::Game()
     }
     setupGL();
 
-
-    // GLint texture = TextureManager::loadAndBufferImage("C:/Users/brit/source/repos/opengl/opengl/resourse/rocket.png");
-    /*GLint texture = TextureManager::loadMapImage("D:/dependencies/resource/PUNY_WORLD_v1/tilemap.png", 3, 0);
-    _testsprite = new Sprite(texture, 48, 48);
-    _gameObject = new GameObject(_testsprite, makeVector2(100.0f, 100.0f), makeVector2(0.0f, 0.0f));*/
     _map = new Map();
-    player.addcomponent<PositionComponent>(Vector2D(500.0f, 500.0f));
+    player.addcomponent<PositionComponent>(Vector2D(500.0f, 500.0f), Vector2D(1.0f, -1.0f), 0.1);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     
     std::cout << player.getComponent<PositionComponent>().getPosition().x << std::endl;
@@ -98,6 +105,19 @@ bool Game::getRunning()
 
 void Game::handleEvents()
 {
+}
+
+void Game::onMouseButton(GLFWwindow* window, int button, int action)
+{
+    if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
+    {
+        // _shotArray->addItem(_shotArray->getSprite(), _playerRocket->getPostition());
+
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        // y = _height - y;
+        std::cout << "Left mouse button pressed!"<< x << " " << y << std::endl;
+    }
 }
 
 void Game::render()

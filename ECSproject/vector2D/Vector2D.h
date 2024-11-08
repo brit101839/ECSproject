@@ -8,16 +8,6 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-//typedef struct {
-//
-//	GLfloat x;
-//	GLfloat y;
-//
-//} Vector2;
-//
-//Vector2 makeVector2(GLfloat x, GLfloat y);
-//Vector2 addVector2(Vector2 first, Vector2 second);
-
 class Vector2D
 {
 private:
@@ -31,10 +21,6 @@ public:
 
 	Vector2D();
 	Vector2D(GLfloat x, GLfloat y);
-
-	// Vector2 getVector2D() { return _vec; };
-	// void setVector2D(Vector2 vec) { _vec = vec; };
-	// void setVector2D(GLfloat x, GLfloat y) { _vec.x = x; _vec.y = y; };
 
 	Vector2D& Add(const Vector2D& vec);
 	Vector2D& Subtract(const Vector2D& vec);
