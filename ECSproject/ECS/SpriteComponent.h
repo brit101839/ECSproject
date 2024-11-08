@@ -39,7 +39,7 @@ public:
 
 	void settexture() {};
 
-	void update() override
+	void update(GLFWwindow* window) override
 	{
 
 	}

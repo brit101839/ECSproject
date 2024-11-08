@@ -150,6 +150,7 @@
     <ClInclude Include="ECS\SpriteComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="textureManager.h" />

@@ -41,7 +41,7 @@ public:
 	Entity* entity;
 
 	virtual void init() {};
-	virtual void update() {};
+	virtual void update(GLFWwindow* window) {};
 	virtual void draw() {};
 
 	virtual ~Component() {};
@@ -59,9 +59,9 @@ private:
 
 public:
 
-	void update()
+	void update(GLFWwindow* window)
 	{
-		for (auto& c : _components) c->update();
+		for (auto& c : _components) c->update(window);
 	}
 	void draw() 
 	{
@@ -110,9 +110,9 @@ private:
 
 public:
 
-	void update()
+	void update(GLFWwindow* window)
 	{
-		for (auto& e : entities) e->update();
+		for (auto& e : entities) e->update(window);
 	}
 
 	void draw()

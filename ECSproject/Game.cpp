@@ -73,7 +73,7 @@ void Game::mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int act
 {
     Game* gameInstance = static_cast<Game*>(glfwGetWindowUserPointer(window));
     if (gameInstance) {
-        gameInstance->onMouseButton(window, button, action);
+        gameInstance->keyCallback(window, button, action);
     }
 }
 
@@ -86,8 +86,9 @@ Game::Game()
     setupGL();
 
     _map = new Map();
-    player.addcomponent<PositionComponent>(Vector2D(500.0f, 500.0f), Vector2D(1.0f, -1.0f), 0.1);
+    player.addcomponent<PositionComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
+    player.addcomponent<KeyboardController>();
     
     std::cout << player.getComponent<PositionComponent>().getPosition().x << std::endl;
 }
@@ -105,9 +106,10 @@ bool Game::getRunning()
 
 void Game::handleEvents()
 {
+    
 }
 
-void Game::onMouseButton(GLFWwindow* window, int button, int action)
+void Game::keyCallback(GLFWwindow* window, int button, int action)
 {
     if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
     {
@@ -137,5 +139,5 @@ void Game::update()
 {
    //  player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
     // _gameObject->update();
-    player.update();
+    player.update(_window);
 }

@@ -6,5 +6,6 @@
 
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
+#include "KeyboardController.h"
 
 #endif // !__Components__

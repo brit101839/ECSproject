@@ -36,8 +36,10 @@ public:
 	void setPosition(Vector2D newPosition) { _position = newPosition; }
 
 	void setVelocity(Vector2D newVelocity) { _velocity = newVelocity; }
+	void setVelocity_x(GLfloat new_x) { _velocity.x = new_x; }
+	void setVelocity_y(GLfloat new_y) { _velocity.y = new_y; }
 
-	void update() override
+	void update(GLFWwindow* window) override
 	{
 		Vector2D tempVec = _velocity;
 		tempVec.operator*=(Vector2D(_speed, _speed));

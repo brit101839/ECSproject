@@ -41,7 +41,7 @@ public:
 	bool getRunning();
 
 	void handleEvents();
-	void onMouseButton(GLFWwindow* window, int button, int action);
+	void keyCallback(GLFWwindow* window, int button, int action);
 
 	void render();
 	void update();
