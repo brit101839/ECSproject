@@ -86,11 +86,11 @@ Game::Game()
     setupGL();
 
     _map = new Map();
-    player.addcomponent<PositionComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f);
+    player.addcomponent<MovementComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<KeyboardController>();
     
-    std::cout << player.getComponent<PositionComponent>().getPosition().x << std::endl;
+    std::cout << player.getComponent<MovementComponent>().getPosition().x << std::endl;
 }
 
 Game::~Game()

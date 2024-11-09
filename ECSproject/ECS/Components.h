@@ -5,7 +5,7 @@
 #define __Components__
 
 #include "SpriteComponent.h"
-#include "PositionComponent.h"
+#include "MovementComponent.h"
 #include "KeyboardController.h"
 
 #endif // !__Components__

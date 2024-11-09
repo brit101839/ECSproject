@@ -11,13 +11,13 @@ class KeyboardController : public Component
 {
 private:
 
-	PositionComponent* posComponent;
+	MovementComponent* posComponent;
 
 public:
 
 	void init() override
 	{
-		posComponent = &entity->getComponent<PositionComponent>();
+		posComponent = &entity->getComponent<MovementComponent>();
 	}
 
 	void update(GLFWwindow* window)

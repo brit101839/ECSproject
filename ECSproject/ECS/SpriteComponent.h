@@ -6,13 +6,13 @@
 
 #include "ECS.h"
 #include "../textureManager.h"
-#include "PositionComponent.h"
+#include "MovementComponent.h"
 
 class SpriteComponent : public Component
 {
 private:
 
-	PositionComponent* _position;
+	MovementComponent* _position;
 	GLfloat _width, _height;
 	GLuint _textureBufferID;
 	Sprite* _sprite;
@@ -30,7 +30,7 @@ public:
 
 	void init() override
 	{
-		_position = &entity->getComponent<PositionComponent>();
+		_position = &entity->getComponent<MovementComponent>();
 
 		_width = 50.0f;
 		_height = 50.0f;

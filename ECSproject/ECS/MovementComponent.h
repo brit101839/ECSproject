@@ -1,12 +1,12 @@
 //
-// PositionComponent.h
+// MovementComponent.h
 
-#ifndef __PositionComponent__
-#define __PositionComponent__
+#ifndef __MovementComponent__
+#define __MovementComponent__
 
 #include "ECS.h"
 
-class PositionComponent : public Component
+class MovementComponent : public Component
 {
 private:
 
@@ -17,14 +17,14 @@ private:
 
 public:
 
-	PositionComponent()
+	MovementComponent()
 	{
 		_position = Vector2D();
 		_velocity = Vector2D();
 		_speed = 0;
 	}
 
-	PositionComponent(Vector2D position, Vector2D velocity, float speed)
+	MovementComponent(Vector2D position, Vector2D velocity, float speed)
 	{
 		_position = position;
 		_velocity = velocity;
@@ -47,4 +47,4 @@ public:
 	}
 };
 
-#endif // !__PositionComponent__
+#endif // !__MovementComponent__
