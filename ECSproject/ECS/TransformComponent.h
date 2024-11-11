@@ -42,9 +42,8 @@ public:
 
 	void update(GLFWwindow* window) override
 	{
-		Vector2D tempVec = velocity;
-		tempVec.operator*=(Vector2D(speed, speed));
-		position.operator+=(tempVec);
+		Vector2D tempVec = velocity * speed;
+		position+=(tempVec);
 	}
 };
 

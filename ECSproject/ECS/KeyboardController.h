@@ -21,18 +21,25 @@ public:
 
 	void update(GLFWwindow* window)
 	{
-		transform->velocity = Vector2D(0.0f, 0.0f);
+		Vector2D& vel = transform->velocity;
+
+		vel = Vector2D(0.0f, 0.0f);
+
 		if (glfwGetKey(window, GLFW_KEY_W)) {
-			transform->velocity.y = 1.0f;
+			vel.y = 1.0f;
+			// std::cout << "key: w" << std::endl;
 		}
 		if (glfwGetKey(window, GLFW_KEY_S)) {
-			transform->velocity.y = -1.0f;
+			vel.y = -1.0f;
+			// std::cout << "key: s" << std::endl;
 		}
 		if (glfwGetKey(window, GLFW_KEY_A)) {
-			transform->velocity.x = -1.0f;
+			vel.x = -1.0f;
+			// std::cout << "key: a" << std::endl;
 		}
 		if (glfwGetKey(window, GLFW_KEY_D)) {
-			transform->velocity.x = 1.0f;
+			vel.x = 1.0f;
+			// std::cout << "key: d" << std::endl;
 		}
 	}
 };

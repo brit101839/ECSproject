@@ -95,7 +95,7 @@ Game::Game()
     
     std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
 
-    wall.addcomponent<TransformComponent>(Vector2D(700.0f, 700.0f), Vector2D(0.0f, 0.0f), 0.3f, 50.0f, 50.0f);
+    wall.addcomponent<TransformComponent>(Vector2D(400.0f, 400.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
     wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     wall.addcomponent<ColliderComponent>("wall");
 }
@@ -147,11 +147,26 @@ void Game::update()
 {
    //  player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
     // _gameObject->update();
+    
     player.update(_window);
     wall.update(_window);
 
     if (Collision::AABB(player.getComponent<ColliderComponent>().boundingBox, 
         wall.getComponent<ColliderComponent>().boundingBox)) {
-        std::cout << "Wall hit" << std::endl;
+        Direction dir = Collision::collisionDirect(player.getComponent<ColliderComponent>().boundingBox,
+            wall.getComponent<ColliderComponent>().boundingBox);
+        if (dir == Up || dir == Down) {
+            player.getComponent<TransformComponent>().velocity.y *= -2;
+            // std::cout << "up or down" << std::endl;
+        }
+        else if (dir == Left || dir == Right) {
+            player.getComponent<TransformComponent>().velocity.x *= -2;
+        }
+
+        // std::cout << "Wall hit: " << dir << std::endl;
+
+        player.getComponent<TransformComponent>().update(_window);
     }
+
+    
 }
