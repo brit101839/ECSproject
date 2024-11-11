@@ -2,9 +2,11 @@
 
 #include "ECS/ECS.h"
 #include "ECS/Components.h"
+#include "ECS/Collision.h"
 
 Manager manager;
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
 
 bool Game::initFlow(const char* title, bool fullscreen)
 {
@@ -86,11 +88,16 @@ Game::Game()
     setupGL();
 
     _map = new Map();
-    player.addcomponent<MovementComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f);
+    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f, 50.0f, 50.0f);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<KeyboardController>();
+    player.addcomponent<ColliderComponent>("player");
     
-    std::cout << player.getComponent<MovementComponent>().getPosition().x << std::endl;
+    std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
+
+    wall.addcomponent<TransformComponent>(Vector2D(700.0f, 700.0f), Vector2D(0.0f, 0.0f), 0.3f, 50.0f, 50.0f);
+    wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
+    wall.addcomponent<ColliderComponent>("wall");
 }
 
 Game::~Game()
@@ -129,6 +136,7 @@ void Game::render()
     _map->DrawMap();
     //_gameObject->render();
     player.draw();
+    wall.draw();
     
 
     /* Swap front and back buffers */
@@ -140,4 +148,10 @@ void Game::update()
    //  player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
     // _gameObject->update();
     player.update(_window);
+    wall.update(_window);
+
+    if (Collision::AABB(player.getComponent<ColliderComponent>().boundingBox, 
+        wall.getComponent<ColliderComponent>().boundingBox)) {
+        std::cout << "Wall hit" << std::endl;
+    }
 }

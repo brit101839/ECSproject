@@ -42,6 +42,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ECS\Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -68,13 +71,19 @@
     <ClInclude Include="ECS\Components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\MovementComponent.h">
+    <ClInclude Include="ECS\TransformComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\SpriteComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\KeyboardController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\ColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

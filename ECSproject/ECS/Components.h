@@ -4,8 +4,9 @@
 #ifndef __Components__
 #define __Components__
 
+#include "ECS.h"
 #include "SpriteComponent.h"
-#include "MovementComponent.h"
+#include "TransformComponent.h"
 #include "KeyboardController.h"
 
 #endif // !__Components__

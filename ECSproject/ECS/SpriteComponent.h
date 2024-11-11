@@ -6,14 +6,13 @@
 
 #include "ECS.h"
 #include "../textureManager.h"
-#include "MovementComponent.h"
+#include "TransformComponent.h"
 
 class SpriteComponent : public Component
 {
 private:
 
-	MovementComponent* _position;
-	GLfloat _width, _height;
+	TransformComponent* _transform;
 	GLuint _textureBufferID;
 	Sprite* _sprite;
 
@@ -30,11 +29,9 @@ public:
 
 	void init() override
 	{
-		_position = &entity->getComponent<MovementComponent>();
+		_transform = &entity->getComponent<TransformComponent>();
 
-		_width = 50.0f;
-		_height = 50.0f;
-		_sprite = new Sprite(_textureBufferID, _width, _height);
+		_sprite = new Sprite(_textureBufferID, _transform->width, _transform->height);
 	}
 
 	void settexture() {};
@@ -46,7 +43,7 @@ public:
 
 	void draw() override
 	{
-		_sprite->render(_position->getPosition(), 0.0f);
+		_sprite->render(_transform->position, 0.0f);
 		//_sprite->render(makeVector2(0.0f, 0.0f), 0.0f);
 	}
 
