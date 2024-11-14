@@ -14,6 +14,7 @@ class Collision
 public:
 
 	static bool AABB(const BoundingBox& boxA, const BoundingBox& boxB);
+	static bool AABB(const ColliderComponent& colA, const ColliderComponent& colB);
 
 	static Direction collisionDirect(const BoundingBox& player, const BoundingBox& tiles);
 };

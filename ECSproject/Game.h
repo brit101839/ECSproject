@@ -12,6 +12,8 @@
 #include "GameObject.h"
 #include "Map.h"
 
+class ColliderComponent;
+
 class Game
 {
 private:
@@ -28,10 +30,10 @@ private:
 
 	static void mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods);
 
-	Sprite* _testsprite;
-	GameObject* _gameObject;
+	// Sprite* _testsprite;
+	// GameObject* _gameObject;
 	Map* _map;
-	TextureManager* _textureManager;
+
 
 public:
 
@@ -45,6 +47,8 @@ public:
 
 	void render();
 	void update();
+
+	static std::vector<ColliderComponent*> colliders;
 
 };
 

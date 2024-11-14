@@ -5,8 +5,13 @@
 #include "ECS/Collision.h"
 
 Manager manager;
+
+std::vector<ColliderComponent*> Game::colliders;
+
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
+
+auto& tile0(manager.addEntity());
 
 bool Game::initFlow(const char* title, bool fullscreen)
 {
@@ -88,12 +93,16 @@ Game::Game()
     setupGL();
 
     _map = new Map();
+
+    tile0.addcomponent<TileComponent>(Vector2D(100.0f, 100.0f), 100.0f, 100.0f);
+    tile0.addcomponent<ColliderComponent>("tree");
+
     player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f, 50.0f, 50.0f);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<KeyboardController>();
     player.addcomponent<ColliderComponent>("player");
     
-    std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
+    // std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
 
     wall.addcomponent<TransformComponent>(Vector2D(400.0f, 400.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
     wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
@@ -134,6 +143,7 @@ void Game::render()
     glClear(GL_COLOR_BUFFER_BIT);
 
     _map->DrawMap();
+    tile0.draw();
     //_gameObject->render();
     player.draw();
     wall.draw();
@@ -147,11 +157,16 @@ void Game::update()
 {
    //  player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
     // _gameObject->update();
+    tile0.update(_window);
     
     player.update(_window);
     wall.update(_window);
 
-    if (Collision::AABB(player.getComponent<ColliderComponent>().boundingBox, 
+    for (auto cc : colliders) {
+        Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
+    }
+
+    if (Collision::AABB(player.getComponent<ColliderComponent>().boundingBox,
         wall.getComponent<ColliderComponent>().boundingBox)) {
         Direction dir = Collision::collisionDirect(player.getComponent<ColliderComponent>().boundingBox,
             wall.getComponent<ColliderComponent>().boundingBox);
