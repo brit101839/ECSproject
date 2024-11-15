@@ -34,7 +34,6 @@ private:
 	// GameObject* _gameObject;
 	Map* _map;
 
-
 public:
 
 	Game();
@@ -44,6 +43,8 @@ public:
 
 	void handleEvents();
 	void keyCallback(GLFWwindow* window, int button, int action);
+
+	static void addTile(int id, Vector2D position, bool collider);
 
 	void render();
 	void update();

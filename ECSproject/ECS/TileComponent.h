@@ -13,7 +13,9 @@ private:
 
 	Vector2D _position;
 	GLfloat _width, _height;
+	int _id;
 	const char* _path;
+	TextureManager _textureManager;
 
 public:
 
@@ -21,20 +23,8 @@ public:
 	SpriteComponent* sprite;
 
 	TileComponent() = default;
+	TileComponent(Vector2D position, GLfloat width, GLfloat height, int id);
 
-	TileComponent(Vector2D position, GLfloat width, GLfloat height)
-		:_position(position), _width(width), _height(height)
-	{
-		_path = "D:/dependencies/resource/redShot.png";
-	}
-
-	void init() override
-	{
-		entity->addcomponent<TransformComponent>(_position, Vector2D(), 0.0f, 100, 100);
-		transform = &entity->getComponent<TransformComponent>();
-
-		entity->addcomponent<SpriteComponent>(_path);
-		sprite = &entity->getComponent<SpriteComponent>();
-	}
+	void init() override;
 
 };

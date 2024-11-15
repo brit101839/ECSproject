@@ -1,6 +1,25 @@
 ﻿#include "textureManager.h"
 #include <iostream>
 
+GLuint TextureManager::TileSpriteManager(int id, const char* filename)
+{
+	GLuint tmpBufferID;
+	auto it = _tileSpriteManager.find(id);
+
+	if (it != _tileSpriteManager.end()) {
+		tmpBufferID = it->second;
+		return tmpBufferID;
+	}
+	else {
+		int row, column;
+		row = id % 8;
+		column = (id - row) / 8;
+		tmpBufferID = loadMapImage(filename, row, column);
+		_tileSpriteManager.insert(std::pair<int, GLuint>(id, tmpBufferID));
+		return tmpBufferID;
+	}
+}
+
 GLuint TextureManager::loadAndBufferImage(const char* filename)
 {
 	int width, height, nrChannels;

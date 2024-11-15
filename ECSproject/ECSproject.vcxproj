@@ -135,11 +135,13 @@
   <ItemGroup>
     <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
+    <ClCompile Include="ECS\TileComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="readTileMap\readTileMap_json.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="textureManager.cpp" />
@@ -157,6 +159,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="readTileMap\readTileMap_json.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="textureManager.h" />
     <ClInclude Include="vector2D\Vector2D.h" />

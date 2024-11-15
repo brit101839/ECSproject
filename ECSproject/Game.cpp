@@ -11,8 +11,6 @@ std::vector<ColliderComponent*> Game::colliders;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
 
-auto& tile0(manager.addEntity());
-
 bool Game::initFlow(const char* title, bool fullscreen)
 {
     /* Initialize the library */
@@ -94,9 +92,6 @@ Game::Game()
 
     _map = new Map();
 
-    tile0.addcomponent<TileComponent>(Vector2D(100.0f, 100.0f), 100.0f, 100.0f);
-    tile0.addcomponent<ColliderComponent>("tree");
-
     player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f, 50.0f, 50.0f);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<KeyboardController>();
@@ -138,15 +133,23 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
     }
 }
 
+void Game::addTile(int id, Vector2D position, bool collider)
+{
+    auto& tile(manager.addEntity());
+    tile.addcomponent<TileComponent>(position, 48, 48, id);
+}
+
 void Game::render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    _map->DrawMap();
-    tile0.draw();
+    // _map->DrawMap();
+    manager.draw();
+
     //_gameObject->render();
-    player.draw();
-    wall.draw();
+    /*player.draw();
+    wall.draw();*/
+    // tile.draw();
     
 
     /* Swap front and back buffers */
@@ -155,16 +158,14 @@ void Game::render()
 
 void Game::update()
 {
-   //  player.getComponent<PositionComponent>().getPosition().operator+=(Vector2D(0.0f, 1.0f));
-    // _gameObject->update();
-    tile0.update(_window);
+   // _gameObject->update();
     
     player.update(_window);
     wall.update(_window);
 
-    for (auto cc : colliders) {
+    /*for (auto cc : colliders) {
         Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
-    }
+    }*/
 
     if (Collision::AABB(player.getComponent<ColliderComponent>().boundingBox,
         wall.getComponent<ColliderComponent>().boundingBox)) {
@@ -177,9 +178,6 @@ void Game::update()
         else if (dir == Left || dir == Right) {
             player.getComponent<TransformComponent>().velocity.x *= -2;
         }
-
-        // std::cout << "Wall hit: " << dir << std::endl;
-
         player.getComponent<TransformComponent>().update(_window);
     }
 

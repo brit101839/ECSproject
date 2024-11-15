@@ -26,6 +26,11 @@ public:
 			throw std::runtime_error("Failed to load texture.");
 		}
 	}
+	SpriteComponent(GLuint textureBufferID)
+		:_textureBufferID(textureBufferID)
+	{
+
+	}
 
 	void init() override
 	{
