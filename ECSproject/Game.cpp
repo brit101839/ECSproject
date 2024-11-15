@@ -92,16 +92,18 @@ Game::Game()
 
     _map = new Map();
 
-    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f, 50.0f, 50.0f);
+    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 1.0f, 50.0f, 50.0f);
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<KeyboardController>();
     player.addcomponent<ColliderComponent>("player");
+    player.addGroup(groupPlayer);
     
     // std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
 
     wall.addcomponent<TransformComponent>(Vector2D(400.0f, 400.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
     wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     wall.addcomponent<ColliderComponent>("wall");
+    wall.addGroup(groupMap);
 }
 
 Game::~Game()
@@ -137,20 +139,22 @@ void Game::addTile(int id, Vector2D position, bool collider)
 {
     auto& tile(manager.addEntity());
     tile.addcomponent<TileComponent>(position, 48, 48, id);
+    tile.addGroup(groupMap);
 }
+
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayer));
+auto& enemies(manager.getGroup(groupEnemies));
 
 void Game::render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // _map->DrawMap();
-    manager.draw();
+    // manager.draw();
 
-    //_gameObject->render();
-    /*player.draw();
-    wall.draw();*/
-    // tile.draw();
-    
+    for (auto& t : tiles) { t->draw(); }
+    for (auto& p : players) { p->draw(); }
+    for (auto& e : enemies) { e->draw(); }
 
     /* Swap front and back buffers */
     glfwSwapBuffers(_window);

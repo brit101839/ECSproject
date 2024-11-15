@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
+    <ClCompile Include="ECS\ECS.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />

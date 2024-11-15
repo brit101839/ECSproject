@@ -14,6 +14,14 @@
 
 class ColliderComponent;
 
+enum GroupLabels : std::size_t
+{
+	groupMap,
+	groupPlayer,
+	groupEnemies,
+	groupColliders
+};
+
 class Game
 {
 private:

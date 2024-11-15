@@ -17,22 +17,14 @@ private:
 	int _MapWidth, _MapHeight;
 	GLfloat _tileSize;
 
-	int _map[16][30];
-
-	Sprite* _drit;
-	Sprite* _grass;
-	Sprite* _water;
-
 public:
 
 	Map();
 	~Map();
 
-	void LoadMap(int arr[16][30]);
 	void loadTileMap(TileMapData tileMap);
 
 	void DrawMap();
-
 };
 
 #endif // !__Map__
