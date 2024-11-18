@@ -17,7 +17,7 @@ private:
 public:
 
 	GLuint TileSpriteManager(int id, const char* filename);
-	static GLuint loadAndBufferImage(const char* filename);
+	static GLuint loadAndBufferImage(const char* filename, int& width, int& height);
 	static GLuint loadMapImage(const char* filename, int row, int column);
 };
 

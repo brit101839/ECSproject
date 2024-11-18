@@ -1,4 +1,4 @@
-//
+﻿//
 // Sprite.h
 
 #ifndef __Sprite__
@@ -6,35 +6,40 @@
 
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
-// #define STB_IMAGE_IMPLEMENTATION
+#include <glm/glm.hpp>
 #include "stb/stb_image.h"
 #include "vector2D/Vector2D.h"
 
 typedef struct {
-	GLfloat positionCoordinate[3];
-	GLfloat textureCoordinate[2];
+	glm::vec3 positionCoord; // 顶点位置
+	glm::vec2 textureCoord; // 纹理坐标
 } VertexData;
 
 class Sprite
 {
 private:
 
-	GLfloat _width, _height;
+	GLfloat _width, _height, _cutWidth, _cutHeight;
 	GLuint _textureBufferID;
-	GLuint _vertexBufferID;
+	GLuint _vertexBufferID, _vaoID;
 	VertexData _vertices[4];
-
+	int _textureWidth, _textureHeight;
 
 public:
 
 	Sprite();
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height);
+	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight);
 	~Sprite();
 
+	void animateInit();
+
 	void setVertices(GLfloat width, GLfloat height);
-	
+	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight);
 
 	void render(Vector2D position, GLfloat rotation);
+	void animateRender(Vector2D position, GLfloat rotation);
+	void updateFrame(int frameIndex, int framePerRow);
 };
 
 #endif // !__Sprite__

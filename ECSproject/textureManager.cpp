@@ -20,9 +20,9 @@ GLuint TextureManager::TileSpriteManager(int id, const char* filename)
 	}
 }
 
-GLuint TextureManager::loadAndBufferImage(const char* filename)
+GLuint TextureManager::loadAndBufferImage(const char* filename, int& width, int& height)
 {
-	int width, height, nrChannels;
+	int nrChannels;
 	unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
 	if (!data) {
 		std::cerr << "Failed to load texture: " << filename << std::endl;
