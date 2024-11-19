@@ -16,7 +16,9 @@ private:
 	GLuint _textureBufferID;
 	Sprite* _sprite;
 	int _textureWidth, _textureHeight;
+	int _id;
 
+	bool _map = false;
 	bool _animated = false;
 	int _frames = 0;
 	int _speed = 100;
@@ -26,6 +28,17 @@ public:
 	SpriteComponent() = default;
 	SpriteComponent(const char* path)
 	{
+		_textureBufferID = TextureManager::loadAndBufferImage(path, _textureWidth, _textureHeight);
+		if (_textureBufferID == -1) {
+			throw std::runtime_error("Failed to load texture.");
+		}
+	}
+
+	SpriteComponent(const char* path, int map_id)
+		:_id(map_id), _map(true)
+	{
+		/*TextureManager& textureManager = TextureManager::getTnstance();
+		_textureBufferID = textureManager.SpriteManager(path, _textureWidth, _textureHeight);*/
 		_textureBufferID = TextureManager::loadAndBufferImage(path, _textureWidth, _textureHeight);
 		if (_textureBufferID == -1) {
 			throw std::runtime_error("Failed to load texture.");
@@ -44,13 +57,13 @@ public:
 	SpriteComponent(GLuint textureBufferID)
 		:_textureBufferID(textureBufferID)
 	{
-
 	}
 
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
 		if (_animated) _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height, _textureWidth, _textureHeight, 32.0f, 32.0f);
+		else if (_map) _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
 		else _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height);
 	}
 

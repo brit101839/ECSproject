@@ -30,15 +30,16 @@ public:
 	Sprite();
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height);
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight);
+	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight, int id);
 	~Sprite();
 
 	void animateInit();
 
 	void setVertices(GLfloat width, GLfloat height);
 	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight);
+	void setTile(int index, int tilePerRow);
 
 	void render(Vector2D position, GLfloat rotation);
-	void animateRender(Vector2D position, GLfloat rotation);
 	void updateFrame(int frameIndex, int framePerRow);
 };
 

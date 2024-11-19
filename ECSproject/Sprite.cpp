@@ -25,6 +25,16 @@ Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textur
 	updateFrame(0, 13);
 }
 
+Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight, int id)
+	:_textureBufferID(textureBufferID), _width(width), _height(height), _textureWidth(textureWidth), _textureHeight(textureHeight), _cutWidth(cutWidth), _cutHeight(cutHeight)
+{
+	// cteate VBO
+	glGenBuffers(1, &_vertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
+
+	updateFrame(id, 8);
+}
+
 Sprite::~Sprite()
 {
 	if (_vertexBufferID != 0)
@@ -86,14 +96,15 @@ void Sprite::setVertices(GLfloat width, GLfloat height)
 
 void Sprite::setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight)
 {
+	GLfloat texOffset = 0.5f / textureWidth; // 每个 texel 的偏移值
 	// 动态计算纹理坐标
 	float frameWidth = _cutWidth / textureWidth;  // 每帧宽占整个纹理的比例
 	float frameHeight = _cutHeight / textureHeight; // 每帧高占整个纹理的比例
 
-	float u0 = frameX * frameWidth;          // 左下 U 坐标
-	float v0 = frameY * frameHeight;         // 左下 V 坐标
-	float u1 = u0 + frameWidth;              // 右上 U 坐标
-	float v1 = v0 + frameHeight;             // 右上 V 坐标
+	float u0 = frameX * frameWidth + texOffset;          // 左下 U 坐标
+	float v0 = frameY * frameHeight + texOffset;         // 左下 V 坐标
+	float u1 = u0 + frameWidth - texOffset;              // 右上 U 坐标
+	float v1 = v0 + frameHeight - texOffset;             // 右上 V 坐标
 
 	_vertices[0] = { { -width / 2, -height / 2, 0.0f }, { u0, v1 } }; // 左下角
 	_vertices[1] = { {  width / 2, -height / 2, 0.0f }, { u1, v1 } }; // 右下角
@@ -104,6 +115,10 @@ void Sprite::setVertices(GLfloat width, GLfloat height, int frameX, int frameY, 
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices), _vertices, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Sprite::setTile(int index, int tilePerRow)
+{
 }
 
 void Sprite::render(Vector2D position, GLfloat rotation)
@@ -130,31 +145,6 @@ void Sprite::render(Vector2D position, GLfloat rotation)
 	// 禁用???性
 	glDisableVertexAttribArray(0);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-}
-
-void Sprite::animateRender(Vector2D position, GLfloat rotation)
-{
-	// std::cout << "VBO ID: " << _vertexBufferID << std::endl;
-	// std::cout << "VAO ID: " << _vaoID << std::endl;
-	// 绑定 VAO
-	glBindVertexArray(_vaoID);
-
-	// 使用模型变换矩阵代替传统的 glTranslate 和 glRotate
-	glLoadIdentity();
-	glTranslatef(position.x, position.y, 0.0f);
-	glRotatef(rotation, 0.0f, 0.0f, 1.0f);
-
-	// 重置顏色為白色，避免受到之前設置的顏色影響
-	glColor3f(1.0f, 1.0f, 1.0f);  // RGB = (1, 1, 1) -> 白色
-
-	// 设置当前纹理（动画时可能切换纹理）
-	glBindTexture(GL_TEXTURE_2D, _textureBufferID);
-
-	// 绘制四边形（QUADS 已被废弃，因此推荐用 TRIANGLES 或 TRIANGLE_STRIP）
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	// 解绑 VAO
-	glBindVertexArray(0);
 }
 
 void Sprite::updateFrame(int frameIndex, int framePerRow)

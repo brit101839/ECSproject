@@ -5,7 +5,6 @@
 
 #include "ECS.h"
 #include "Components.h"
-#include "../textureManager.h"
 
 class TileComponent : public Component
 {
@@ -15,7 +14,6 @@ private:
 	GLfloat _width, _height;
 	int _id;
 	const char* _path;
-	TextureManager _textureManager;
 
 public:
 

@@ -1,4 +1,5 @@
 #include "TileComponent.h"
+#include "../textureManager.h"
 
 
 TileComponent::TileComponent(Vector2D position, GLfloat width, GLfloat height, int id)
@@ -12,8 +13,13 @@ void TileComponent::init()
 	entity->addcomponent<TransformComponent>(_position, Vector2D(), 0.0f, _width, _height);
 	transform = &entity->getComponent<TransformComponent>();
 
-	GLuint tmpBufferID = _textureManager.TileSpriteManager(_id, _path);
-	entity->addcomponent<SpriteComponent>(tmpBufferID);
+	// TextureManager& textureManager = TextureManager::getTnstance();
+
+	// GLuint tmpBufferID = textureManager.TileSpriteManager(_id, _path);
+	/*int textureWidth, textureHeight;
+	GLuint tmpBufferID = textureManager.loadAndBufferImage(_path, textureWidth, textureHeight);*/
+
+	entity->addcomponent<SpriteComponent>(_path, _id);
 	sprite = &entity->getComponent<SpriteComponent>();
 }
 
