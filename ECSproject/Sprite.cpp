@@ -22,7 +22,7 @@ Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textur
 	:_textureBufferID(textureBufferID), _width(width), _height(height), _textureWidth(textureWidth), _textureHeight(textureHeight), _cutWidth(cutWidth), _cutHeight(cutHeight)
 {
 	animateInit();
-	updateFrame(0, 13);
+	updateVertex(0, 13, true);
 }
 
 Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight, int id)
@@ -32,7 +32,7 @@ Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textur
 	glGenBuffers(1, &_vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
 
-	updateFrame(id, 8);
+	updateVertex(id, 8, false);
 }
 
 Sprite::~Sprite()
@@ -94,7 +94,7 @@ void Sprite::setVertices(GLfloat width, GLfloat height)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Sprite::setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight)
+void Sprite::setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight, bool animated)
 {
 	GLfloat texOffset = 0.5f / textureWidth; // 每个 texel 的偏移值
 	// 动态计算纹理坐标
@@ -113,7 +113,8 @@ void Sprite::setVertices(GLfloat width, GLfloat height, int frameX, int frameY, 
 
 	// update VBO data
 	glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices), _vertices, GL_DYNAMIC_DRAW);
+	if (animated) glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices), _vertices, GL_DYNAMIC_DRAW);
+	else glBufferData(GL_ARRAY_BUFFER, sizeof(_vertices), _vertices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -147,10 +148,10 @@ void Sprite::render(Vector2D position, GLfloat rotation)
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-void Sprite::updateFrame(int frameIndex, int framePerRow)
+void Sprite::updateVertex(int index, int tilePerRow, bool animated)
 {
-	int frameX = frameIndex % framePerRow;      // 计算当前帧的列号
-	int frameY = frameIndex / framePerRow;      // 计算当前帧的行号
-	setVertices(_width, _height, frameX, frameY, _textureWidth, _textureHeight);
+	int tileX = index % tilePerRow;      // 计算当前帧的列号
+	int tileY = index / tilePerRow;      // 计算当前帧的行号
+	setVertices(_width, _height, tileX, tileY, _textureWidth, _textureHeight, animated);
 }
 

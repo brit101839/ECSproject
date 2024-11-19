@@ -36,11 +36,11 @@ public:
 	void animateInit();
 
 	void setVertices(GLfloat width, GLfloat height);
-	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight);
+	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight, bool animated);
 	void setTile(int index, int tilePerRow);
 
 	void render(Vector2D position, GLfloat rotation);
-	void updateFrame(int frameIndex, int framePerRow);
+	void updateVertex(int frameIndex, int framePerRow, bool animated);
 };
 
 #endif // !__Sprite__

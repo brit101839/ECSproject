@@ -15,7 +15,7 @@ private:
 	TransformComponent* _transform;
 	GLuint _textureBufferID;
 	Sprite* _sprite;
-	int _textureWidth, _textureHeight;
+	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
 
 	bool _map = false;
@@ -28,7 +28,8 @@ public:
 	SpriteComponent() = default;
 	SpriteComponent(const char* path)
 	{
-		_textureBufferID = TextureManager::loadAndBufferImage(path, _textureWidth, _textureHeight);
+		TextureManager& textureManager = TextureManager::getTnstance();
+		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_textureBufferID == -1) {
 			throw std::runtime_error("Failed to load texture.");
 		}
@@ -37,9 +38,8 @@ public:
 	SpriteComponent(const char* path, int map_id)
 		:_id(map_id), _map(true)
 	{
-		/*TextureManager& textureManager = TextureManager::getTnstance();
-		_textureBufferID = textureManager.SpriteManager(path, _textureWidth, _textureHeight);*/
-		_textureBufferID = TextureManager::loadAndBufferImage(path, _textureWidth, _textureHeight);
+		TextureManager& textureManager = TextureManager::getTnstance();
+		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_textureBufferID == -1) {
 			throw std::runtime_error("Failed to load texture.");
 		}
@@ -48,15 +48,11 @@ public:
 	SpriteComponent(const char* path, int nFrames, int mSpeed)
 		:_frames(nFrames), _speed(mSpeed), _animated(true)
 	{
-		_textureBufferID = TextureManager::loadAndBufferImage(path, _textureWidth, _textureHeight);
+		TextureManager& textureManager = TextureManager::getTnstance();
+		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_textureBufferID == -1) {
 			throw std::runtime_error("Failed to load texture.");
 		}
-	}
-
-	SpriteComponent(GLuint textureBufferID)
-		:_textureBufferID(textureBufferID)
-	{
 	}
 
 	void init() override
@@ -67,7 +63,7 @@ public:
 		else _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height);
 	}
 
-	void settexture() {};
+	// void settexture() {};
 
 	void update(GLFWwindow* window) override
 	{
@@ -84,7 +80,7 @@ public:
 			float currentTime = glfwGetTime();
 			if (currentTime - lastFrameTime > frameInterval) {
 				currentFrame = (currentFrame + 1) % totalFrames; // 循环播放
-				_sprite->updateFrame(currentFrame, framesPerRow);
+				_sprite->updateVertex(currentFrame, framesPerRow, _animated);
 				lastFrameTime = currentTime;
 			}
 		}
