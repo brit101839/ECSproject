@@ -148,6 +148,12 @@ void Sprite::render(Vector2D position, GLfloat rotation)
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
+void Sprite::updateAnimateVertex(int frameIndex, int tileY, int framePerRow, bool animated)
+{
+	int tileX = frameIndex % framePerRow;      // 计算当前帧的列号
+	setVertices(_width, _height, tileX, tileY, _textureWidth, _textureHeight, animated);
+}
+
 void Sprite::updateVertex(int index, int tilePerRow, bool animated)
 {
 	int tileX = index % tilePerRow;      // 计算当前帧的列号

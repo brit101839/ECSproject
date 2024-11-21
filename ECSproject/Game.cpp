@@ -92,9 +92,9 @@ Game::Game()
 
     _map = new Map();
 
-    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.5f, 100.0f, 100.0f);
+    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
-    player.addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", 4, 100);
+    player.addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true);
     player.addcomponent<KeyboardController>();
     player.addcomponent<ColliderComponent>("player");
     player.addGroup(groupPlayer);
@@ -102,7 +102,7 @@ Game::Game()
     // std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
 
     wall.addcomponent<TransformComponent>(Vector2D(400.0f, 400.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
-    wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
+    wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png", false);
     wall.addcomponent<ColliderComponent>("wall");
     wall.addGroup(groupMap);
 }

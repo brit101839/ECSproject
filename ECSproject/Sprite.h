@@ -40,7 +40,8 @@ public:
 	void setTile(int index, int tilePerRow);
 
 	void render(Vector2D position, GLfloat rotation);
-	void updateVertex(int frameIndex, int framePerRow, bool animated);
+	void updateAnimateVertex(int frameIndex, int tileY, int framePerRow, bool animated);
+	void updateVertex(int index, int tilePerRow, bool animated);
 };
 
 #endif // !__Sprite__

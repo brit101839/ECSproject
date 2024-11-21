@@ -7,6 +7,8 @@
 #include "ECS.h"
 #include "../textureManager.h"
 #include "TransformComponent.h"
+#include "Animation.h"
+#include <map>
 
 class SpriteComponent : public Component
 {
@@ -25,9 +27,28 @@ private:
 
 public:
 
+	int tileY = 0;
+
+	std::map<std::string, Animation> animations;
+
 	SpriteComponent() = default;
-	SpriteComponent(const char* path)
+
+	SpriteComponent(const char* path, bool isAnimated)
+		:_animated(isAnimated)
 	{
+		if (isAnimated) {
+			Animation idle = Animation(0, 13, 10);
+			Animation walk_LR = Animation(1, 8, 10);
+			Animation walk_Up = Animation(11, 8, 10);
+			// Animation walk_Down = Animation();
+
+			animations.emplace("idle", idle);
+			animations.emplace("walkLR", walk_LR);
+			animations.emplace("walkUp", walk_Up);
+
+			setAnimate("idle");
+		}
+
 		TextureManager& textureManager = TextureManager::getTnstance();
 		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_textureBufferID == -1) {
@@ -37,16 +58,6 @@ public:
 
 	SpriteComponent(const char* path, int map_id)
 		:_id(map_id), _map(true)
-	{
-		TextureManager& textureManager = TextureManager::getTnstance();
-		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
-		if (_textureBufferID == -1) {
-			throw std::runtime_error("Failed to load texture.");
-		}
-	}
-
-	SpriteComponent(const char* path, int nFrames, int mSpeed)
-		:_frames(nFrames), _speed(mSpeed), _animated(true)
 	{
 		TextureManager& textureManager = TextureManager::getTnstance();
 		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
@@ -68,10 +79,10 @@ public:
 	void update(GLFWwindow* window) override
 	{
 		static float lastFrameTime = 0.0f;
-		static float frameInterval = 0.1f; // 每帧持续时间
+		static float frameInterval = 1.0f/_speed; // 每帧持续时间
 		static int currentFrame = 0;
-		static int totalFrames = 13; // 动画总帧数
-		static int framesPerRow = 13; // 每行的帧数
+		int totalFrames = _frames; // 动画总帧数
+		int framesPerRow = _frames; // 每行的帧数
 
 		if (_animated) {
 
@@ -80,7 +91,7 @@ public:
 			float currentTime = glfwGetTime();
 			if (currentTime - lastFrameTime > frameInterval) {
 				currentFrame = (currentFrame + 1) % totalFrames; // 循环播放
-				_sprite->updateVertex(currentFrame, framesPerRow, _animated);
+				_sprite->updateAnimateVertex(currentFrame, tileY, framesPerRow, _animated);
 				lastFrameTime = currentTime;
 			}
 		}
@@ -90,6 +101,13 @@ public:
 	{
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
 		_sprite->render(_transform->position, 0.0f);
+	}
+
+	void setAnimate(std::string animName)
+	{
+		tileY = animations[animName].tileY;
+		_frames = animations[animName].frames;
+		_speed = animations[animName].speed;
 	}
 
 };
