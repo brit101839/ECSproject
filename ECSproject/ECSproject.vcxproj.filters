@@ -107,5 +107,8 @@
     <ClInclude Include="ECS\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="shader\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

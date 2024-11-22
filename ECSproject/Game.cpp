@@ -17,6 +17,14 @@ bool Game::initFlow(const char* title, bool fullscreen)
     if (!glfwInit())
         return false;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
     glfwDefaultWindowHints();
 
     /* Create a windowed mode window and its OpenGL context */
