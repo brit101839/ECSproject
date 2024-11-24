@@ -8,6 +8,7 @@
 #include "../textureManager.h"
 #include "TransformComponent.h"
 #include "Animation.h"
+#include "../shader/Shader.h"
 #include <map>
 
 class SpriteComponent : public Component
@@ -15,7 +16,7 @@ class SpriteComponent : public Component
 private:
 
 	TransformComponent* _transform;
-	GLuint _textureBufferID;
+	GLuint _texture;
 	Sprite* _sprite;
 	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
@@ -49,19 +50,19 @@ public:
 			setAnimate("idle");
 		}
 
-		TextureManager& textureManager = TextureManager::getTnstance();
-		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
-		if (_textureBufferID == -1) {
+		TextureManager& textureManager = TextureManager::getInstance();
+		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
+		if (_texture == -1) {
 			throw std::runtime_error("Failed to load texture.");
 		}
 	}
 
-	SpriteComponent(const char* path, int map_id)
+	SpriteComponent(int map_id, const char* path)
 		:_id(map_id), _map(true)
 	{
-		TextureManager& textureManager = TextureManager::getTnstance();
-		_textureBufferID = textureManager.textureManager(path, _textureWidth, _textureHeight);
-		if (_textureBufferID == -1) {
+		TextureManager& textureManager = TextureManager::getInstance();
+		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
+		if (_texture == -1) {
 			throw std::runtime_error("Failed to load texture.");
 		}
 	}
@@ -69,9 +70,9 @@ public:
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
-		if (_animated) _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height, _textureWidth, _textureHeight, 32.0f, 32.0f);
-		else if (_map) _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
-		else _sprite = new Sprite(_textureBufferID, _transform->width, _transform->height);
+		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 32.0f, 32.0f);
+		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
+		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
 	}
 
 	// void settexture() {};
@@ -91,16 +92,16 @@ public:
 			float currentTime = glfwGetTime();
 			if (currentTime - lastFrameTime > frameInterval) {
 				currentFrame = (currentFrame + 1) % totalFrames; // 循环播放
-				_sprite->updateAnimateVertex(currentFrame, tileY, framesPerRow, _animated);
+				_sprite->updateAnimateVertex(currentFrame, tileY, framesPerRow);
 				lastFrameTime = currentTime;
 			}
 		}
 	}
 
-	void draw() override
+	void draw(Shader& shader) override
 	{
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
-		_sprite->render(_transform->position, 0.0f);
+		_sprite->render(_transform->position, 0.0f, shader);
 	}
 
 	void setAnimate(std::string animName)
@@ -113,7 +114,4 @@ public:
 };
 
 
-#endif // !__SpriteComponent__
-
-
-#pragma once
+#endif // !__SpriteComponent

@@ -5,6 +5,7 @@
 
 #include "ECS.h"
 #include "Components.h"
+#include "../shader/Shader.h"
 
 class TileComponent : public Component
 {

@@ -19,7 +19,7 @@ void TileComponent::init()
 	/*int textureWidth, textureHeight;
 	GLuint tmpBufferID = textureManager.loadAndBufferImage(_path, textureWidth, textureHeight);*/
 
-	entity->addcomponent<SpriteComponent>(_path, _id);
+	entity->addcomponent<SpriteComponent>(_id, _path);
 	sprite = &entity->getComponent<SpriteComponent>();
 }
 

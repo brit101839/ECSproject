@@ -1,8 +1,11 @@
-#include "Game.h"
+﻿#include "Game.h"
 
 #include "ECS/ECS.h"
 #include "ECS/Components.h"
 #include "ECS/Collision.h"
+#include <glm/gtc/matrix_transform.hpp>
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 Manager manager;
 
@@ -38,6 +41,7 @@ bool Game::initFlow(const char* title, bool fullscreen)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(_window);
+    glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;
@@ -58,20 +62,20 @@ void Game::setupGL()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glViewport(0.0f, 0.0f, Window_w_Size, Window_h_Size);
 
-    glEnable(GL_TEXTURE_2D);
+    // glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glMatrixMode(GL_PROJECTION);
-    glOrtho(0, Window_w_Size, 0, Window_h_Size, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
+    // glMatrixMode(GL_PROJECTION);
+    // glOrtho(0, Window_w_Size, 0, Window_h_Size, -1, 1);
+    // glMatrixMode(GL_MODELVIEW);
 }
 
 void Game::handleInitFailure()
 {
     std::cerr << "Error: Window initialization failed, terminating program." << std::endl;
     cleanup();
-    exit(EXIT_FAILURE);  // �פ�{�ǡA�ήھڻݨD�B�z���~
+    exit(EXIT_FAILURE);  // 終止程序，或根據需求處理錯誤
 }
 
 void Game::cleanup()
@@ -96,11 +100,14 @@ Game::Game()
     if (!initFlow("OpenGL practice", false)) {
         handleInitFailure();
     }
+
     setupGL();
+
+    _shader.init("shader/shader.vert", "shader/shader.frag");
 
     _map = new Map();
 
-    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
+    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.5f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true);
     player.addcomponent<KeyboardController>();
@@ -124,6 +131,11 @@ bool Game::getRunning()
 {
     _isRunning = !glfwWindowShouldClose(_window);
     return _isRunning;
+}
+
+Shader& Game::getShader()
+{
+    return _shader;
 }
 
 void Game::handleEvents()
@@ -159,13 +171,14 @@ void Game::render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // manager.draw();
+    //// manager.draw();
 
-    for (auto& t : tiles) { t->draw(); }
-    for (auto& p : players) { p->draw(); }
-    for (auto& e : enemies) { e->draw(); }
+    for (auto& t : tiles) { t->draw(_shader); }
+    for (auto& p : players) { p->draw(_shader); }
+    for (auto& e : enemies) { e->draw(_shader); }
 
-    /* Swap front and back buffers */
+    // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+    // -------------------------------------------------------------------------------
     glfwSwapBuffers(_window);
 }
 
@@ -195,4 +208,18 @@ void Game::update()
     }
 
     
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+
+    //// 重新计算正交投影矩阵
+    //glm::mat4 projection = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+
+    //// 更新到着色器中（需在回调中获取当前使用的 Shader 对象）
+    //shader.use();
+    //shader.setMat4("projection", projection);
 }

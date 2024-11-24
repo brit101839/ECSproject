@@ -1,4 +1,4 @@
-#ifndef SHADER_H
+﻿#ifndef SHADER_H
 #define SHADER_H
 
 #include <glad/glad.h>
@@ -8,13 +8,17 @@
 #include <sstream>
 #include <iostream>
 
+#include "glm/glm.hpp"
+
 class Shader
 {
 public:
     unsigned int ID;
+
+    Shader() : ID(0) {}
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
-    Shader(const char* vertexPath, const char* fragmentPath)
+    void init(const char* vertexPath, const char* fragmentPath)
     {
         // 1. retrieve the vertex/fragment source code from filePath
         std::string vertexCode;
@@ -89,6 +93,16 @@ public:
     void setFloat(const std::string& name, float value) const
     {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    }
+
+    void setMat4(const std::string& name, const glm::mat4& mat) const {
+        // 找到uniform位置
+        int location = glGetUniformLocation(ID, name.c_str());
+        if (location == -1) {
+            std::cout << "Uniform '" << name << "' not found in shader!" << std::endl;
+        }
+        // 发送矩阵数据
+        glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
     }
 
 private:

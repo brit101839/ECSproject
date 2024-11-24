@@ -11,6 +11,7 @@
 #include "textureManager.h"
 #include "GameObject.h"
 #include "Map.h"
+#include "shader/Shader.h"
 
 class ColliderComponent;
 
@@ -30,6 +31,8 @@ private:
 
 	GLFWwindow* _window;
 
+	Shader _shader;
+
 	bool initFlow(const char* title, bool fullscreen);
 	void setupGL();
 
@@ -48,7 +51,8 @@ public:
 	~Game();
 
 	bool getRunning();
-
+	Shader& getShader();
+	
 	void handleEvents();
 	void keyCallback(GLFWwindow* window, int button, int action);
 
@@ -59,6 +63,8 @@ public:
 
 	static std::vector<ColliderComponent*> colliders;
 
+	unsigned int VBO, VAO, EBO;
+	unsigned int texture;
 };
 
 #endif // !__Game__

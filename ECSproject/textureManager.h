@@ -27,7 +27,7 @@ private:
 
 public:
 
-	static TextureManager& getTnstance() {
+	static TextureManager& getInstance() {
 		static TextureManager instance;
 		return instance;
 	}

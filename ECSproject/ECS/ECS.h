@@ -11,6 +11,7 @@
 #include <bitset>
 #include <array>
 #include "../vector2D/Vector2D.h"
+#include "../shader/Shader.h"
 
 class Component;
 class Entity;
@@ -47,7 +48,7 @@ public:
 
 	virtual void init() {};
 	virtual void update(GLFWwindow* window) {};
-	virtual void draw() {};
+	virtual void draw(Shader& shader) {};
 
 	virtual ~Component() {};
 };
@@ -73,9 +74,9 @@ public:
 	{
 		for (auto& c : _components) c->update(window);
 	}
-	void draw() 
+	void draw(Shader& shader)
 	{
-		for (auto& c : _components) c->draw();
+		for (auto& c : _components) c->draw(shader);
 	}
 
 	bool isActive() const { return _active; }
@@ -134,9 +135,9 @@ public:
 		for (auto& e : entities) e->update(window);
 	}
 
-	void draw()
+	void draw(Shader& shader)
 	{
-		for (auto& e : entities) e->draw();
+		for (auto& e : entities) e->draw(shader);
 	}
 
 	void refresh()

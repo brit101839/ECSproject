@@ -9,10 +9,15 @@
 #include <glm/glm.hpp>
 #include "stb/stb_image.h"
 #include "vector2D/Vector2D.h"
+#include "shader/Shader.h"
+
+#define Window_w_Size 1351
+#define Window_h_Size 760
 
 typedef struct {
-	glm::vec3 positionCoord; // 顶点位置
-	glm::vec2 textureCoord; // 纹理坐标
+	glm::vec3 positionCoord; 
+	glm::vec3 colorCoord;
+	glm::vec2 textureCoord; 
 } VertexData;
 
 class Sprite
@@ -20,10 +25,18 @@ class Sprite
 private:
 
 	GLfloat _width, _height, _cutWidth, _cutHeight;
-	GLuint _textureBufferID;
-	GLuint _vertexBufferID, _vaoID;
+	GLuint _textureID;
+	unsigned int _VBO, _VAO, _EBO;
 	VertexData _vertices[4];
+	unsigned int _indices[6] = {
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
+	};
+
 	int _textureWidth, _textureHeight;
+
+	// Shader _shader = Shader("shader/shader.vert", "shader/shader.frag");
+	
 
 public:
 
@@ -33,15 +46,15 @@ public:
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight, int id);
 	~Sprite();
 
-	void animateInit();
+	void setVAO(bool animated);
 
 	void setVertices(GLfloat width, GLfloat height);
-	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight, bool animated);
+	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight);
 	void setTile(int index, int tilePerRow);
 
-	void render(Vector2D position, GLfloat rotation);
-	void updateAnimateVertex(int frameIndex, int tileY, int framePerRow, bool animated);
-	void updateVertex(int index, int tilePerRow, bool animated);
+	void render(Vector2D position, GLfloat rotation, Shader& shader);
+	void updateAnimateVertex(int frameIndex, int tileY, int framePerRow);
+	void updateVertex(int index, int tilePerRow);
 };
 
 #endif // !__Sprite__

@@ -7,9 +7,6 @@
 #include "readTileMap/readTileMap_json.h"
 #include "ECS/ECS.h"
 
-#define Window_w_Size 1351
-#define Window_h_Size 760
-
 class Map
 {
 private:

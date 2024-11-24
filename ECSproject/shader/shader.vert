@@ -22,9 +22,13 @@ layout (location = 2) in vec2 aTexCoord;
 out vec3 ourColor;
 out vec2 TexCoord;
 
+uniform mat4 model; // 模型矩阵
+uniform mat4 view; // 观察矩阵
+uniform mat4 projection; // 投影矩阵
+
 void main()
 {
-	gl_Position = vec4(aPos, 1.0);
+	gl_Position = projection * view * model * vec4(aPos, 1.0);
 	ourColor = aColor;
 	TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 }
