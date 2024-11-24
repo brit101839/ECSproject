@@ -35,17 +35,17 @@ public:
 		}
 		if (glfwGetKey(window, GLFW_KEY_S)) {
 			vel.y = -1.0f;
-			_sprite->setAnimate("walkLR");
+			_sprite->setAnimate("walkR");
 			// std::cout << "key: s" << std::endl;
 		}
 		if (glfwGetKey(window, GLFW_KEY_A)) {
 			vel.x = -1.0f;
-			_sprite->setAnimate("walkLR");
+			_sprite->setAnimate("walkL");
 			// std::cout << "key: a" << std::endl;
 		}
 		if (glfwGetKey(window, GLFW_KEY_D)) {
 			vel.x = 1.0f;
-			_sprite->setAnimate("walkLR");
+			_sprite->setAnimate("walkR");
 			// std::cout << "key: d" << std::endl;
 		}
 	}

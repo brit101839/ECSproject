@@ -25,6 +25,7 @@ private:
 	bool _animated = false;
 	int _frames = 0;
 	int _speed = 100;
+	bool _flip = false;
 
 public:
 
@@ -38,13 +39,15 @@ public:
 		:_animated(isAnimated)
 	{
 		if (isAnimated) {
-			Animation idle = Animation(0, 13, 10);
-			Animation walk_LR = Animation(1, 8, 10);
-			Animation walk_Up = Animation(11, 8, 10);
+			Animation idle = Animation(0, 13, 10, false);
+			Animation walk_L = Animation(1, 8, 10, true);
+			Animation walk_R = Animation(1, 8, 10, false);
+			Animation walk_Up = Animation(11, 8, 10, false);
 			// Animation walk_Down = Animation();
 
 			animations.emplace("idle", idle);
-			animations.emplace("walkLR", walk_LR);
+			animations.emplace("walkL", walk_L);
+			animations.emplace("walkR", walk_R);
 			animations.emplace("walkUp", walk_Up);
 
 			setAnimate("idle");
@@ -95,6 +98,7 @@ public:
 				_sprite->updateAnimateVertex(currentFrame, tileY, framesPerRow);
 				lastFrameTime = currentTime;
 			}
+			_sprite->setFlip(_flip);
 		}
 	}
 
@@ -109,6 +113,7 @@ public:
 		tileY = animations[animName].tileY;
 		_frames = animations[animName].frames;
 		_speed = animations[animName].speed;
+		_flip = animations[animName].flip;
 	}
 
 };

@@ -34,6 +34,7 @@ private:
 	};
 
 	int _textureWidth, _textureHeight;
+	bool _flip = false;
 
 	// Shader _shader = Shader("shader/shader.vert", "shader/shader.frag");
 	
@@ -45,6 +46,8 @@ public:
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight);
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight, int id);
 	~Sprite();
+
+	void setFlip(bool flip) { _flip = flip; }
 
 	void setVAO(bool animated);
 
