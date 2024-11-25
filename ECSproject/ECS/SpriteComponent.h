@@ -102,10 +102,10 @@ public:
 		}
 	}
 
-	void draw(Shader& shader) override
+	void draw(Shader& shader, Vector2D cameraPos) override
 	{
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
-		_sprite->render(_transform->position, 0.0f, shader);
+		_sprite->render(_transform->position, 0.0f, shader, cameraPos);
 	}
 
 	void setAnimate(std::string animName)

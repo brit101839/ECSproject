@@ -10,5 +10,6 @@
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "TileComponent.h"
+#include "CameraComponent.h"
 
 #endif // !__Components__

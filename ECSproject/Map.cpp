@@ -20,7 +20,7 @@ void Map::loadTileMap(TileMapData tileMap)
 
 	for (auto layer = tileMap.layers.rbegin(); layer != tileMap.layers.rend(); ++layer) {
 		for (const auto& tile : layer->tiles) {
-			Game::addTile(tile.id, Vector2D(tile.x * 48, Window_h_Size - tile.y * 48), layer->collider);
+			Game::addTile(tile.id, 80, Vector2D(tile.x * 80, Window_h_Size - tile.y * 80), layer->collider);
 		}
 	}
 

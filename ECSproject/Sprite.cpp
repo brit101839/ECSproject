@@ -107,23 +107,20 @@ void Sprite::setTile(int index, int tilePerRow)
 {
 }
 
-void Sprite::render(Vector2D position, GLfloat rotation, Shader& shader)
+void Sprite::render(Vector2D position, GLfloat rotation, Shader& shader, Vector2D cameraPos)
 {
-	// std::cout << flip << std::endl;
 	// bind Texture
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-
 	if (_flip) {
 		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));  // Flip horizontally
 	}
 
-
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-
+	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraPos.x, -cameraPos.y, 0.0f));
 	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, 0.0f, (float)Window_h_Size, -1.0f, 1.0f);
 
 	// render container

@@ -55,7 +55,7 @@ public:
 	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight);
 	void setTile(int index, int tilePerRow);
 
-	void render(Vector2D position, GLfloat rotation, Shader& shader);
+	void render(Vector2D position, GLfloat rotation, Shader& shader, Vector2D cameraPos);
 	void updateAnimateVertex(int frameIndex, int tileY, int framePerRow);
 	void updateVertex(int index, int tilePerRow);
 };

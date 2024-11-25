@@ -20,14 +20,13 @@ enum GroupLabels : std::size_t
 	groupMap,
 	groupPlayer,
 	groupEnemies,
-	groupColliders
+	groupColliders,
+	groupCamera
 };
 
 class Game
 {
 private:
-
-	bool _isRunning;
 
 	GLFWwindow* _window;
 
@@ -47,16 +46,19 @@ private:
 
 public:
 
+	static bool _isRunning;
+
 	Game();
 	~Game();
 
 	bool getRunning();
+
 	Shader& getShader();
 	
 	void handleEvents();
 	void keyCallback(GLFWwindow* window, int button, int action);
 
-	static void addTile(int id, Vector2D position, bool collider);
+	static void addTile(int id, GLfloat tileSize, Vector2D position, bool collider);
 
 	void render();
 	void update();

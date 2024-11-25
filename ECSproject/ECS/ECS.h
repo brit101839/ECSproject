@@ -48,7 +48,7 @@ public:
 
 	virtual void init() {};
 	virtual void update(GLFWwindow* window) {};
-	virtual void draw(Shader& shader) {};
+	virtual void draw(Shader& shader, Vector2D cameraPos) {};
 
 	virtual ~Component() {};
 };
@@ -74,9 +74,9 @@ public:
 	{
 		for (auto& c : _components) c->update(window);
 	}
-	void draw(Shader& shader)
+	void draw(Shader& shader, Vector2D cameraPos)
 	{
-		for (auto& c : _components) c->draw(shader);
+		for (auto& c : _components) c->draw(shader, cameraPos);
 	}
 
 	bool isActive() const { return _active; }
@@ -135,9 +135,9 @@ public:
 		for (auto& e : entities) e->update(window);
 	}
 
-	void draw(Shader& shader)
+	void draw(Shader& shader, Vector2D cameraPos)
 	{
-		for (auto& e : entities) e->draw(shader);
+		for (auto& e : entities) e->draw(shader, cameraPos);
 	}
 
 	void refresh()

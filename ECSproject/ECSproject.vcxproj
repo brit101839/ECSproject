@@ -136,6 +136,7 @@
     <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\ECS.cpp" />
+    <ClCompile Include="ECS\KeyboardController.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -150,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ECS\Animation.h" />
+    <ClInclude Include="ECS\CameraComponent.h" />
     <ClInclude Include="ECS\Collision.h" />
     <ClInclude Include="ECS\ColliderComponent.h" />
     <ClInclude Include="ECS\Components.h" />

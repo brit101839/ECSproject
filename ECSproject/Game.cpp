@@ -13,6 +13,13 @@ std::vector<ColliderComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
+auto& Camera(manager.addEntity());
+
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayer));
+auto& enemies(manager.getGroup(groupEnemies));
+
+bool Game::_isRunning = false;
 
 bool Game::initFlow(const char* title, bool fullscreen)
 {
@@ -95,8 +102,9 @@ void Game::mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int act
 }
 
 Game::Game()
-    :_isRunning(false)
 {
+    // _isRunning = false;
+
     if (!initFlow("OpenGL practice", false)) {
         handleInitFailure();
     }
@@ -107,16 +115,19 @@ Game::Game()
 
     _map = new Map();
 
-    player.addcomponent<TransformComponent>(Vector2D(500.0f, 500.0f), Vector2D(0.0f, 0.0f), 0.5f, 100.0f, 100.0f);
+    player.addcomponent<TransformComponent>(Vector2D((float)Window_w_Size/2, (float)Window_h_Size/2), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true);
     player.addcomponent<KeyboardController>();
     player.addcomponent<ColliderComponent>("player");
     player.addGroup(groupPlayer);
+
+    Camera.addcomponent<CameraComponent>(&player.getComponent<TransformComponent>());
+    Camera.addGroup(groupCamera);
     
     // std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
 
-    wall.addcomponent<TransformComponent>(Vector2D(400.0f, 400.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
+    wall.addcomponent<TransformComponent>(Vector2D(800.0f, 300.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
     wall.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png", false);
     wall.addcomponent<ColliderComponent>("wall");
     wall.addGroup(groupMap);
@@ -129,6 +140,7 @@ Game::~Game()
 
 bool Game::getRunning()
 {
+    if (!_isRunning) return _isRunning;
     _isRunning = !glfwWindowShouldClose(_window);
     return _isRunning;
 }
@@ -156,26 +168,23 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
     }
 }
 
-void Game::addTile(int id, Vector2D position, bool collider)
+void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
 {
     auto& tile(manager.addEntity());
-    tile.addcomponent<TileComponent>(position, 48, 48, id);
+    tile.addcomponent<TileComponent>(position, tileSize, tileSize, id);
     tile.addGroup(groupMap);
 }
-
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayer));
-auto& enemies(manager.getGroup(groupEnemies));
 
 void Game::render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
     //// manager.draw();
+    Vector2D cameraPos = Camera.getComponent<CameraComponent>().CameraPos;
 
-    for (auto& t : tiles) { t->draw(_shader); }
-    for (auto& p : players) { p->draw(_shader); }
-    for (auto& e : enemies) { e->draw(_shader); }
+    for (auto& t : tiles) { t->draw(_shader, cameraPos); }
+    for (auto& p : players) { p->draw(_shader, cameraPos); }
+    for (auto& e : enemies) { e->draw(_shader, cameraPos); }
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
@@ -184,10 +193,10 @@ void Game::render()
 
 void Game::update()
 {
-   // _gameObject->update();
-    
-    player.update(_window);
-    wall.update(_window);
+    //player.update(_window);
+    //wall.update(_window);
+    manager.refresh();
+    manager.update(_window);
 
     /*for (auto cc : colliders) {
         Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
@@ -206,8 +215,6 @@ void Game::update()
         }
         player.getComponent<TransformComponent>().update(_window);
     }
-
-    
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
