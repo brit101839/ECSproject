@@ -14,7 +14,7 @@ private:
 	float _zoom = 1.0f;
 	TransformComponent* _target;
 	bool _followTarget = true;
-	float mapWidth = 2320.0f, mapHeight = 1280.0f;
+	float mapWidth = 2320.0f, mapHeight = 1520.0f;
 
 public:
 

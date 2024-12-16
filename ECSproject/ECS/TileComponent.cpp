@@ -5,7 +5,7 @@
 TileComponent::TileComponent(Vector2D position, GLfloat width, GLfloat height, int id)
 	:_position(position), _width(width), _height(height), _id(id)
 {
-	_path = "D:/dependencies/resource/map3/spritesheet.png";
+	_path = "D:/dependencies/resource/map1/spritesheet.png";
 }
 
 void TileComponent::init()

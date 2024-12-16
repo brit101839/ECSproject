@@ -21,6 +21,7 @@ class ColliderComponent : public Component
 private:
 
 	TransformComponent* _trans;
+	bool isInitialSize;
 
 public:
 
@@ -28,6 +29,7 @@ public:
 	BoundingBox boundingBox;
 
 	ColliderComponent(std::string t);
+	ColliderComponent(std::string t, BoundingBox boundingBox);
 		
 	void init() override;
 

@@ -32,3 +32,20 @@ Direction Collision::collisionDirect(const BoundingBox& player, const BoundingBo
 
 	return None;
 }
+
+Vector2D Collision::calculateMTV(const BoundingBox& boxA, const BoundingBox& boxB)
+{
+	float overlapX = std::min(boxA.position.x + boxA.width / 2, boxB.position.x + boxB.width / 2) - std::max(boxA.position.x - boxA.width / 2, boxB.position.x - boxB.width / 2);
+	float overlapY = std::min(boxA.position.y + boxA.height / 2, boxB.position.y + boxB.height / 2) - std::max(boxA.position.y - boxA.height / 2, boxB.position.y - boxB.height / 2);
+
+	if (overlapX <= 0 || overlapY <= 0) { return Vector2D(0.0f, 0.0f); }
+
+	if (overlapX < overlapY) {
+		return (boxA.position.x - boxA.width / 2 < boxB.position.x - boxB.width / 2) ? Vector2D(-overlapX, 0.0f) : Vector2D(overlapX, 0.0f);
+	}
+	else {
+		return(boxA.position.y - boxA.height / 2 < boxB.position.y - boxB.height / 2) ? Vector2D(0.0f, -overlapY) : Vector2D(0.0f, overlapY);
+	}
+	
+	return Vector2D(0.0f, 0.0f);
+}

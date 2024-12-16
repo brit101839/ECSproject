@@ -115,11 +115,15 @@ Game::Game()
 
     _map = new Map();
 
-    player.addcomponent<TransformComponent>(Vector2D((float)Window_w_Size/2, (float)Window_h_Size/2), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
+    player.addcomponent<TransformComponent>(Vector2D(400.0f, 100.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true);
     player.addcomponent<KeyboardController>();
-    player.addcomponent<ColliderComponent>("player");
+
+    auto trans = player.getComponent<TransformComponent>();
+    BoundingBox bound{trans.position, 40.0f, 40.0f};
+    player.addcomponent<ColliderComponent>("player", bound);
+
     player.addGroup(groupPlayer);
 
     Camera.addcomponent<CameraComponent>(&player.getComponent<TransformComponent>());
@@ -173,13 +177,17 @@ void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
     auto& tile(manager.addEntity());
     tile.addcomponent<TileComponent>(position, tileSize, tileSize, id);
     tile.addGroup(groupMap);
+    if (collider) {
+        std::string tag = "tile id: ";
+        tile.addcomponent<ColliderComponent>(tag.append(std::to_string(id)));
+    }
 }
 
 void Game::render()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    //// manager.draw();
+    // manager.draw();
     Vector2D cameraPos = Camera.getComponent<CameraComponent>().CameraPos;
 
     for (auto& t : tiles) { t->draw(_shader, cameraPos); }
@@ -198,22 +206,14 @@ void Game::update()
     manager.refresh();
     manager.update(_window);
 
-    /*for (auto cc : colliders) {
-        Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
-    }*/
-
-    if (Collision::AABB(player.getComponent<ColliderComponent>().boundingBox,
-        wall.getComponent<ColliderComponent>().boundingBox)) {
-        Direction dir = Collision::collisionDirect(player.getComponent<ColliderComponent>().boundingBox,
-            wall.getComponent<ColliderComponent>().boundingBox);
-        if (dir == Up || dir == Down) {
-            player.getComponent<TransformComponent>().velocity.y *= -2;
-            // std::cout << "up or down" << std::endl;
+    for (auto cc : colliders) {
+        if (cc->tag != "player" && Collision::AABB(player.getComponent<ColliderComponent>().boundingBox, cc->boundingBox)) {
+            std::cout << "collision: " << cc->tag << std::endl;
+            std::cout << "position:" << player.getComponent<TransformComponent>().position.x << ", " << player.getComponent<TransformComponent>().position.y << std::endl;
+            Vector2D mtv = Collision::calculateMTV(player.getComponent<ColliderComponent>().boundingBox, cc->boundingBox);
+            player.getComponent<TransformComponent>().position += mtv;
+            player.getComponent<TransformComponent>().update(_window);
         }
-        else if (dir == Left || dir == Right) {
-            player.getComponent<TransformComponent>().velocity.x *= -2;
-        }
-        player.getComponent<TransformComponent>().update(_window);
     }
 }
 

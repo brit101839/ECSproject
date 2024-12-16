@@ -17,5 +17,6 @@ public:
 	static bool AABB(const ColliderComponent& colA, const ColliderComponent& colB);
 
 	static Direction collisionDirect(const BoundingBox& player, const BoundingBox& tiles);
+	static Vector2D calculateMTV(const BoundingBox& boxA, const BoundingBox& boxB);
 };
 

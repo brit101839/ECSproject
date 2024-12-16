@@ -5,7 +5,7 @@
 
 Map::Map()
 {
-	loadTileMap(readTileMap_json::loadMapFromJson("D:/dependencies/resource/map3/map.json"));
+	loadTileMap(readTileMap_json::loadMapFromJson("D:/dependencies/resource/map1/map.json"));
 }
 
 Map::~Map()

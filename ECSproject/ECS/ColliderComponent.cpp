@@ -2,8 +2,15 @@
 #include "../Game.h"
 
 ColliderComponent::ColliderComponent(std::string t)
-	:tag(t)
+	:tag(t), isInitialSize(false)
 {
+	
+}
+
+ColliderComponent::ColliderComponent(std::string t, BoundingBox newboundingBox) 
+	:tag(t), isInitialSize(true), boundingBox(newboundingBox)
+{
+
 }
 
 void ColliderComponent::init()
@@ -12,14 +19,19 @@ void ColliderComponent::init()
 	{
 		entity->addcomponent<TransformComponent>();
 	}
-	_trans = &entity->getComponent<TransformComponent>();
 
+	_trans = &entity->getComponent<TransformComponent>();
+	if (!isInitialSize) {
+		boundingBox.width = _trans->width;
+		boundingBox.height = _trans->height;
+	}
+	
 	Game::colliders.push_back(this);
 }
 
 void ColliderComponent::update(GLFWwindow* window)
 {
 	boundingBox.position = _trans->position;
-	boundingBox.width = _trans->width;
-	boundingBox.height = _trans->height;
+	/*boundingBox.width = _trans->width;
+	boundingBox.height = _trans->height;*/
 }
