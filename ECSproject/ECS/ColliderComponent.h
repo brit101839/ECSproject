@@ -5,6 +5,7 @@
 
 #include <string>
 #include "Components.h"
+#include "Quadtree/Box.h"
 // #include "../Game.h"
 
 // class Game;
@@ -25,8 +26,10 @@ private:
 
 public:
 
+	size_t indexInVector;
 	std::string tag;
 	BoundingBox boundingBox;
+	quadtree::Box<float> box;
 
 	ColliderComponent(std::string t);
 	ColliderComponent(std::string t, BoundingBox boundingBox);

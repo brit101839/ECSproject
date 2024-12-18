@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="readTileMap\readTileMap_json.cpp" />
+    <ClCompile Include="RenderQuadtreeManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="textureManager.cpp" />
@@ -164,6 +167,7 @@
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="readTileMap\readTileMap_json.h" />
+    <ClInclude Include="RenderQuadtreeManager.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="shader\Shader.h" />
     <ClInclude Include="Sprite.h" />

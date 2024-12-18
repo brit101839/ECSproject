@@ -3,9 +3,11 @@
 #include "nlohmann/json.hpp"
 #include "Game.h"
 
-Map::Map()
+Map::Map(Game& gameInstance, std::string mapJASON)
+	: _game(gameInstance)
 {
-	loadTileMap(readTileMap_json::loadMapFromJson("D:/dependencies/resource/map1/map.json"));
+	// loadTileMap(readTileMap_json::loadMapFromJson("D:\\dependencies\\resource\\map_town\\map_town\\map.json"));
+	loadTileMap(readTileMap_json::loadMapFromJson(mapJASON));
 }
 
 Map::~Map()
@@ -20,7 +22,7 @@ void Map::loadTileMap(TileMapData tileMap)
 
 	for (auto layer = tileMap.layers.rbegin(); layer != tileMap.layers.rend(); ++layer) {
 		for (const auto& tile : layer->tiles) {
-			Game::addTile(tile.id, 80, Vector2D(tile.x * 80, Window_h_Size - tile.y * 80), layer->collider);
+			_game.addTile(tile.id, 80, Vector2D(tile.x * 80, Window_h_Size - tile.y * 80), layer->collider);
 		}
 	}
 

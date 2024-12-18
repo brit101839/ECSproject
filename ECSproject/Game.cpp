@@ -4,6 +4,8 @@
 #include "ECS/Components.h"
 #include "ECS/Collision.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "Quadtree/Quadtree.h"
+#include "Map.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -16,8 +18,11 @@ auto& wall(manager.addEntity());
 auto& Camera(manager.addEntity());
 
 auto& tiles(manager.getGroup(groupMap));
+auto& colliderTile(manager.getGroup(groupCollider));
 auto& players(manager.getGroup(groupPlayer));
 auto& enemies(manager.getGroup(groupEnemies));
+
+// quadtree::Quadtree<Entity, quadtree::Box<float>, GetEntityBox> quadTree();
 
 bool Game::_isRunning = false;
 
@@ -113,12 +118,17 @@ Game::Game()
 
     _shader.init("shader/shader.vert", "shader/shader.frag");
 
-    _map = new Map();
+    Box<float> interBox{ {-5000.0f, -5000.0f} , {10000.0f, 10000.0f} };
+    std::cout << "{ {" << interBox.left << "," << interBox.getBottom() << " }, {" << interBox.getRight() << "," << interBox.top << " } }" << std::endl;
+    _renderManager = new RenderQuadtreeManager(interBox);
+
+    _map = new Map(*this, "D:/dependencies/resource/map_town/map_town/map.json");
 
     player.addcomponent<TransformComponent>(Vector2D(400.0f, 100.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     player.addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true);
     player.addcomponent<KeyboardController>();
+    //_renderManager->addTransfrom(&player.getComponent<TransformComponent>());
 
     auto trans = player.getComponent<TransformComponent>();
     BoundingBox bound{trans.position, 40.0f, 40.0f};
@@ -174,12 +184,21 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
 
 void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
 {
+    const char* sheetPath = "D:/dependencies/resource/map_town/map_town/spritesheet.png";
     auto& tile(manager.addEntity());
-    tile.addcomponent<TileComponent>(position, tileSize, tileSize, id);
-    tile.addGroup(groupMap);
+    tile.addcomponent<TileComponent>(position, tileSize, tileSize, id, sheetPath);
+    
+
     if (collider) {
         std::string tag = "tile id: ";
         tile.addcomponent<ColliderComponent>(tag.append(std::to_string(id)));
+        tile.addGroup(groupCollider);
+
+        // quadTree.add(tile);
+    }
+    else {
+        tile.addGroup(groupMap);
+        _renderManager->addTransfrom(&tile.getComponent<TransformComponent>());
     }
 }
 
@@ -189,8 +208,11 @@ void Game::render()
 
     // manager.draw();
     Vector2D cameraPos = Camera.getComponent<CameraComponent>().CameraPos;
+    quadtree::Box<float> cameraBound = Camera.getComponent<CameraComponent>().getBox();
+    
 
-    for (auto& t : tiles) { t->draw(_shader, cameraPos); }
+    // for (auto& t : tiles) { t->draw(_shader, cameraPos); }
+    for (auto& r : _renderManager->query(cameraBound)) { r->entity->draw(_shader, cameraPos); }
     for (auto& p : players) { p->draw(_shader, cameraPos); }
     for (auto& e : enemies) { e->draw(_shader, cameraPos); }
 

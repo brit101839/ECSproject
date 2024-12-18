@@ -5,12 +5,11 @@
 #define __TransformComponent__
 
 #include "ECS.h"
+#include "Quadtree/Box.h"
 
 class TransformComponent : public Component
 {
 private:
-
-	
 
 public:
 
@@ -33,12 +32,9 @@ public:
 
 	}
 
-	//Vector2D getPosition() { return position; }
-	//void setPosition(Vector2D newPosition) { position = newPosition; }
-
-	//void setVelocity(Vector2D newVelocity) { velocity = newVelocity; }
-	//void setVelocity_x(GLfloat new_x) { velocity.x = new_x; }
-	//void setVelocity_y(GLfloat new_y) { velocity.y = new_y; }
+	quadtree::Box<float> getBox() const {
+		return { {position.x - width / 2, position.y + height / 2},{width, height} };
+	}
 
 	void update(GLFWwindow* window) override
 	{

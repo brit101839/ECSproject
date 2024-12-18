@@ -2,10 +2,11 @@
 #include "../textureManager.h"
 
 
-TileComponent::TileComponent(Vector2D position, GLfloat width, GLfloat height, int id)
+TileComponent::TileComponent(Vector2D position, GLfloat width, GLfloat height, int id, const char* sheetPath)
 	:_position(position), _width(width), _height(height), _id(id)
 {
-	_path = "D:/dependencies/resource/map1/spritesheet.png";
+	_path = sheetPath;
+	// _path = "D:\\dependencies\\resource\\map_town\\map_town\\spritesheet.png";
 }
 
 void TileComponent::init()

@@ -10,19 +10,27 @@
 
 #include "textureManager.h"
 #include "GameObject.h"
-#include "Map.h"
 #include "shader/Shader.h"
+#include "RenderQuadtreeManager.h"
 
 class ColliderComponent;
+class Map;
 
 enum GroupLabels : std::size_t
 {
 	groupMap,
+	groupCollider,
 	groupPlayer,
 	groupEnemies,
 	groupColliders,
 	groupCamera
 };
+
+//struct GetEntityBox {
+//	quadtree::Box<float> operator()(const Entity& entity) const {
+//		return entity.getComponent<ColliderComponent>().box;
+//	}
+//};
 
 class Game
 {
@@ -40,9 +48,10 @@ private:
 
 	static void mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods);
 
-	// Sprite* _testsprite;
 	// GameObject* _gameObject;
 	Map* _map;
+
+	RenderQuadtreeManager* _renderManager;
 
 public:
 
@@ -58,7 +67,7 @@ public:
 	void handleEvents();
 	void keyCallback(GLFWwindow* window, int button, int action);
 
-	static void addTile(int id, GLfloat tileSize, Vector2D position, bool collider);
+	void addTile(int id, GLfloat tileSize, Vector2D position, bool collider);
 
 	void render();
 	void update();

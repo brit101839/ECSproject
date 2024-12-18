@@ -6,6 +6,7 @@
 #include "ECS.h"
 #include "Components.h"
 #include <algorithm>
+#include "Quadtree/Box.h"
 
 class CameraComponent :public Component
 {
@@ -14,7 +15,7 @@ private:
 	float _zoom = 1.0f;
 	TransformComponent* _target;
 	bool _followTarget = true;
-	float mapWidth = 2320.0f, mapHeight = 1520.0f;
+	float mapWidth = 52.0f * 80.0f, mapHeight = 39.0f * 80.0f;
 
 public:
 
@@ -23,6 +24,13 @@ public:
 	CameraComponent(TransformComponent* target)
 	{
 		_target = target;
+	}
+
+	quadtree::Box<float> getBox() const {
+		float width = Window_w_Size;
+		float height = Window_h_Size;
+		// std::cout << "{ {" << CameraPos.x << "," << CameraPos.y << " }, {" << CameraPos.x + width << "," << CameraPos.y + height << " } }" << std::endl;
+		return { {CameraPos.x, CameraPos.y},{width, height+100.0f} };
 	}
 
 	void update(GLFWwindow* window) override 

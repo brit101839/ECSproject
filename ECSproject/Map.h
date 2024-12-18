@@ -7,16 +7,19 @@
 #include "readTileMap/readTileMap_json.h"
 #include "ECS/ECS.h"
 
+class Game;
+
 class Map
 {
 private:
 
+	Game& _game;
 	int _MapWidth, _MapHeight;
 	GLfloat _tileSize;
 
 public:
 
-	Map();
+	explicit Map(Game& gameInstance, std::string mapJASON);
 	~Map();
 
 	void loadTileMap(TileMapData tileMap);

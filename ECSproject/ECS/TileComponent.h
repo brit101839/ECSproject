@@ -22,7 +22,7 @@ public:
 	SpriteComponent* sprite;
 
 	TileComponent() = default;
-	TileComponent(Vector2D position, GLfloat width, GLfloat height, int id);
+	TileComponent(Vector2D position, GLfloat width, GLfloat height, int id, const char* sheetPath);
 
 	void init() override;
 

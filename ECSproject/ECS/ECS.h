@@ -119,6 +119,8 @@ public:
 		}
 		return *static_cast<T*>(ptr);
 	}
+
+	
 };
 
 class Manager
