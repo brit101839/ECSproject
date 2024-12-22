@@ -12,4 +12,14 @@
 #include "TileComponent.h"
 #include "CameraComponent.h"
 
+enum GroupLabels : std::size_t
+{
+	groupMap,
+	groupCollider,
+	groupPlayer,
+	groupEnemies,
+	groupColliders,
+	groupCamera
+};
+
 #endif // !__Components__

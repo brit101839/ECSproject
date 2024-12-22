@@ -7,9 +7,8 @@
 #include "ECS.h"
 #include "../textureManager.h"
 #include "TransformComponent.h"
-#include "Animation.h"
+#include "../AnimateSet.h"
 #include "../shader/Shader.h"
-#include <map>
 
 class SpriteComponent : public Component
 {
@@ -18,41 +17,22 @@ private:
 	TransformComponent* _transform;
 	GLuint _texture;
 	Sprite* _sprite;
+	AnimationSet _animationSet;
+	const Animation* _activeAnimation;
+	std::string _currentAnimation;
 	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
 
 	bool _map = false;
 	bool _animated = false;
-	int _frames = 0;
-	int _speed = 100;
-	bool _flip = false;
 
 public:
-
-	int tileY = 0;
-
-	std::map<std::string, Animation> animations;
 
 	SpriteComponent() = default;
 
 	SpriteComponent(const char* path, bool isAnimated)
-		:_animated(isAnimated)
+		:_animated(isAnimated), _activeAnimation(nullptr)
 	{
-		if (isAnimated) {
-			Animation idle = Animation(0, 13, 10, false);
-			Animation walk_L = Animation(1, 8, 10, true);
-			Animation walk_R = Animation(1, 8, 10, false);
-			Animation walk_Up = Animation(11, 8, 10, false);
-			// Animation walk_Down = Animation();
-
-			animations.emplace("idle", idle);
-			animations.emplace("walkL", walk_L);
-			animations.emplace("walkR", walk_R);
-			animations.emplace("walkUp", walk_Up);
-
-			setAnimate("idle");
-		}
-
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_texture == -1) {
@@ -78,27 +58,38 @@ public:
 		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
 	}
 
+	void addAnimation(const std::string& name, const Animation& anim) {
+		_animationSet.addAnimation(name, anim);
+	}
+
+	void setAnimate(std::string animName)
+	{
+		_currentAnimation = animName;
+		_activeAnimation = &_animationSet.getAnimation(animName);
+		if (_activeAnimation == nullptr) {
+			_activeAnimation = &_animationSet.getAnimation("idle");
+		}
+	}
+
 	// void settexture() {};
 
 	void update(GLFWwindow* window) override
 	{
-		static float lastFrameTime = 0.0f;
-		static float frameInterval = 1.0f/_speed; // 每帧持续时间
-		static int currentFrame = 0;
-		int totalFrames = _frames; // 动画总帧数
-		int framesPerRow = _frames; // 每行的帧数
-
 		if (_animated) {
-
-			// _sprite->updateFrame(currentFrame, framesPerRow);
+			static float lastFrameTime = 0.0f;
+			static float frameInterval = 1.0f / _activeAnimation->speed; // 每帧持续时间
+			static int currentFrame = 0;
+			int totalFrames = _activeAnimation->frames; // 动画总帧数
+			int framesPerRow = _activeAnimation->frames; // 每行的帧数
 
 			float currentTime = glfwGetTime();
 			if (currentTime - lastFrameTime > frameInterval) {
 				currentFrame = (currentFrame + 1) % totalFrames; // 循环播放
-				_sprite->updateAnimateVertex(currentFrame, tileY, framesPerRow);
+				_sprite->updateAnimateVertex(currentFrame, _activeAnimation->tileY, framesPerRow);
 				lastFrameTime = currentTime;
 			}
-			_sprite->setFlip(_flip);
+			// _sprite->setFlip(_flip);
+			_sprite->setFlip(_activeAnimation->flip);
 		}
 	}
 
@@ -107,15 +98,6 @@ public:
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
 		_sprite->render(_transform->position, 0.0f, shader, cameraPos);
 	}
-
-	void setAnimate(std::string animName)
-	{
-		tileY = animations[animName].tileY;
-		_frames = animations[animName].frames;
-		_speed = animations[animName].speed;
-		_flip = animations[animName].flip;
-	}
-
 };
 
 

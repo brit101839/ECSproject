@@ -23,6 +23,7 @@ private:
 
 	TransformComponent* _trans;
 	bool isInitialSize;
+	Vector2D _shift;
 
 public:
 
@@ -32,7 +33,7 @@ public:
 	quadtree::Box<float> box;
 
 	ColliderComponent(std::string t);
-	ColliderComponent(std::string t, BoundingBox boundingBox);
+	ColliderComponent(std::string t, BoundingBox boundingBox, Vector2D shift = Vector2D(0.0f, 0.0f));
 		
 	void init() override;
 

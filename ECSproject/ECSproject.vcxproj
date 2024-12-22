@@ -140,6 +140,7 @@
     <ClCompile Include="ECS\ECS.cpp" />
     <ClCompile Include="ECS\KeyboardController.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
@@ -153,6 +154,7 @@
     <ClCompile Include="vector2D\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimateSet.h" />
     <ClInclude Include="ECS\Animation.h" />
     <ClInclude Include="ECS\CameraComponent.h" />
     <ClInclude Include="ECS\Collision.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="ECS\TileComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ECS\KeyboardController.h" />

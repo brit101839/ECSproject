@@ -12,19 +12,10 @@
 #include "GameObject.h"
 #include "shader/Shader.h"
 #include "RenderQuadtreeManager.h"
+#include "EnemyManager.h"
 
 class ColliderComponent;
 class Map;
-
-enum GroupLabels : std::size_t
-{
-	groupMap,
-	groupCollider,
-	groupPlayer,
-	groupEnemies,
-	groupColliders,
-	groupCamera
-};
 
 //struct GetEntityBox {
 //	quadtree::Box<float> operator()(const Entity& entity) const {
@@ -42,6 +33,7 @@ private:
 
 	bool initFlow(const char* title, bool fullscreen);
 	void setupGL();
+	bool initEntityGroup();
 
 	void handleInitFailure();
 	void cleanup();
@@ -51,7 +43,13 @@ private:
 	// GameObject* _gameObject;
 	Map* _map;
 
+	EnemyManager* _enemyManager;
+
 	RenderQuadtreeManager* _renderManager;
+
+	Entity* player = nullptr;
+	Entity* wall = nullptr;
+	Entity* Camera = nullptr;
 
 public:
 
