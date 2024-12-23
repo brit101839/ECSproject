@@ -18,20 +18,23 @@ private:
 	GLuint _texture;
 	Sprite* _sprite;
 	AnimationSet _animationSet;
-	const Animation* _activeAnimation;
+	
 	std::string _currentAnimation;
+	GLfloat _cutWidth, _cutHeight;
 	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
 
 	bool _map = false;
 	bool _animated = false;
 
+	
+
 public:
 
 	SpriteComponent() = default;
 
-	SpriteComponent(const char* path, bool isAnimated)
-		:_animated(isAnimated), _activeAnimation(nullptr)
+	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight)
+		:_animated(isAnimated), _cutWidth(cutWidth), _cutHeight(cutHeight)
 	{
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
@@ -53,7 +56,7 @@ public:
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
-		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 32.0f, 32.0f);
+		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
 		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
 		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
 	}
@@ -64,11 +67,7 @@ public:
 
 	void setAnimate(std::string animName)
 	{
-		_currentAnimation = animName;
-		_activeAnimation = &_animationSet.getAnimation(animName);
-		if (_activeAnimation == nullptr) {
-			_activeAnimation = &_animationSet.getAnimation("idle");
-		}
+		_animationSet.setAnimation(animName);
 	}
 
 	// void settexture() {};
@@ -76,20 +75,7 @@ public:
 	void update(GLFWwindow* window) override
 	{
 		if (_animated) {
-			static float lastFrameTime = 0.0f;
-			static float frameInterval = 1.0f / _activeAnimation->speed; // 每帧持续时间
-			static int currentFrame = 0;
-			int totalFrames = _activeAnimation->frames; // 动画总帧数
-			int framesPerRow = _activeAnimation->frames; // 每行的帧数
-
-			float currentTime = glfwGetTime();
-			if (currentTime - lastFrameTime > frameInterval) {
-				currentFrame = (currentFrame + 1) % totalFrames; // 循环播放
-				_sprite->updateAnimateVertex(currentFrame, _activeAnimation->tileY, framesPerRow);
-				lastFrameTime = currentTime;
-			}
-			// _sprite->setFlip(_flip);
-			_sprite->setFlip(_activeAnimation->flip);
+			_animationSet.update(_sprite);
 		}
 	}
 

@@ -9,32 +9,30 @@ Game* game = nullptr;
 
 int main(int argc, char** argv)
 {
-    const int FPS = 60;
-    // const int frameDelay = 1000 / FPS;
-
-    // uint32_t frameStart;
-    // int frameTime;
-
     game = new Game();
 
-    double initTime = glfwGetTime();
-    double lastTime = glfwGetTime();
-    double deltaTime = 0.0f;
+    const double FPS = 60;
+    const double TIME_STEP = 1.0 / FPS;
+
+    double currentTime = glfwGetTime();
+    double accumulator = 0.0;
 
     /* Loop until the user closes the window */
     while (game->getRunning())
     {
-        deltaTime += (glfwGetTime() - lastTime) * FPS;
-        lastTime = glfwGetTime();
-        while (deltaTime >= 1.0f) {
+        double newTime = glfwGetTime();
+        double frameTime = newTime - currentTime;
+        currentTime = newTime;
+
+        accumulator += frameTime;
+
+        while (accumulator >= TIME_STEP) {
             game->update();
-            --deltaTime;
+            accumulator -= frameTime;
         }
 
         /* Render here */
         game->render();
-
-        game->update();
 
         game->handleEvents();
 

@@ -22,6 +22,12 @@ public:
 		}
 	}
 
-
+	void updateEnemies(GLFWwindow* window) {
+		for (auto* enemy : _enemies) {
+			if (enemy->isActive()) {
+				enemy->update(window);
+			}
+		}
+	}
 };
 

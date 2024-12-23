@@ -13,15 +13,6 @@ Manager manager;
 
 std::vector<ColliderComponent*> Game::colliders;
 
-//auto& player(manager.addEntity());
-//auto& wall(manager.addEntity());
-//auto& Camera(manager.addEntity());
-
-//auto& tiles(manager.getGroup(groupMap));
-//auto& colliderTile(manager.getGroup(groupCollider));
-//auto& players(manager.getGroup(groupPlayer));
-//auto& enemies(manager.getGroup(groupEnemies));
-
 bool Game::_isRunning = false;
 
 bool Game::initFlow(const char* title, bool fullscreen)
@@ -110,7 +101,7 @@ bool Game::initEntityGroup()
     wall = &manager.addEntity();
     Camera = &manager.addEntity();
 
-    return false;
+    return true;
 }
 
 Game::Game()
@@ -135,17 +126,17 @@ Game::Game()
 
     initEntityGroup();
 
-    player->addcomponent<TransformComponent>(Vector2D(400.0f, 100.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
+    auto trans = player->addcomponent<TransformComponent>(Vector2D(400.0f, 100.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
-    auto& playerSprite = player->addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true);
+    auto& playerSprite = player->addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true, 32.f, 32.f);
     playerSprite.addAnimation("idle", Animation(0, 13, 10, false));
     playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
     playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
     playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
+    playerSprite.addAnimation("attack", Animation(11, 8, 10, false));
     playerSprite.setAnimate("idle");
     player->addcomponent<KeyboardController>();
 
-    auto trans = player->getComponent<TransformComponent>();
     BoundingBox bound{trans.position, 40.0f, 40.0f};
     player->addcomponent<ColliderComponent>("player", bound, Vector2D(0.f, -40.f));
 
@@ -153,16 +144,8 @@ Game::Game()
 
     Camera->addcomponent<CameraComponent>(&player->getComponent<TransformComponent>());
     Camera->addGroup(groupCamera);
-    
-    // std::cout << player.getComponent<TransformComponent>().position.x << std::endl;
 
-    wall->addcomponent<TransformComponent>(Vector2D(800.0f, 300.0f), Vector2D(0.0f, 0.0f), 0.3f, 100.0f, 100.0f);
-    wall->addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png", false);
-    wall->addcomponent<ColliderComponent>("wall");
-    wall->addGroup(groupMap);
-
-    // _enemyManager->addEnemy(Vector2D(400.0f, 100.0f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
-    _enemyManager->addEnemy(Vector2D(400.0f, 100.0f), "D:/dependencies/resource/redShot.png");
+    _enemyManager->addEnemy(Vector2D(600.0f, 100.0f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
 }
 
 Game::~Game()
@@ -197,6 +180,8 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
         glfwGetCursorPos(window, &x, &y);
         // y = _height - y;
         std::cout << "Left mouse button pressed!"<< x << " " << y << std::endl;
+
+        // player->getComponent<SpriteComponent>().setAnimate("attack");
     }
 }
 
@@ -246,6 +231,7 @@ void Game::update()
     //wall.update(_window);
     manager.refresh();
     manager.update(_window);
+    // _enemyManager->updateEnemies(_window);
 
     for (auto cc : colliders) {
         if (cc->tag != "player" && Collision::AABB(player->getComponent<ColliderComponent>().boundingBox, cc->boundingBox)) {
