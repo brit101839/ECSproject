@@ -76,6 +76,7 @@ public:
 	{
 		if (_animated) {
 			_animationSet.update(_sprite);
+			_transform->canMove = _animationSet.getFrameInterrupt();
 		}
 	}
 

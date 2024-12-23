@@ -133,7 +133,9 @@ Game::Game()
     playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
     playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
     playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
-    playerSprite.addAnimation("attack", Animation(11, 8, 10, false));
+    playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, false));
+    playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, false));
+    playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, false));
     playerSprite.setAnimate("idle");
     player->addcomponent<KeyboardController>();
 
@@ -145,7 +147,7 @@ Game::Game()
     Camera->addcomponent<CameraComponent>(&player->getComponent<TransformComponent>());
     Camera->addGroup(groupCamera);
 
-    _enemyManager->addEnemy(Vector2D(600.0f, 100.0f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
+    _enemyManager->addEnemy(Vector2D(1000.0f, -100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
 }
 
 Game::~Game()
@@ -181,7 +183,8 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
         // y = _height - y;
         std::cout << "Left mouse button pressed!"<< x << " " << y << std::endl;
 
-        // player->getComponent<SpriteComponent>().setAnimate("attack");
+        player->getComponent<SpriteComponent>().setAnimate("attack_1");
+        player->getComponent<TransformComponent>().canMove = false;
     }
 }
 

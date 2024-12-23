@@ -8,8 +8,8 @@ Entity& EnemyManager::addEnemy(const Vector2D& position, const char* spritePath)
     auto& sprite = enemy.addcomponent<SpriteComponent>(spritePath, true, 96.f, 96.f);
     sprite.addAnimation("idle", Animation(0, 5, 10, true));
     sprite.setAnimate("idle");
-    BoundingBox bound{ trans.position, 40.0f, 40.0f };
-    enemy.addcomponent<ColliderComponent>("enemy", bound);
+    BoundingBox bound{ trans.position, 80.0f, 80.0f };
+    enemy.addcomponent<ColliderComponent>("enemy", bound, Vector2D(0.f, -40.f));
     enemy.addGroup(groupEnemies);
     _enemies.push_back(&enemy);
     

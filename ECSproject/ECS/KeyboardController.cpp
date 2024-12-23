@@ -13,6 +13,14 @@ void KeyboardController::update(GLFWwindow* window)
 	vel = Vector2D(0.0f, 0.0f);
 	_sprite->setAnimate("idle");
 
+	if (glfwGetKey(window, GLFW_MOUSE_BUTTON_LEFT)) {
+		_sprite->setAnimate("attack_1");
+		std::cout << "attack" << std::endl;
+		return;
+	}
+
+	if (!_transform->canMove) { return; }
+
 	if (glfwGetKey(window, GLFW_KEY_W)) {
 		vel.y = 1.0f;
 		_sprite->setAnimate("walkUp");

@@ -19,6 +19,8 @@ public:
 
 	float speed;
 
+	bool canMove = true;
+
 	TransformComponent()
 	{
 		position = Vector2D();
