@@ -140,5 +140,14 @@
     <ClInclude Include="ECS\AIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StateMaching\StateMaching.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMaching\AIStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\AIContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

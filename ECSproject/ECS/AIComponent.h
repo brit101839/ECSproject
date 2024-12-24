@@ -1,14 +1,10 @@
 #pragma once
 
 #include "ECS.h"
-#include "Components.h"
+#include "AIContext.h"
+#include "../StateMaching/StateMaching.h"
 
-enum class EnemyState
-{
-	patrol, tracking, fighting, backing
-};
-
-class AIComponent :public Component
+class AIComponent :public Component, public AIContext
 {
 private:
 
@@ -17,6 +13,8 @@ private:
 	Vector2D _defaltPos;
 
 	const TransformComponent& _playerTrans;
+
+	AIStateMachine _stateMaching;
 
 public:
 
@@ -31,8 +29,17 @@ public:
 		_transform = &entity->getComponent<TransformComponent>();
 		_sprite = &entity->getComponent<SpriteComponent>();
 		_defaltPos = _transform->position;
+
+		_stateMaching.changeState(new TrackingState());
 	};
 
-	void update(GLFWwindow* window) override;
+	void update(GLFWwindow* window) override {
+		_stateMaching.update(*this);
+	}
+
+	TransformComponent* getTransform() const override { return _transform; }
+	SpriteComponent* getSprite() const override { return _sprite; }
+	Vector2D getDefaultPos() const override { return _defaltPos; }
+	const Vector2D& getPlayerPos() const override { return _playerTrans.position; }
 };
 

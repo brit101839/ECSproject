@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="ECS\AIComponent.h" />
     <ClInclude Include="AnimateSet.h" />
+    <ClInclude Include="ECS\AIContext.h" />
     <ClInclude Include="ECS\Animation.h" />
     <ClInclude Include="ECS\CameraComponent.h" />
     <ClInclude Include="ECS\Collision.h" />
@@ -176,6 +177,8 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="shader\Shader.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StateMaching\AIStates.h" />
+    <ClInclude Include="StateMaching\StateMaching.h" />
     <ClInclude Include="textureManager.h" />
     <ClInclude Include="vector2D\Vector2D.h" />
   </ItemGroup>
