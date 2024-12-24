@@ -116,7 +116,7 @@ Game::Game()
     setupGL();
 
     _shader.init("shader/shader.vert", "shader/shader.frag");
-    _enemyManager = new EnemyManager(manager);
+    initEntityGroup();
 
     Box<float> interBox{ {-5000.0f, -5000.0f} , {10000.0f, 10000.0f} };
     std::cout << "{ {" << interBox.left << "," << interBox.getBottom() << " }, {" << interBox.getRight() << "," << interBox.top << " } }" << std::endl;
@@ -124,9 +124,7 @@ Game::Game()
 
     _map = new Map(*this, "D:/dependencies/resource/map_town/map_town/map.json");
 
-    initEntityGroup();
-
-    auto trans = player->addcomponent<TransformComponent>(Vector2D(400.0f, 100.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
+    auto trans = player->addcomponent<TransformComponent>(Vector2D(550.0f, -1200.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
     // player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
     auto& playerSprite = player->addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true, 32.f, 32.f);
     playerSprite.addAnimation("idle", Animation(0, 13, 10, false));
@@ -147,7 +145,8 @@ Game::Game()
     Camera->addcomponent<CameraComponent>(&player->getComponent<TransformComponent>());
     Camera->addGroup(groupCamera);
 
-    _enemyManager->addEnemy(Vector2D(1000.0f, -100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
+    _enemyManager = new EnemyManager(manager, player->getComponent<TransformComponent>());
+    _enemyManager->addEnemy(Vector2D(550.0f, 100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
 }
 
 Game::~Game()
@@ -219,9 +218,10 @@ void Game::render()
 
     // for (auto& t : tiles) { t->draw(_shader, cameraPos); }
     for (auto& r : _renderManager->query(cameraBound)) { r->entity->draw(_shader, cameraPos); }
+    _enemyManager->renderEnemies(_shader, cameraPos);
     for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_shader, cameraPos); }
     // for (auto& e : manager.getGroup(groupEnemies)) { e->draw(_shader, cameraPos); }
-    _enemyManager->renderEnemies(_shader, cameraPos);
+    
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------

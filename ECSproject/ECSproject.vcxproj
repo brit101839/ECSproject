@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\AIComponent.cpp" />
     <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\ECS.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="vector2D\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ECS\AIComponent.h" />
     <ClInclude Include="AnimateSet.h" />
     <ClInclude Include="ECS\Animation.h" />
     <ClInclude Include="ECS\CameraComponent.h" />

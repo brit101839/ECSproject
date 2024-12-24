@@ -1,5 +1,6 @@
 #pragma once
 #include "ECS/ECS.h"
+#include "ECS/TransformComponent.h"
 
 class EnemyManager
 {
@@ -7,10 +8,11 @@ private:
 
 	std::vector<Entity*> _enemies;
 	Manager& _manager;
+	TransformComponent& _playerTrans;
 
 public:
 
-	explicit EnemyManager(Manager& m) : _manager(m) {}
+	explicit EnemyManager(Manager& m, TransformComponent& playerT) : _manager(m), _playerTrans(playerT) {}
 
 	Entity& addEnemy(const Vector2D& position, const char* spritePath);
 

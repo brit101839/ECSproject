@@ -39,6 +39,9 @@ public:
 
 	Vector2D& operator*(const float& i);
 	Vector2D& zero();
+	GLfloat distanceTo(const Vector2D& other) const;
+	GLfloat magnitude() const;
+	Vector2D& normalize();
 
 	friend std::ostream& operator<<(std::ostream& stream, const Vector2D& vec);
 };

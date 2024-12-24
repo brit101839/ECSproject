@@ -11,6 +11,7 @@
 #include "ColliderComponent.h"
 #include "TileComponent.h"
 #include "CameraComponent.h"
+#include "AIComponent.h"
 
 enum GroupLabels : std::size_t
 {

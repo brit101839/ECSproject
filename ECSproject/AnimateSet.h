@@ -33,6 +33,9 @@ public:
 				else if (_currentAnimation == &animations.at("attack_2")) {
 					_nextAnimate = "attack_3";
 				}
+				else if (_currentAnimation == &animations.at("attack_3") && animations.find("attack_4") != animations.end()) {
+					_nextAnimate = "attack_4";
+				}
 			}
 			
 			return;

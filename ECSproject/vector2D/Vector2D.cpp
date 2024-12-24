@@ -98,6 +98,28 @@ Vector2D& Vector2D::zero()
 	// TODO: insert return statement here
 }
 
+GLfloat Vector2D::distanceTo(const Vector2D& other) const
+{
+	GLfloat dx = other.x - x;
+	GLfloat dy = other.y - y;
+	return std::sqrt(dx * dx + dy * dy);
+}
+
+GLfloat Vector2D::magnitude() const
+{
+	return std::sqrt(x * x + y * y);
+}
+
+Vector2D& Vector2D::normalize()
+{
+	GLfloat mag = magnitude();
+	if (mag > 0.0f) {
+		x /= mag;
+		y /= mag;
+	}
+	return *this;
+}
+
 std::ostream& operator<<(std::ostream& stream, const Vector2D& vec)
 {
 	stream << "(" << vec.x << "," << vec.y << ")";
