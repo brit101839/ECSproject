@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "shader/Shader.h"
 #include "RenderQuadtreeManager.h"
+#include "CollisionManager.h"
 #include "EnemyManager.h"
 
 class ColliderComponent;
@@ -46,6 +47,7 @@ private:
 	EnemyManager* _enemyManager;
 
 	RenderQuadtreeManager* _renderManager;
+	CollisionManager* _colliderManager;
 
 	Entity* player = nullptr;
 	Entity* wall = nullptr;
@@ -69,11 +71,6 @@ public:
 
 	void render();
 	void update();
-
-	static std::vector<ColliderComponent*> colliders;
-
-	unsigned int VBO, VAO, EBO;
-	unsigned int texture;
 };
 
 #endif // !__Game__

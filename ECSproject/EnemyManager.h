@@ -2,6 +2,8 @@
 #include "ECS/ECS.h"
 #include "ECS/TransformComponent.h"
 
+class CollisionManager;
+
 class EnemyManager
 {
 private:
@@ -9,10 +11,12 @@ private:
 	std::vector<Entity*> _enemies;
 	Manager& _manager;
 	TransformComponent& _playerTrans;
+	CollisionManager* _colliderManager;
 
 public:
 
-	explicit EnemyManager(Manager& m, TransformComponent& playerT) : _manager(m), _playerTrans(playerT) {}
+	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM) 
+		: _manager(m), _playerTrans(playerT), _colliderManager(colM) {}
 
 	Entity& addEnemy(const Vector2D& position, const char* spritePath);
 

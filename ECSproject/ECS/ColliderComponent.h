@@ -9,6 +9,7 @@
 // #include "../Game.h"
 
 // class Game;
+class CollisionManager;
 
 typedef struct boundingBox {
 
@@ -21,6 +22,7 @@ class ColliderComponent : public Component
 {
 private:
 
+	CollisionManager* _colliderManager;
 	TransformComponent* _trans;
 	bool isInitialSize;
 	Vector2D _shift;
@@ -32,8 +34,12 @@ public:
 	BoundingBox boundingBox;
 	quadtree::Box<float> box;
 
-	ColliderComponent(std::string t);
-	ColliderComponent(std::string t, BoundingBox boundingBox, Vector2D shift = Vector2D(0.0f, 0.0f));
+	ColliderComponent(CollisionManager* colM, std::string t);
+	ColliderComponent(CollisionManager* colM, std::string t, BoundingBox boundingBox, Vector2D shift = Vector2D(0.0f, 0.0f));
+
+	quadtree::Box<float> getBox() const {
+		return { {boundingBox.position.x - boundingBox.width / 2, boundingBox.position.y + boundingBox.height / 2},{boundingBox.width, boundingBox.height} };
+	}
 		
 	void init() override;
 

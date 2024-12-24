@@ -38,6 +38,10 @@ public:
 		return { {position.x - width / 2, position.y + height / 2},{width, height} };
 	}
 
+	quadtree::Box<float> getWideBox() const {
+		return { {position.x - width * 100 / 2, position.y + height * 100 / 2},{width * 100, height * 100} };
+	}
+
 	void update(GLFWwindow* window) override
 	{
 		Vector2D tempVec = velocity * speed;

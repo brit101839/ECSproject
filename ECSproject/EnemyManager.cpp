@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include "ECS/Components.h"
+#include "CollisionManager.h"
 
 Entity& EnemyManager::addEnemy(const Vector2D& position, const char* spritePath)
 {
@@ -15,7 +16,7 @@ Entity& EnemyManager::addEnemy(const Vector2D& position, const char* spritePath)
     sprite.addAnimation("attack_4", Animation(6, 9, 10, false, false));
     sprite.setAnimate("idle");
     BoundingBox bound{ trans.position, 80.0f, 80.0f };
-    enemy.addcomponent<ColliderComponent>("enemy", bound, Vector2D(0.f, -40.f));
+    enemy.addcomponent<ColliderComponent>(_colliderManager, "enemy", bound, Vector2D(0.f, -40.f));
     enemy.addcomponent<AIComponent>(_playerTrans);
     enemy.addGroup(groupEnemies);
     _enemies.push_back(&enemy);

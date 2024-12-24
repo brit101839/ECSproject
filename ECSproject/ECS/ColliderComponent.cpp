@@ -1,14 +1,14 @@
 #include "ColliderComponent.h"
-#include "../Game.h"
+#include "../CollisionManager.h"
 
-ColliderComponent::ColliderComponent(std::string t)
-	:tag(t), isInitialSize(false)
+ColliderComponent::ColliderComponent(CollisionManager* colM, std::string t)
+	:_colliderManager(colM), tag(t), isInitialSize(false)
 {
 	
 }
 
-ColliderComponent::ColliderComponent(std::string t, BoundingBox newboundingBox, Vector2D shift)
-	:tag(t), isInitialSize(true), boundingBox(newboundingBox), _shift(shift)
+ColliderComponent::ColliderComponent(CollisionManager* colM, std::string t, BoundingBox newboundingBox, Vector2D shift)
+	:_colliderManager(colM), tag(t), isInitialSize(true), boundingBox(newboundingBox), _shift(shift)
 {
 	box = { {newboundingBox.position.x - newboundingBox.width, newboundingBox.position.y - newboundingBox.height},
 		    {newboundingBox.position.x + newboundingBox.width, newboundingBox.position.y + newboundingBox.height} };
@@ -29,14 +29,11 @@ void ColliderComponent::init()
 			{boundingBox.position.x + boundingBox.width, boundingBox.position.y + boundingBox.height} };
 	}
 	
-	Game::colliders.push_back(this);
-	indexInVector = Game::colliders.size() - 1;
+	_colliderManager->addCollider(this);
 }
 
 void ColliderComponent::update(GLFWwindow* window)
 {
 	auto& position = _trans->position;
 	boundingBox.position = position + _shift;
-	/*boundingBox.width = _trans->width;
-	boundingBox.height = _trans->height;*/
 }

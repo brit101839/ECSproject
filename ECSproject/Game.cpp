@@ -11,8 +11,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 Manager manager;
 
-std::vector<ColliderComponent*> Game::colliders;
-
 bool Game::_isRunning = false;
 
 bool Game::initFlow(const char* title, bool fullscreen)
@@ -121,6 +119,7 @@ Game::Game()
     Box<float> interBox{ {-5000.0f, -5000.0f} , {10000.0f, 10000.0f} };
     std::cout << "{ {" << interBox.left << "," << interBox.getBottom() << " }, {" << interBox.getRight() << "," << interBox.top << " } }" << std::endl;
     _renderManager = new RenderQuadtreeManager(interBox);
+    _colliderManager = new CollisionManager(interBox);
 
     _map = new Map(*this, "D:/dependencies/resource/map_town/map_town/map.json");
 
@@ -138,14 +137,14 @@ Game::Game()
     player->addcomponent<KeyboardController>();
 
     BoundingBox bound{trans.position, 40.0f, 40.0f};
-    player->addcomponent<ColliderComponent>("player", bound, Vector2D(0.f, -40.f));
+    player->addcomponent<ColliderComponent>(_colliderManager, "player", bound, Vector2D(0.f, -40.f));
 
     player->addGroup(groupPlayer);
 
     Camera->addcomponent<CameraComponent>(&player->getComponent<TransformComponent>());
     Camera->addGroup(groupCamera);
 
-    _enemyManager = new EnemyManager(manager, player->getComponent<TransformComponent>());
+    _enemyManager = new EnemyManager(manager, player->getComponent<TransformComponent>(), _colliderManager);
     _enemyManager->addEnemy(Vector2D(550.0f, 100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
 }
 
@@ -196,10 +195,8 @@ void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
 
     if (collider) {
         std::string tag = "tile id: ";
-        tile.addcomponent<ColliderComponent>(tag.append(std::to_string(id)));
+        tile.addcomponent<ColliderComponent>(_colliderManager, tag.append(std::to_string(id)));
         tile.addGroup(groupCollider);
-
-        // quadTree.add(tile);
     }
     else {
         tile.addGroup(groupMap);
@@ -230,21 +227,11 @@ void Game::render()
 
 void Game::update()
 {
-    //player.update(_window);
-    //wall.update(_window);
     manager.refresh();
     manager.update(_window);
-    // _enemyManager->updateEnemies(_window);
 
-    for (auto cc : colliders) {
-        if (cc->tag != "player" && Collision::AABB(player->getComponent<ColliderComponent>().boundingBox, cc->boundingBox)) {
-            std::cout << "collision: " << cc->tag << std::endl;
-            std::cout << "position:" << player->getComponent<TransformComponent>().position.x << ", " << player->getComponent<TransformComponent>().position.y << std::endl;
-            Vector2D mtv = Collision::calculateMTV(player->getComponent<ColliderComponent>().boundingBox, cc->boundingBox);
-            player->getComponent<TransformComponent>().position += mtv;
-            player->getComponent<TransformComponent>().update(_window);
-        }
-    }
+    quadtree::Box<float> cameraBound = Camera->getComponent<CameraComponent>().getBox();
+    _colliderManager->checkCollisions(player, cameraBound, _window);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
