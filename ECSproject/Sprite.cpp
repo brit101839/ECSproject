@@ -10,6 +10,13 @@ Sprite::Sprite()
 	setVertices(_width, _height);
 }
 
+Sprite::Sprite(GLfloat width, GLfloat height)
+	:_textureID(0), _width(width), _height(height)
+{
+	setVertices(_width, _height);
+	setVAO(false);
+}
+
 Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height)
 	:_textureID(textureBufferID), _width(width), _height(height)
 {
@@ -128,7 +135,33 @@ void Sprite::render(Vector2D position, GLfloat rotation, Shader& shader, Vector2
 	shader.setMat4("model", model);
 	shader.setMat4("view", view);
 	shader.setMat4("projection", projection);
+	shader.setVec3("overlayColor", _overlayColor);
 	glBindVertexArray(_VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void Sprite::renderRectangle(Vector2D position, Vector2D size, Shader& shader, Vector2D cameraPos, glm::vec3 color) {
+	
+	glBindTexture(GL_TEXTURE_2D, _textureID);
+
+	// 設置矩形的模型矩陣
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
+
+	// 設置視圖和投影矩陣
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraPos.x, -cameraPos.y, 0.0f));
+	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, 0.0f, (float)Window_h_Size, -1.0f, 1.0f);
+
+	// 使用著色器並設置 uniform
+	shader.use();
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	shader.setVec3("overlayColor", color);
+
+	// 渲染矩形（假設矩形的 VAO 已初始化）
+	glBindVertexArray(_VAO); // 你可以用單獨的 VAO 或與 Sprite 共用的 VAO
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 

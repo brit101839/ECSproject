@@ -32,6 +32,7 @@ public:
 		return instance;
 	}
 
+	GLuint genWhiteTexture();
 	GLuint textureManager(const char* filename, int& width, int& height);
 	static GLuint loadAndBufferImage(const char* filename, int& width, int& height);
 };

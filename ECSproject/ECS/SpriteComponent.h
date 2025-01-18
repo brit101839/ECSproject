@@ -26,8 +26,8 @@ private:
 
 	bool _map = false;
 	bool _animated = false;
-
-	
+	bool _OnAttack = false;
+	float beginAttackTime;
 
 public:
 
@@ -70,6 +70,11 @@ public:
 		_animationSet.setAnimation(animName);
 	}
 
+	void OnAttack() {
+		beginAttackTime = glfwGetTime();
+		_OnAttack = true;
+	}
+
 	// void settexture() {};
 
 	void update(GLFWwindow* window) override
@@ -78,6 +83,15 @@ public:
 			_animationSet.update(_sprite);
 			_transform->canMove = _animationSet.getFrameInterrupt();
 		}
+		if (_OnAttack) {
+			float time = glfwGetTime(); // 獲取時間
+			float sqr = (sin(time * 10) > 0.5) ? 1.0f : 0.0f;
+			_sprite->setOverlapColor(glm::vec3(1.0f - (1 - sqr)/4, sqr, sqr)); // 閃爍紅色
+			if (time - beginAttackTime > 0.3) {
+				_OnAttack = false;
+				_sprite->setOverlapColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			}
+		}
 	}
 
 	void draw(Shader& shader, Vector2D cameraPos) override
@@ -85,6 +99,8 @@ public:
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
 		_sprite->render(_transform->position, 0.0f, shader, cameraPos);
 	}
+
+	bool getFlip() { return _sprite->getFlip(); }
 };
 
 

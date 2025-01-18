@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\AttackComponent.cpp" />
     <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\ECS.cpp" />
@@ -153,16 +154,20 @@
     <ClCompile Include="vector2D\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ECS\AIComponent.h" />
     <ClInclude Include="AnimateSet.h" />
     <ClInclude Include="ECS\AIContext.h" />
     <ClInclude Include="ECS\Animation.h" />
+    <ClInclude Include="ECS\AttackComponent.h" />
     <ClInclude Include="ECS\CameraComponent.h" />
     <ClInclude Include="ECS\Collision.h" />
     <ClInclude Include="ECS\ColliderComponent.h" />
     <ClInclude Include="ECS\Components.h" />
     <ClInclude Include="ECS\ECS.h" />
+    <ClInclude Include="ECS\HealthBarComponet.h" />
+    <ClInclude Include="ECS\StatsComponent.h" />
     <ClInclude Include="ECS\TileComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />

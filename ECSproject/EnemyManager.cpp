@@ -18,6 +18,9 @@ Entity& EnemyManager::addEnemy(const Vector2D& position, const char* spritePath)
     BoundingBox bound{ trans.position, 80.0f, 80.0f };
     enemy.addcomponent<ColliderComponent>(_colliderManager, "enemy", bound, Vector2D(0.f, -40.f));
     enemy.addcomponent<AIComponent>(_playerTrans);
+    enemy.addcomponent<StatsComponent>(100, 10, 1);
+    enemy.addcomponent<HealthBarComponent>();
+    // enemy.addcomponent<AttackComponent>(this);
     enemy.addGroup(groupEnemies);
     _enemies.push_back(&enemy);
     

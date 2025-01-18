@@ -6,17 +6,18 @@
 #include <string>
 #include "Components.h"
 #include "Quadtree/Box.h"
+#include "../BoundingBox.h"
 // #include "../Game.h"
 
 // class Game;
 class CollisionManager;
 
-typedef struct boundingBox {
-
-	Vector2D position;
-	GLfloat width, height;
-
-} BoundingBox;
+//typedef struct boundingBox {
+//
+//	Vector2D position;
+//	GLfloat width, height;
+//
+//} BoundingBox;
 
 class ColliderComponent : public Component
 {

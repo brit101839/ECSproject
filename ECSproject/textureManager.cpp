@@ -1,6 +1,18 @@
 ﻿#include "textureManager.h"
 #include <iostream>
 
+GLuint TextureManager::genWhiteTexture()
+{
+	GLuint whiteTexture;
+	unsigned char whitePixel[3] = { 255, 255, 255 };
+	glGenTextures(1, &whiteTexture);
+	glBindTexture(GL_TEXTURE_2D, whiteTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, (void*)whitePixel);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	return whiteTexture;
+}
+
 GLuint TextureManager::textureManager(const char* filename, int& width, int& height)
 {
 	GLuint tmpBufferID;

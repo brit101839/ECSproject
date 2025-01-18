@@ -138,7 +138,7 @@ Game::Game()
 
     BoundingBox bound{trans.position, 40.0f, 40.0f};
     player->addcomponent<ColliderComponent>(_colliderManager, "player", bound, Vector2D(0.f, -40.f));
-
+    player->addcomponent<StatsComponent>(100, 10, 1);
     player->addGroup(groupPlayer);
 
     Camera->addcomponent<CameraComponent>(&player->getComponent<TransformComponent>());
@@ -146,6 +146,8 @@ Game::Game()
 
     _enemyManager = new EnemyManager(manager, player->getComponent<TransformComponent>(), _colliderManager);
     _enemyManager->addEnemy(Vector2D(550.0f, 100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
+
+    player->addcomponent<AttackComponent>(_enemyManager);
 }
 
 Game::~Game()
@@ -182,7 +184,12 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
         std::cout << "Left mouse button pressed!"<< x << " " << y << std::endl;
 
         player->getComponent<SpriteComponent>().setAnimate("attack_1");
-        player->getComponent<TransformComponent>().canMove = false;
+        auto trans = player->getComponent<TransformComponent>();
+        trans.canMove = false;
+        BoundingBox box;
+        if(player->getComponent<SpriteComponent>().getFlip()) box = { trans.position - Vector2D(40.f, 0.f), trans.width, trans.height };
+        else box = {trans.position + Vector2D(40.f, 0.f), trans.width, trans.height};
+        player->getComponent<AttackComponent>().startAttack(box);
     }
 }
 
