@@ -14,6 +14,14 @@
 #define Window_w_Size 1351
 #define Window_h_Size 760
 
+enum class Origin {
+	Center,      // origin position
+	TopLeft,   
+	TopRight,   
+	BottomLeft, 
+	BottomRight  
+};
+
 typedef struct {
 	glm::vec3 positionCoord; 
 	glm::vec3 colorCoord;
@@ -37,6 +45,7 @@ private:
 	bool _flip = false;
 	glm::vec3 _overlayColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
+	Origin _origin = Origin::Center;
 	// Shader _shader = Shader("shader/shader.vert", "shader/shader.frag");
 	
 
@@ -44,7 +53,7 @@ public:
 
 	Sprite();
 	Sprite(GLfloat width, GLfloat height);
-	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height);
+	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, Origin origin = Origin::Center);
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight);
 	Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, int textureWidth, int textureHeight, GLfloat cutWidth, GLfloat cutHeight, int id);
 	~Sprite();
@@ -55,7 +64,7 @@ public:
 
 	void setVAO(bool animated);
 
-	void setVertices(GLfloat width, GLfloat height);
+	void setVertices(GLfloat width, GLfloat height, Origin origin = Origin::Center);
 	void setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight);
 	void setTile(int index, int tilePerRow);
 

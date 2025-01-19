@@ -100,7 +100,9 @@ public:
 		_sprite->render(_transform->position, 0.0f, shader, cameraPos);
 	}
 
+	bool isanimated() { return _animated; }
 	bool getFlip() { return _sprite->getFlip(); }
+	GLfloat getCutWidth() { return _cutWidth; }
 };
 
 

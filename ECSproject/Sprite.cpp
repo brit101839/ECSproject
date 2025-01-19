@@ -13,14 +13,14 @@ Sprite::Sprite()
 Sprite::Sprite(GLfloat width, GLfloat height)
 	:_textureID(0), _width(width), _height(height)
 {
-	setVertices(_width, _height);
+	setVertices(_width, _height, Origin::TopLeft);
 	setVAO(false);
 }
 
-Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height)
-	:_textureID(textureBufferID), _width(width), _height(height)
+Sprite::Sprite(GLuint textureBufferID, GLfloat width, GLfloat height, Origin origin)
+	:_textureID(textureBufferID), _width(width), _height(height), _origin(origin)
 {
-	setVertices(_width, _height);
+	setVertices(_width, _height, _origin);
 	setVAO(false);
 }
 
@@ -78,13 +78,32 @@ void Sprite::setVAO(bool animated)
 	glBindVertexArray(0);
 }
 
-void Sprite::setVertices(GLfloat width, GLfloat height)
+void Sprite::setVertices(GLfloat width, GLfloat height, Origin origin)
 {
-						// positions					// colors          // texture coords
-	_vertices[0] = { {  width / 2,  height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f } }; // top right
-	_vertices[1] = { {  width / 2, -height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 1.0f, 0.0f } }; // bottom right
-	_vertices[2] = { { -width / 2, -height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 0.0f, 0.0f } }; // bottom left
-	_vertices[3] = { { -width / 2,  height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f } }; // top left
+	float offsetX = 0.0f, offsetY = 0.0f;
+
+	switch (origin) {
+	case Origin::Center:
+		offsetX = 0.0f; offsetY = 0.0f;
+		break;
+	case Origin::TopLeft:
+		offsetX = width / 2.0f; offsetY = -height / 2.0f;
+		break;
+	case Origin::TopRight:
+		offsetX = -width / 2.0f; offsetY = -height / 2.0f;
+		break;
+	case Origin::BottomLeft:
+		offsetX = width / 2.0f; offsetY = height / 2.0f;
+		break;
+	case Origin::BottomRight:
+		offsetX = -width / 2.0f; offsetY = height / 2.0f;
+		break;
+	}
+	// positions															// colors      // texture coords
+	_vertices[0] = { { offsetX + width / 2, offsetY + height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f } }; // top right
+	_vertices[1] = { { offsetX + width / 2, offsetY - height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 1.0f, 0.0f } }; // bottom right
+	_vertices[2] = { { offsetX - width / 2, offsetY - height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 0.0f, 0.0f } }; // bottom left
+	_vertices[3] = { { offsetX - width / 2, offsetY + height / 2, 0.0f },{1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f } }; // top left
 }
 
 void Sprite::setVertices(GLfloat width, GLfloat height, int frameX, int frameY, int textureWidth, int textureHeight)

@@ -22,11 +22,7 @@ public:
 	int getHealth() const { return _health; }
 	int getMaxHealth() const { return _maxHealth; }
 
-	void takeDamage(int damage) {
-		_health -= std::max(0, damage - _defense);
-		if (_health < 0) _health = 0;
-		mhealthPercent = float(_health) / _maxHealth;
-	}
+	void takeDamage(int damage);
 
 	int getAttack() const { return _attack; }
 

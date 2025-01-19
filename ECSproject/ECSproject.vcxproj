@@ -140,6 +140,7 @@
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\ECS.cpp" />
     <ClCompile Include="ECS\KeyboardController.cpp" />
+    <ClCompile Include="ECS\StatsComponent.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
