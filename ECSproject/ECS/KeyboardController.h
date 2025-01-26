@@ -21,5 +21,7 @@ public:
 		_sprite = &entity->getComponent<SpriteComponent>();
 	}
 
+	void onLeftMouse();
+
 	void update(GLFWwindow* window);
 };

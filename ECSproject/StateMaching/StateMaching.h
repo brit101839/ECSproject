@@ -43,11 +43,11 @@ public:
 
     int to_int(EnemyState state) {
         switch (state) {
-        case EnemyState::patrol: return 0;
-        case EnemyState::tracking: return 1;
-        case EnemyState::fighting: return 2;
-        case EnemyState::backing: return 3;
-        default: return -1;
+            case EnemyState::patrol: return 0;
+            case EnemyState::tracking: return 1;
+            case EnemyState::fighting: return 2;
+            case EnemyState::backing: return 3;
+            default: return -1;
         }
     }
 

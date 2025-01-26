@@ -1,6 +1,16 @@
 #include "KeyboardController.h"
 #include "../Game.h"
 
+void KeyboardController::onLeftMouse()
+{
+	auto trans = entity->getComponent<TransformComponent>();
+	trans.canMove = false;
+	BoundingBox box;
+	if (entity->getComponent<SpriteComponent>().getFlip()) box = { trans.position - Vector2D(40.f, 0.f), trans.width, trans.height };
+	else box = { trans.position + Vector2D(40.f, 0.f), trans.width, trans.height };
+	entity->getComponent<AttackComponent>().startAttack(box);
+}
+
 void KeyboardController::update(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE)) {
@@ -13,11 +23,11 @@ void KeyboardController::update(GLFWwindow* window)
 	vel = Vector2D(0.0f, 0.0f);
 	_sprite->setAnimate("idle");
 
-	if (glfwGetKey(window, GLFW_MOUSE_BUTTON_LEFT)) {
+	/*if (glfwGetKey(window, GLFW_MOUSE_BUTTON_LEFT)) {
 		_sprite->setAnimate("attack_1");
 		std::cout << "attack" << std::endl;
 		return;
-	}
+	}*/
 
 	if (!_transform->canMove) { return; }
 

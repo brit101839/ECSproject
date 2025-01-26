@@ -42,7 +42,6 @@ public:
 			float healthPercentage = _stats->mhealthPercent;
 			Vector2D position = _trans->position + Vector2D(-_trans->width / 3, 100.0f); // 血量條顯示在角色上方
 			
-
 			// 渲染背景
 			_sprite->renderRectangle(position, _barSize, shader, cameraPos, glm::vec3(0.4f, 0.4f, 0.4f));
 

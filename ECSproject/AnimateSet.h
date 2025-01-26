@@ -3,6 +3,7 @@
 #include "ECS/Animation.h"
 #include <unordered_map>
 #include <string>
+#include <functional>
 
 class AnimationSet {
 private:
@@ -16,6 +17,8 @@ private:
 
 public:
 
+	std::function<void()> attackingCheck;
+
 	void addAnimation(const std::string& name, const Animation& anim) {
 		animations[name] = anim;
 	}
@@ -25,8 +28,10 @@ public:
 	}
 
 	void setAnimation(const std::string& name) {
+		// playing cannot interrupt animate
 		if (_currentAnimation && !_currentAnimation->canInterrupt) {
 			if (name == "attack_1") {
+				
 				if (_currentAnimation == &animations.at("attack_1")) {
 					_nextAnimate = "attack_2";
 				}
@@ -40,8 +45,11 @@ public:
 			
 			return;
 		}
+
+		// playing can interrupt animate
 		if (animations.find(name) != animations.end()) {
 			_currentAnimation = &animations[name];
+			animateSwitching();
 			if (name == "walkL" || name == "walkR") { _flip = _currentAnimation->flip; }
 			if (!_currentAnimation->canInterrupt) {
 				_currentFrame = 0;
@@ -49,7 +57,16 @@ public:
 		}
 	}
 
+	void animateSwitching() {
+		if (_currentAnimation->state == AnimateState::Attacking) {
+			 if (attackingCheck) {
+				attackingCheck();
+			 }
+		}
+	}
+
 	bool getFrameInterrupt() { return _currentAnimation->canInterrupt; }
+	AnimateState getAnimateState() { return _currentAnimation->state; }
 
 	void update(Sprite* sprite) {
 		if (_currentAnimation) {
@@ -64,6 +81,7 @@ public:
 				if (!_currentAnimation->canInterrupt && _currentFrame + 1 >= totalFrames) {
 					_currentAnimation = &animations[_nextAnimate];
 					_nextAnimate = "idle";
+					animateSwitching();
 				}
 				_currentFrame = (_currentFrame + 1) % totalFrames; // 循环播放
 				sprite->updateAnimateVertex(_currentFrame, _currentAnimation->tileY, framesPerRow);

@@ -70,6 +70,8 @@ public:
 		_animationSet.setAnimation(animName);
 	}
 
+	AnimationSet& getAnimationSet() { return _animationSet; }
+
 	void OnAttack() {
 		beginAttackTime = glfwGetTime();
 		_OnAttack = true;

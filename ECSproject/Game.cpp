@@ -130,9 +130,9 @@ Game::Game()
     playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
     playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
     playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
-    playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, false));
-    playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, false));
-    playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, false));
+    playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, false, AnimateState::Attacking));
+    playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, false, AnimateState::Attacking));
+    playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, false, AnimateState::Attacking));
     playerSprite.setAnimate("idle");
     player->addcomponent<KeyboardController>();
 
@@ -176,20 +176,12 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
 {
     if (action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT)
     {
-        // _shotArray->addItem(_shotArray->getSprite(), _playerRocket->getPostition());
-
         double x, y;
         glfwGetCursorPos(window, &x, &y);
         // y = _height - y;
         std::cout << "Left mouse button pressed!"<< x << " " << y << std::endl;
 
-        player->getComponent<SpriteComponent>().setAnimate("attack_1");
-        auto trans = player->getComponent<TransformComponent>();
-        trans.canMove = false;
-        BoundingBox box;
-        if(player->getComponent<SpriteComponent>().getFlip()) box = { trans.position - Vector2D(40.f, 0.f), trans.width, trans.height };
-        else box = {trans.position + Vector2D(40.f, 0.f), trans.width, trans.height};
-        player->getComponent<AttackComponent>().startAttack(box);
+        player->getComponent<KeyboardController>().onLeftMouse();
     }
 }
 
