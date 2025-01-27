@@ -56,7 +56,9 @@ public:
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
-		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
+		if (_animated) {
+			_sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
+		}
 		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
 		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
 	}

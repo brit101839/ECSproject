@@ -28,10 +28,21 @@ public:
 	}
 
 	void setAnimation(const std::string& name) {
+		if (name == "dying") {
+			_nextAnimate = "died";
+			if (_currentAnimation != &animations.at("died") && _currentAnimation != &animations.at("dying")) {
+				if (animations.find(name) != animations.end()) {
+					_currentAnimation = &animations[name];
+					if (!_currentAnimation->canInterrupt) {
+						_currentFrame = 0;
+					}
+				}
+			}
+			return;
+		}
 		// playing cannot interrupt animate
 		if (_currentAnimation && !_currentAnimation->canInterrupt) {
 			if (name == "attack_1") {
-				
 				if (_currentAnimation == &animations.at("attack_1")) {
 					_nextAnimate = "attack_2";
 				}
@@ -42,10 +53,8 @@ public:
 					_nextAnimate = "attack_4";
 				}
 			}
-			
 			return;
 		}
-
 		// playing can interrupt animate
 		if (animations.find(name) != animations.end()) {
 			_currentAnimation = &animations[name];
@@ -58,11 +67,23 @@ public:
 	}
 
 	void animateSwitching() {
-		if (_currentAnimation->state == AnimateState::Attacking) {
-			 if (attackingCheck) {
-				attackingCheck();
-			 }
+		_nextAnimate = "idle";
+		switch (_currentAnimation->state)
+		{
+		case AnimateState::Attacking:
+			if (attackingCheck) { attackingCheck(); }
+			break;
+		case AnimateState::Dying:
+			std::cout << "dying 2" << std::endl;
+			_nextAnimate = "died";
+			break;
+		case AnimateState::Died:
+			_nextAnimate = "died";
+			break;
+		default:
+			break;
 		}
+		return;
 	}
 
 	bool getFrameInterrupt() { return _currentAnimation->canInterrupt; }
@@ -70,17 +91,21 @@ public:
 
 	void update(Sprite* sprite) {
 		if (_currentAnimation) {
-			
 			float frameInterval = 1.0f / _currentAnimation->speed; // 每帧持续时间
 			int totalFrames = _currentAnimation->frames; // 动画总帧数
 			int framesPerRow = _currentAnimation->frames; // 每行的帧数
 
 			float currentTime = glfwGetTime();
+
+			if (_currentAnimation->state == AnimateState::Died) {
+				sprite->updateAnimateVertex(totalFrames - 1, _currentAnimation->tileY, framesPerRow);
+				_lastFrameTime = currentTime;
+				return;
+			}
 			// std::cout << _currentAnimation->speed << "/" << _currentFrame << "/" << currentTime - _lastFrameTime << "/" << currentTime << std::endl;
 			if (currentTime - _lastFrameTime > frameInterval) {
 				if (!_currentAnimation->canInterrupt && _currentFrame + 1 >= totalFrames) {
 					_currentAnimation = &animations[_nextAnimate];
-					_nextAnimate = "idle";
 					animateSwitching();
 				}
 				_currentFrame = (_currentFrame + 1) % totalFrames; // 循环播放

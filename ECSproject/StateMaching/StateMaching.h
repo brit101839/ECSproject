@@ -18,6 +18,9 @@ public:
         else if (stateName == EnemyState::backing) {
             return new BackingState();
         }
+        else if (stateName == EnemyState::dying) {
+            return new DyingState();
+        }
         return nullptr;
     }
 };
@@ -43,11 +46,12 @@ public:
 
     int to_int(EnemyState state) {
         switch (state) {
-            case EnemyState::patrol: return 0;
-            case EnemyState::tracking: return 1;
-            case EnemyState::fighting: return 2;
-            case EnemyState::backing: return 3;
-            default: return -1;
+        case EnemyState::patrol: return 0;
+        case EnemyState::tracking: return 1;
+        case EnemyState::fighting: return 2;
+        case EnemyState::backing: return 3;
+        case EnemyState::dying: return 4;
+        default: return -1;
         }
     }
 

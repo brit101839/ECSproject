@@ -5,7 +5,7 @@
 
 enum class EnemyState
 {
-    patrol, tracking, fighting, backing
+    patrol, tracking, fighting, backing, dying
 };
 
 class AIState {
@@ -92,5 +92,17 @@ public:
         auto dist = ai.getTransform()->position.distanceTo(ai.getDefaultPos());
         if (dist < 50.f) return EnemyState::patrol;
         return EnemyState::backing;
+    }
+};
+
+class DyingState : public AIState {
+public:
+    void update(AIContext& ai) override {
+        ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+        ai.getSprite()->setAnimate("dying");
+    }
+
+    EnemyState getNextState(AIContext& ai) override {
+        return EnemyState::dying;
     }
 };

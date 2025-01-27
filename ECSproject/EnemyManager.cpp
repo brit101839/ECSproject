@@ -14,6 +14,8 @@ Entity& EnemyManager::addEnemy(const Vector2D& position, const char* spritePath)
     sprite.addAnimation("attack_2", Animation(3, 9, 10, false, false, AnimateState::Attacking));
     sprite.addAnimation("attack_3", Animation(4, 5, 10, false, false, AnimateState::Attacking));
     sprite.addAnimation("attack_4", Animation(6, 9, 10, false, false, AnimateState::Attacking));
+    sprite.addAnimation("dying", Animation(9, 6, 5, false, false, AnimateState::Dying));
+    sprite.addAnimation("died", Animation(9, 6, 5, false, false, AnimateState::Died));
     sprite.setAnimate("idle");
     BoundingBox bound{ trans.position, 80.0f, 80.0f };
     enemy.addcomponent<ColliderComponent>(_colliderManager, "enemy", bound, Vector2D(0.f, -40.f));

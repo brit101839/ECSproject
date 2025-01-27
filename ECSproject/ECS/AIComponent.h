@@ -33,6 +33,10 @@ public:
 		_stateMaching.changeState(new TrackingState());
 	};
 
+	void enemyDying() {
+		_stateMaching.changeState(AIStateFactory::createState(EnemyState::dying));
+	}
+
 	void update(GLFWwindow* window) override {
 		_stateMaching.update(*this);
 	}
