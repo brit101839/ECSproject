@@ -10,6 +10,11 @@
 #include "../AnimateSet.h"
 #include "../shader/Shader.h"
 
+enum class SpriteType
+{
+	Default, Animate, Map, UI
+};
+
 class SpriteComponent : public Component
 {
 private:
@@ -24,6 +29,7 @@ private:
 	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
 
+	SpriteType _spriteType = SpriteType::Default;
 	bool _map = false;
 	bool _animated = false;
 	bool _OnAttack = false;
@@ -36,6 +42,7 @@ public:
 	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight)
 		:_animated(isAnimated), _cutWidth(cutWidth), _cutHeight(cutHeight)
 	{
+		if (_animated) _spriteType = SpriteType::Animate;
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_texture == -1) {
@@ -44,7 +51,17 @@ public:
 	}
 
 	SpriteComponent(int map_id, const char* path)
-		:_id(map_id), _map(true)
+		:_id(map_id), _map(true), _spriteType(SpriteType::Map)
+	{
+		TextureManager& textureManager = TextureManager::getInstance();
+		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
+		if (_texture == -1) {
+			throw std::runtime_error("Failed to load texture.");
+		}
+	}
+
+	SpriteComponent(const char* path, SpriteType t = SpriteType::Default)
+		:_spriteType(t)
 	{
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
@@ -56,10 +73,9 @@ public:
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
-		if (_animated) {
-			_sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
-		}
+		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
 		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
+		else if (_spriteType == SpriteType::UI) _sprite = new Sprite(_texture, _transform->width, _transform->height, Origin::TopLeft);
 		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
 	}
 
@@ -101,7 +117,8 @@ public:
 	void draw(Shader& shader, Vector2D cameraPos) override
 	{
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
-		_sprite->render(_transform->position, 0.0f, shader, cameraPos);
+		if (_spriteType == SpriteType::UI) _sprite->renderUI(_transform->position, 0.0f, shader);
+		else _sprite->render(_transform->position, 0.0f, shader, cameraPos);
 	}
 
 	bool isanimated() { return _animated; }

@@ -141,6 +141,7 @@
     <ClCompile Include="ECS\ECS.cpp" />
     <ClCompile Include="ECS\KeyboardController.cpp" />
     <ClCompile Include="ECS\StatsComponent.cpp" />
+    <ClCompile Include="ECS\TextRenderComponent.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="textureManager.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="vector2D\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +171,7 @@
     <ClInclude Include="ECS\ECS.h" />
     <ClInclude Include="ECS\HealthBarComponet.h" />
     <ClInclude Include="ECS\StatsComponent.h" />
+    <ClInclude Include="ECS\TextRenderComponent.h" />
     <ClInclude Include="ECS\TileComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
@@ -184,7 +187,9 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StateMaching\AIStates.h" />
     <ClInclude Include="StateMaching\StateMaching.h" />
+    <ClInclude Include="TextRender.h" />
     <ClInclude Include="textureManager.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="vector2D\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

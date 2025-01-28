@@ -11,14 +11,16 @@ private:
 	StatsComponent* _stats;
 	Vector2D _barSize;
 	Vector2D _pos;
+	Vector2D _posOffset;
 	Sprite* _sprite;
+	bool _UI;
 
 public:
 
 	float mDroppingBlood = 0.f;
 
-	HealthBarComponent(Vector2D size = Vector2D(15.f, 3.f))
-		:_barSize(size) 
+	HealthBarComponent(Vector2D size = Vector2D(15.f, 3.f), Vector2D offset = Vector2D(0.f,100.f), bool nUI = false)
+		:_barSize(size), _posOffset(offset), _UI(nUI)
 	{
 	}
 
@@ -31,6 +33,8 @@ public:
 
 		TextureManager& textureManager = TextureManager::getInstance();
 		_sprite = new Sprite(textureManager.genWhiteTexture(), _barSize.x, _barSize.y, Origin::TopLeft);
+
+		if(!_UI) _posOffset.x = -_trans->width / 3;
 	}
 
 	void update(GLFWwindow* window) override {
@@ -40,7 +44,9 @@ public:
 	void draw(Shader& shader, Vector2D cameraPos) override {
 		if (_trans) {
 			float healthPercentage = _stats->mhealthPercent;
-			Vector2D position = _trans->position + Vector2D(-_trans->width / 3, 100.0f); // 血量條顯示在角色上方
+			Vector2D position;
+			if (_UI) position = cameraPos + _posOffset;
+			else position = _trans->position + _posOffset; // 血量條顯示在角色上方
 			
 			// 渲染背景
 			_sprite->renderRectangle(position, _barSize, shader, cameraPos, glm::vec3(0.4f, 0.4f, 0.4f));

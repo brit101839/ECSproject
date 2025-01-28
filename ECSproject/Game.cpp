@@ -148,6 +148,10 @@ Game::Game()
     _enemyManager->addEnemy(Vector2D(550.0f, 100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
 
     player->addcomponent<AttackComponent>(_enemyManager);
+    // player->addcomponent<HealthBarComponent>(Vector2D(25.f,4.f), Vector2D(40.f, 700.f), true);
+    
+    _UIManager = new UIManager(manager);
+    _UIManager->init();
 }
 
 Game::~Game()
@@ -217,7 +221,7 @@ void Game::render()
     _enemyManager->renderEnemies(_shader, cameraPos);
     for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_shader, cameraPos); }
     // for (auto& e : manager.getGroup(groupEnemies)) { e->draw(_shader, cameraPos); }
-    
+    _UIManager->render(_shader, cameraPos);
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------

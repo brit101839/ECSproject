@@ -30,7 +30,7 @@ public:
 	void setAnimation(const std::string& name) {
 		if (name == "dying") {
 			_nextAnimate = "died";
-			if (_currentAnimation != &animations.at("died") && _currentAnimation != &animations.at("dying")) {
+			if (_currentAnimation->state != AnimateState::Dying && _currentAnimation->state != AnimateState::Died) {
 				if (animations.find(name) != animations.end()) {
 					_currentAnimation = &animations[name];
 					if (!_currentAnimation->canInterrupt) {
@@ -74,7 +74,6 @@ public:
 			if (attackingCheck) { attackingCheck(); }
 			break;
 		case AnimateState::Dying:
-			std::cout << "dying 2" << std::endl;
 			_nextAnimate = "died";
 			break;
 		case AnimateState::Died:

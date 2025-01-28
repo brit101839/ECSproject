@@ -14,6 +14,7 @@
 #include "RenderQuadtreeManager.h"
 #include "CollisionManager.h"
 #include "EnemyManager.h"
+#include "UIManager.h"
 
 class ColliderComponent;
 class Map;
@@ -48,6 +49,7 @@ private:
 
 	RenderQuadtreeManager* _renderManager;
 	CollisionManager* _colliderManager;
+	UIManager* _UIManager;
 
 	Entity* player = nullptr;
 	Entity* wall = nullptr;

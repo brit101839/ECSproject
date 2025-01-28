@@ -10,6 +10,7 @@
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "TileComponent.h"
+#include "TextRenderComponent.h"
 #include "CameraComponent.h"
 #include "AIComponent.h"
 #include "StatsComponent.h"
@@ -23,7 +24,8 @@ enum GroupLabels : std::size_t
 	groupPlayer,
 	groupEnemies,
 	groupColliders,
-	groupCamera
+	groupCamera,
+	groupUI
 };
 
 #endif // !__Components__

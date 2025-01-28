@@ -70,6 +70,8 @@ public:
 
 	void render(Vector2D position, GLfloat rotation, Shader& shader, Vector2D cameraPos);
 	void renderRectangle(Vector2D position, Vector2D size, Shader& shader, Vector2D cameraPos, glm::vec3 color);
+	void renderUI(Vector2D position, GLfloat rotation, Shader& shader);
+	void renderNumber(Vector2D position, GLfloat rotation, Shader& shader, GLuint texture);
 	void updateAnimateVertex(int frameIndex, int tileY, int framePerRow);
 	void updateVertex(int index, int tilePerRow);
 };

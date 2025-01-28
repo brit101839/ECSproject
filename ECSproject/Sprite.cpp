@@ -184,6 +184,58 @@ void Sprite::renderRectangle(Vector2D position, Vector2D size, Shader& shader, V
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
+void Sprite::renderUI(Vector2D position, GLfloat rotation, Shader& shader)
+{
+	// bind Texture
+	glBindTexture(GL_TEXTURE_2D, _textureID);
+
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	if (_flip) {
+		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));  // Flip horizontally
+	}
+
+	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 view = glm::mat4(1.0f); // camera dont move in UI render
+	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, (float)Window_h_Size, 0.0f, -1.0f, 1.0f);
+
+	// render container
+	shader.use();
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	shader.setVec3("overlayColor", _overlayColor);
+	glBindVertexArray(_VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void Sprite::renderNumber(Vector2D position, GLfloat rotation, Shader& shader, GLuint texture)
+{
+	// bind Texture
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
+	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	if (_flip) {
+		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));  // Flip horizontally
+	}
+
+	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 view = glm::mat4(1.0f); // camera dont move in UI render
+	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, (float)Window_h_Size, 0.0f, -1.0f, 1.0f);
+
+	// render container
+	shader.use();
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+	shader.setVec3("overlayColor", _overlayColor);
+	glBindVertexArray(_VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
 void Sprite::updateAnimateVertex(int frameIndex, int tileY, int framePerRow)
 {
 	int tileX = frameIndex % framePerRow;      // 计算当前帧的列号
