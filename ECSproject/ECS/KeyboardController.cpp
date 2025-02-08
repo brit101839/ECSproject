@@ -11,7 +11,7 @@ void KeyboardController::onLeftMouse()
 	entity->getComponent<AttackComponent>().startAttack(box);
 }
 
-void KeyboardController::update(GLFWwindow* window)
+void KeyboardController::onKeyboard(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE)) {
 		// std::cout << "key: esc" << std::endl;
@@ -19,36 +19,30 @@ void KeyboardController::update(GLFWwindow* window)
 	}
 
 	Vector2D& vel = _transform->velocity;
-
 	vel = Vector2D(0.0f, 0.0f);
 	_sprite->setAnimate("idle");
 
-	/*if (glfwGetKey(window, GLFW_MOUSE_BUTTON_LEFT)) {
-		_sprite->setAnimate("attack_1");
-		std::cout << "attack" << std::endl;
-		return;
-	}*/
-
 	if (!_transform->canMove) { return; }
 
-	if (glfwGetKey(window, GLFW_KEY_W)) {
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		vel.y = 1.0f;
 		_sprite->setAnimate("walkUp");
-		// std::cout << "key: w" << std::endl;
 	}
-	if (glfwGetKey(window, GLFW_KEY_S)) {
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 		vel.y = -1.0f;
 		_sprite->setAnimate("walkR");
-		// std::cout << "key: s" << std::endl;
 	}
-	if (glfwGetKey(window, GLFW_KEY_A)) {
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 		vel.x = -1.0f;
 		_sprite->setAnimate("walkL");
-		// std::cout << "key: a" << std::endl;
 	}
-	if (glfwGetKey(window, GLFW_KEY_D)) {
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		vel.x = 1.0f;
 		_sprite->setAnimate("walkR");
-		// std::cout << "key: d" << std::endl;
 	}
+}
+
+void KeyboardController::update(GLFWwindow* window)
+{
+	
 }

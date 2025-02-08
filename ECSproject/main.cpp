@@ -35,9 +35,6 @@ int main(int argc, char** argv)
         game->render();
 
         game->handleEvents();
-
-        /* Poll for and process events */
-        glfwPollEvents();
     }
 
     glfwTerminate();

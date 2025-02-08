@@ -49,7 +49,7 @@ bool Game::initFlow(const char* title, bool fullscreen)
 
     glfwSetWindowUserPointer(_window, this);
 
-    glfwSetMouseButtonCallback(_window, mouseButtonCallbackDispatcher);
+    // glfwSetMouseButtonCallback(_window, mouseButtonCallbackDispatcher);
 
     _isRunning = true;
     return true;
@@ -85,13 +85,13 @@ void Game::cleanup()
     glfwTerminate();
 }
 
-void Game::mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods)
-{
-    Game* gameInstance = static_cast<Game*>(glfwGetWindowUserPointer(window));
-    if (gameInstance) {
-        gameInstance->keyCallback(window, button, action);
-    }
-}
+//void Game::mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods)
+//{
+//    Game* gameInstance = static_cast<Game*>(glfwGetWindowUserPointer(window));
+//    if (gameInstance) {
+//        gameInstance->keyCallback(window, button, action);
+//    }
+//}
 
 bool Game::initEntityGroup()
 {
@@ -173,7 +173,23 @@ Shader& Game::getShader()
 
 void Game::handleEvents()
 {
-    
+    /* Poll for and process events */
+    glfwPollEvents();
+
+    static bool leftMousePressed = false;
+
+    int mouseState = glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT);
+    if (mouseState == GLFW_PRESS && !leftMousePressed)
+    {
+        leftMousePressed = true;
+        keyCallback(_window, GLFW_MOUSE_BUTTON_LEFT, GLFW_PRESS);
+    }
+    else if (mouseState == GLFW_RELEASE)
+    {
+        leftMousePressed = false;
+    }
+
+    player->getComponent<KeyboardController>().onKeyboard(_window);
 }
 
 void Game::keyCallback(GLFWwindow* window, int button, int action)

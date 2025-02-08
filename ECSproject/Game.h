@@ -40,7 +40,7 @@ private:
 	void handleInitFailure();
 	void cleanup();
 
-	static void mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods);
+	// static void mouseButtonCallbackDispatcher(GLFWwindow* window, int button, int action, int mods);
 
 	// GameObject* _gameObject;
 	Map* _map;
