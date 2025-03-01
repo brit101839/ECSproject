@@ -143,7 +143,7 @@
     <ClCompile Include="ECS\StatsComponent.cpp" />
     <ClCompile Include="ECS\TextRenderComponent.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="Enemy\EnemyManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
@@ -175,7 +175,9 @@
     <ClInclude Include="ECS\TileComponent.h" />
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
-    <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="Enemy\Enemy.h" />
+    <ClInclude Include="Enemy\EnemyManager.h" />
+    <ClInclude Include="Enemy\Skill.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ECS\KeyboardController.h" />

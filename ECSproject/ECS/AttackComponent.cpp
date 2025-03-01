@@ -1,5 +1,5 @@
 #include "AttackComponent.h"
-#include "../EnemyManager.h"
+#include "../Enemy/EnemyManager.h"
 
 void AttackComponent::startAttack(BoundingBox box)
 {
