@@ -15,6 +15,7 @@
 #include "CollisionManager.h"
 #include "Enemy/EnemyManager.h"
 #include "UIManager.h"
+#include "player.h"
 
 class ColliderComponent;
 class Map;
@@ -51,7 +52,7 @@ private:
 	CollisionManager* _colliderManager;
 	UIManager* _UIManager;
 
-	Entity* player = nullptr;
+	Player* player = nullptr;
 	Entity* wall = nullptr;
 	Entity* Camera = nullptr;
 

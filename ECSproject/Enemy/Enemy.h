@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "../ECS/ECS.h"
-#include "../ECS/TransformComponent.h"
-#include "../ECS/StatsComponent.h"
-#include "../ECS/ColliderComponent.h"
+#include "../ECS/Components.h"
 #include "Skill.h"
 
 class Enemy
@@ -35,6 +33,20 @@ public:
 	// 可以随时更换技能
 	void setSkill(Skill* newSkill) {
 		_skill = newSkill;
+	}
+
+	bool checkAttack(AttackComponent& atc) {
+		return Collision::AABB(atc.mboundingBox, _entity->getComponent<ColliderComponent>().boundingBox);
+	}
+
+	void handleAttack(AttackComponent& atc) {
+		if (checkAttack(atc)) {
+			int damage = atc.getDamage();
+			takeDamage(damage);
+			onAttack();
+			atc.endAttack();
+			std::cout << "attacking( " << getHealth() << "/ " << getMaxHealth() << ")" << std::endl;
+		}
 	}
 
 	void takeDamage(int damage) {

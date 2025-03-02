@@ -44,13 +44,7 @@ public:
 	void checkAttack(AttackComponent& atc) {
 		std::cout << "checking" << std::endl;
 		for (auto* enemy : _enemies) {
-			if (Collision::AABB(atc.mboundingBox, enemy->getEntity()->getComponent<ColliderComponent>().boundingBox)) {
-				int damage = atc.getDamage();
-				enemy->takeDamage(damage);
-				enemy->onAttack();
-				atc.endAttack();
-				std::cout << "attacking( " << enemy->getHealth() << "/ " << enemy->getMaxHealth() << ")" << std::endl;
-			}
+			enemy->handleAttack(atc);
 		}
 	}
 
