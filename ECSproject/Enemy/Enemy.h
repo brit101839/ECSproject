@@ -25,19 +25,6 @@ public:
 		_collider = &_entity->getComponent<ColliderComponent>();
 	}
 
-	void init() {
-		_sprite->addAnimation("idle", Animation(0, 5, 10, true));
-		_sprite->addAnimation("walkR", Animation(1, 8, 10, false));
-		_sprite->addAnimation("walkL", Animation(1, 8, 10, true));
-		_sprite->addAnimation("attack_1", Animation(5, 6, 10, false, false, AnimateState::Attacking));
-		_sprite->addAnimation("attack_2", Animation(3, 9, 10, false, false, AnimateState::Attacking));
-		_sprite->addAnimation("attack_3", Animation(4, 5, 10, false, false, AnimateState::Attacking));
-		_sprite->addAnimation("attack_4", Animation(6, 9, 10, false, false, AnimateState::Attacking));
-		_sprite->addAnimation("dying", Animation(9, 6, 5, false, false, AnimateState::Dying));
-		_sprite->addAnimation("died", Animation(9, 6, 5, false, false, AnimateState::Died));
-		_sprite->setAnimate("idle");
-	}
-
 	// 敌人技能
 	void useSkill() {
 		if (_skill) {
@@ -53,7 +40,7 @@ public:
 	void takeDamage(int damage) {
 		_stats->takeDamage(damage);
 		if (_stats->getHealth() <= 0) {
-			_entity->destroy();
+			// _entity->destroy();
 		}
 	}
 

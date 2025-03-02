@@ -14,7 +14,7 @@ private:
 public:
 
 	Vector2D position;
-	Vector2D velocity;
+	Vector2D velocity = Vector2D(0.f, 0.f);
 	GLfloat width, height;
 
 	float speed;
@@ -30,6 +30,12 @@ public:
 
 	TransformComponent(Vector2D position, GLfloat width, GLfloat height)
 		:position(position), velocity(Vector2D(0.f, 0.f)), speed(0), width(width), height(height){ }
+
+	TransformComponent(Vector2D position, float speed, GLfloat width, GLfloat height)
+		:position(position), speed(speed), width(width), height(height)
+	{
+
+	}
 
 	TransformComponent(Vector2D position, Vector2D velocity, float speed, GLfloat width, GLfloat height)
 		:position(position), velocity(velocity), speed(speed), width(width), height(height)

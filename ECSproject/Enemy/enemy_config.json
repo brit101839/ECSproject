@@ -1,0 +1,120 @@
+{
+  "enemies": [
+    {
+      "name": "Minotaur",
+      "hp": 100,
+      "atk": 10,
+      "def": 1,
+      "speed": 1.0,
+      "width": 300.0,
+      "height": 300.0,
+      "sprite": {
+        "path": "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png",
+        "animated": true,
+        "cutWidth": 96.0,
+        "cutHeight": 96.0 
+      },
+      "animations": {
+        "idle": {
+          "row": 0,
+          "frames": 5,
+          "speed": 10,
+          "flip": true
+        },
+        "walkR": {
+          "row": 1,
+          "frames": 8,
+          "speed": 10,
+          "flip": false
+        },
+        "walkL": {
+          "row": 1,
+          "frames": 8,
+          "speed": 10,
+          "flip": true
+        },
+        "attack_1": {
+          "row": 5,
+          "frames": 6,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking"
+        },
+        "attack_2": {
+          "row": 3,
+          "frames": 9,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking"
+        },
+        "attack_3": {
+          "row": 4,
+          "frames": 5,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking"
+        },
+        "attack_4": {
+          "row": 6,
+          "frames": 9,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking"
+        },
+        "dying": {
+          "row": 9,
+          "frames": 6,
+          "speed": 5,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Dying"
+        },
+        "died": {
+          "row": 9,
+          "frames": 6,
+          "speed": 5,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Died"
+        }
+      }
+    },
+    {
+      "name": "Orc",
+      "hp": 200,
+      "speed": 1.5,
+      "animations": {
+        "idle": {
+          "row": 0,
+          "frames": 5,
+          "speed": 8,
+          "loop": true
+        },
+        "walkR": {
+          "row": 1,
+          "frames": 6,
+          "speed": 8,
+          "loop": false
+        },
+        "attack_1": {
+          "row": 4,
+          "frames": 7,
+          "speed": 12,
+          "loop": false,
+          "state": "Attacking"
+        },
+        "dying": {
+          "row": 8,
+          "frames": 5,
+          "speed": 5,
+          "loop": false,
+          "state": "Dying"
+        }
+      }
+    }
+  ]
+}

@@ -176,6 +176,7 @@
     <ClInclude Include="ECS\TransformComponent.h" />
     <ClInclude Include="ECS\SpriteComponent.h" />
     <ClInclude Include="Enemy\Enemy.h" />
+    <ClInclude Include="Enemy\EnemyFactory.h" />
     <ClInclude Include="Enemy\EnemyManager.h" />
     <ClInclude Include="Enemy\Skill.h" />
     <ClInclude Include="GameObject.h" />
@@ -193,6 +194,9 @@
     <ClInclude Include="textureManager.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="vector2D\Vector2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Enemy\enemy_config.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

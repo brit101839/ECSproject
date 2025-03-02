@@ -185,5 +185,11 @@
     <ClInclude Include="Enemy\Skill.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy\EnemyFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Enemy\enemy_config.json" />
   </ItemGroup>
 </Project>
