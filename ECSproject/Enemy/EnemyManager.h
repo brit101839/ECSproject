@@ -47,16 +47,16 @@ public:
 	void onAttackEvent(Event& event) {
 		auto& attackEvent = static_cast<AttackEvent&>(event);
 		if (attackEvent.attacker == "player") {
-			checkAttack(attackEvent);
+			handleHurtEvent(attackEvent);
 		}
 	}
 
-	void checkAttack(AttackEvent& atc) {
-		std::cout << "checking" << std::endl;
+	void handleHurtEvent(AttackEvent& atc) {
+		std::cout << "checking attack by: " << atc.attacker << std::endl;
 		for (auto* enemy : _enemies) {
-			enemy->handleAttack(atc);
+			enemy->handleHurt(atc);
 		}
-		AttackStepEvent event("enemyAttackCheckComplete");
+		AttackStepEvent event("enemyHurtCheckComplete");
 		_globalEventManager.notify<AttackStepEvent>(event);
 	}
 

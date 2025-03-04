@@ -13,11 +13,14 @@ private:
     EventManager& _globalEventManager;
     EventManager _localEventManager;
     std::string _name = "player";
+    StatsComponent* _stats;
 
 public:
     Player(Entity* entity, EventManager& eventManager) : _entity(entity), _globalEventManager(eventManager) {
         _globalEventManager.subscribe<AttackStepEvent>([this](Event& event) {
             onAttackStepEvent(event); });
+        _globalEventManager.subscribe<AttackEvent>([this](Event& event) {
+            onAttackEvent(event); });
     }
 
     void componentSetting(CollisionManager* mCollisionM) {
@@ -35,17 +38,52 @@ public:
 
         BoundingBox bound{ trans.position, 40.0f, 40.0f };
         _entity->addcomponent<ColliderComponent>(mCollisionM, "player", bound, Vector2D(0.f, -40.f));
-        _entity->addcomponent<StatsComponent>(100, 10, 1);
+        _stats = &_entity->addcomponent<StatsComponent>(100, 10, 1);
         _entity->addcomponent<AttackComponent>(_name, _globalEventManager, _localEventManager);
         _entity->addGroup(groupPlayer);
     }
 
+    bool checkAttack(BoundingBox& box) {
+        return Collision::AABB(box, _entity->getComponent<ColliderComponent>().boundingBox);
+    }
+
+    void takeDamage(int damage) {
+        _stats->takeDamage(damage);
+        if (_stats->getHealth() <= 0) {
+            // _entity->destroy();
+        }
+    }
+
+    void onHurt() {
+        // takeDamage()
+    }
+
+    void handleHurtEvent(AttackEvent& atc) {
+        std::cout << "checking attack by: "<< atc.attacker << std::endl;
+        if (checkAttack(atc.boundingBox)) {
+            int damage = atc.damage;
+            takeDamage(damage);
+            onHurt();
+            // atc.endAttack();
+            std::cout << "attacking( " << getHealth() << "/ " << getMaxHealth() << ")" << std::endl;
+        }
+    }
+
+    void onAttackEvent(Event& event) {
+        auto& attackEvent = static_cast<AttackEvent&>(event);
+        if (attackEvent.attacker != "player") {
+            handleHurtEvent(attackEvent);
+        }
+    }
+
     void onAttackStepEvent(Event& event) {
         auto& attackStepEvent = static_cast<AttackStepEvent&>(event);
-        if (attackStepEvent.attackStep == "enemyAttackCheckComplete") {
+        if (attackStepEvent.attackStep == "enemyHurtCheckComplete") {
             _entity->getComponent<AttackComponent>().endAttack();
         }
     }
 
     Entity& getEntity() { return *_entity; }
+    int getHealth() const { return _stats->getHealth(); }
+    int getMaxHealth() const { return _stats->getMaxHealth(); }
 };
