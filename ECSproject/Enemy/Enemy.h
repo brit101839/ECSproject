@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../ECS/ECS.h"
 #include "../ECS/Components.h"
+#include "../EventManager.h"
 #include "Skill.h"
 
 class Enemy
@@ -23,28 +24,26 @@ public:
 		_collider = &_entity->getComponent<ColliderComponent>();
 	}
 
-	// 敌人技能
 	void useSkill() {
 		if (_skill) {
 			_skill->execute();
 		}
 	}
 
-	// 可以随时更换技能
 	void setSkill(Skill* newSkill) {
 		_skill = newSkill;
 	}
 
-	bool checkAttack(AttackComponent& atc) {
-		return Collision::AABB(atc.mboundingBox, _entity->getComponent<ColliderComponent>().boundingBox);
+	bool checkAttack(BoundingBox& box) {
+		return Collision::AABB(box, _entity->getComponent<ColliderComponent>().boundingBox);
 	}
 
-	void handleAttack(AttackComponent& atc) {
-		if (checkAttack(atc)) {
-			int damage = atc.getDamage();
+	void handleAttack(AttackEvent& atc) {
+		if (checkAttack(atc.boundingBox)) {
+			int damage = atc.damage;
 			takeDamage(damage);
 			onAttack();
-			atc.endAttack();
+			// atc.endAttack();
 			std::cout << "attacking( " << getHealth() << "/ " << getMaxHealth() << ")" << std::endl;
 		}
 	}
@@ -57,7 +56,7 @@ public:
 	}
 
 	void onAttack() {
-		// 受击时的动画或效果
+		// takeDamage()
 	}
 
 	Entity* getEntity() { return _entity; }

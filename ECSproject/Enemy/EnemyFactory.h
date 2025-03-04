@@ -30,7 +30,7 @@ Animation parseAnimation(const json& animJson) {
 
 class EnemyFactory {
 public:
-    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position) {
+    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position, EventManager& eventM) {
         std::ifstream file("C:/Users/brit/source/repos/ECSproject/ECSproject/Enemy/enemy_config.json");
         if (!file.is_open()) {
             std::cerr << "Failed to open enemy_config.json" << std::endl;
@@ -54,7 +54,7 @@ public:
                 auto& stats = enemyEntity->addcomponent<StatsComponent>(enemyData["hp"], enemyData["atk"], enemyData["def"]);
                 auto& spriteData = enemyData["sprite"];
                 std::string path = spriteData["path"];
-                auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"]);
+                auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"], &eventM);
                 for (auto& [name, anim] : enemyData["animations"].items()) {
                     sprite.addAnimation(name, parseAnimation(anim));
                 }

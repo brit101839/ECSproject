@@ -96,7 +96,7 @@ void Game::cleanup()
 bool Game::initEntityGroup()
 {
     Entity* playerEntity = &manager.addEntity();
-    player = new Player(playerEntity);
+    player = new Player(playerEntity, _globalEventManager);
     wall = &manager.addEntity();
     Camera = &manager.addEntity();
 
@@ -115,6 +115,7 @@ Game::Game()
     setupGL();
 
     _shader.init("shader/shader.vert", "shader/shader.frag");
+
     initEntityGroup();
 
     Box<float> interBox{ {-5000.0f, -5000.0f} , {10000.0f, 10000.0f} };
@@ -125,31 +126,13 @@ Game::Game()
     _map = new Map(*this, "D:/dependencies/resource/map_town/map_town/map.json");
 
     player->componentSetting(_colliderManager);
-    //auto trans = player->addcomponent<TransformComponent>(Vector2D(550.0f, -1200.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
-    //// player.addcomponent<SpriteComponent>("D:/dependencies/resource/heart.png");
-    //auto& playerSprite = player->addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true, 32.f, 32.f);
-    //playerSprite.addAnimation("idle", Animation(0, 13, 10, false));
-    //playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
-    //playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
-    //playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
-    //playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, false, AnimateState::Attacking));
-    //playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, false, AnimateState::Attacking));
-    //playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, false, AnimateState::Attacking));
-    //playerSprite.setAnimate("idle");
-    //player->addcomponent<KeyboardController>();
-
-    //BoundingBox bound{trans.position, 40.0f, 40.0f};
-    //player->addcomponent<ColliderComponent>(_colliderManager, "player", bound, Vector2D(0.f, -40.f));
-    //player->addcomponent<StatsComponent>(100, 10, 1);
-    //player->addGroup(groupPlayer);
 
     Camera->addcomponent<CameraComponent>(&player->getEntity().getComponent<TransformComponent>());
     Camera->addGroup(groupCamera);
 
-    _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager);
+    _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager);
     _enemyManager->addEnemy(Vector2D(550.0f, 100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
 
-    player->addAttackComponent(_enemyManager);
     // player->addcomponent<AttackComponent>(_enemyManager);
     // player->addcomponent<HealthBarComponent>(Vector2D(25.f,4.f), Vector2D(40.f, 700.f), true);
     

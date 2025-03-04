@@ -16,11 +16,14 @@ private:
 	Manager& _manager;
 	TransformComponent& _playerTrans;
 	CollisionManager* _colliderManager;
+	EventManager& _globalEventManager;
 
 public:
 
-	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM)
-		: _manager(m), _playerTrans(playerT), _colliderManager(colM) {
+	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM, EventManager& GeventM)
+		: _manager(m), _playerTrans(playerT), _colliderManager(colM), _globalEventManager(GeventM) {
+		_globalEventManager.subscribe<AttackEvent>([this](Event& event) {
+			onAttackEvent(event); });
 	}
 
 	Enemy* addEnemy(const Vector2D& position, const char* spritePath);
@@ -41,11 +44,20 @@ public:
 		}
 	}
 
-	void checkAttack(AttackComponent& atc) {
+	void onAttackEvent(Event& event) {
+		auto& attackEvent = static_cast<AttackEvent&>(event);
+		if (attackEvent.attacker == "player") {
+			checkAttack(attackEvent);
+		}
+	}
+
+	void checkAttack(AttackEvent& atc) {
 		std::cout << "checking" << std::endl;
 		for (auto* enemy : _enemies) {
 			enemy->handleAttack(atc);
 		}
+		AttackStepEvent event("enemyAttackCheckComplete");
+		_globalEventManager.notify<AttackStepEvent>(event);
 	}
 
 	std::vector<Enemy*>& getEnemies() { return _enemies; }

@@ -9,7 +9,7 @@ Enemy* EnemyManager::addEnemy(const Vector2D& position, const char* spritePath)
     auto& trans = enemyEntity.addcomponent<TransformComponent>(position, Vector2D(0.0f, 0.0f), 0.5f, 300.f, 300.f);
     auto& sprite = enemyEntity.addcomponent<SpriteComponent>(spritePath, true, 96.f, 96.f);*/
 
-    Entity* enemyEntity = EnemyFactory::createEnemyFromJson(_manager, "Minotaur", position);
+    Entity* enemyEntity = EnemyFactory::createEnemyFromJson(_manager, "Minotaur", position, _globalEventManager);
 
     BoundingBox bound{ position, 80.0f, 80.0f };
     enemyEntity->addcomponent<ColliderComponent>(_colliderManager, "enemy", bound, Vector2D(0.f, -40.f));

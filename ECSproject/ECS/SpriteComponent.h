@@ -9,6 +9,7 @@
 #include "TransformComponent.h"
 #include "../AnimateSet.h"
 #include "../shader/Shader.h"
+#include "../EventManager.h"
 
 enum class SpriteType
 {
@@ -22,7 +23,7 @@ private:
 	TransformComponent* _transform;
 	GLuint _texture;
 	Sprite* _sprite;
-	AnimationSet _animationSet;
+	AnimationSet* _animationSet;
 	
 	std::string _currentAnimation;
 	GLfloat _cutWidth, _cutHeight;
@@ -39,10 +40,16 @@ public:
 
 	SpriteComponent() = default;
 
-	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight)
+	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight, EventManager* e = nullptr)
 		:_animated(isAnimated), _cutWidth(cutWidth), _cutHeight(cutHeight)
 	{
-		if (_animated) _spriteType = SpriteType::Animate;
+		if (_animated) {
+			_spriteType = SpriteType::Animate;
+			_animationSet = new AnimationSet(e);
+			if (!e) {
+				std::cerr << "event manager not inject successfully" << std::endl;
+			}
+		}
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_texture == -1) {
@@ -80,15 +87,23 @@ public:
 	}
 
 	void addAnimation(const std::string& name, const Animation& anim) {
-		_animationSet.addAnimation(name, anim);
+		_animationSet->addAnimation(name, anim);
 	}
 
 	void setAnimate(std::string animName)
 	{
-		_animationSet.setAnimation(animName);
+		_animationSet->setAnimation(animName);
 	}
 
-	AnimationSet& getAnimationSet() { return _animationSet; }
+	AnimationSet* getAnimationSet() {
+		if (_animationSet) {
+			return _animationSet;
+		}
+		else {
+			std::cerr << "animationSet not init" << std::endl;
+		}
+		return nullptr;
+	}
 
 	void OnAttack() {
 		beginAttackTime = glfwGetTime();
@@ -100,8 +115,8 @@ public:
 	void update(GLFWwindow* window) override
 	{
 		if (_animated) {
-			_animationSet.update(_sprite);
-			_transform->canMove = _animationSet.getFrameInterrupt();
+			_animationSet->update(_sprite);
+			_transform->canMove = _animationSet->getFrameInterrupt();
 		}
 		if (_OnAttack) {
 			float time = glfwGetTime(); // 獲取時間

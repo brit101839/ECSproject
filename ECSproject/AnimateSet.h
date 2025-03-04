@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include <functional>
+#include "EventManager.h"
 
 class AnimationSet {
 private:
@@ -14,10 +15,19 @@ private:
 	int _currentFrame = 0;
 	std::string _nextAnimate = "idle";
 	bool _flip = false;
+	EventManager* _componentEventManager;
 
 public:
 
-	std::function<void()> attackingCheck;
+	AnimationSet(EventManager* eventManager) : _componentEventManager(eventManager) {
+		if (_componentEventManager) {
+			_componentEventManager->subscribe<AttackStepEvent>([this](Event& event) {
+				onAnimationEvent(event); });
+		}
+		else {
+			std::cerr << "event manager not inject successfully" << std::endl;
+		}
+	}
 
 	void addAnimation(const std::string& name, const Animation& anim) {
 		animations[name] = anim;
@@ -68,10 +78,12 @@ public:
 
 	void animateSwitching() {
 		_nextAnimate = "idle";
+		AttackStepEvent event("normal attack");
 		switch (_currentAnimation->state)
 		{
 		case AnimateState::Attacking:
-			if (attackingCheck) { attackingCheck(); }
+			// if (attackingCheck) { attackingCheck(); }
+			_componentEventManager->notify<AttackStepEvent&>(event);
 			break;
 		case AnimateState::Dying:
 			_nextAnimate = "died";
@@ -83,6 +95,15 @@ public:
 			break;
 		}
 		return;
+	}
+
+	void onAnimationEvent(Event& event) {
+		auto& animateEvent = static_cast<AttackStepEvent&>(event);
+		// Handle the attack event
+		if (animateEvent.attackStep == "startAttack") {
+			std::cout << "attack event: " << animateEvent.attackStep << std::endl;
+			setAnimation("attack_1");
+		}
 	}
 
 	bool getFrameInterrupt() { return _currentAnimation->canInterrupt; }
