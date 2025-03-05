@@ -38,9 +38,11 @@ public:
 
         BoundingBox bound{ trans.position, 40.0f, 40.0f };
         _entity->addcomponent<ColliderComponent>(mCollisionM, "player", bound, Vector2D(0.f, -40.f));
-        _stats = &_entity->addcomponent<StatsComponent>(100, 10, 1);
+        _entity->addcomponent<StatsComponent>(100, 10, 1);
         _entity->addcomponent<AttackComponent>(_name, _globalEventManager, _localEventManager);
         _entity->addGroup(groupPlayer);
+
+        _stats = &_entity->getComponent<StatsComponent>();
     }
 
     bool checkAttack(BoundingBox& box) {
@@ -60,12 +62,15 @@ public:
 
     void handleHurtEvent(AttackEvent& atc) {
         std::cout << "checking attack by: "<< atc.attacker << std::endl;
+        if (!_entity->hasComponent<ColliderComponent>()) {
+            std::cout << "collider loss " << std::endl;
+        }
         if (checkAttack(atc.boundingBox)) {
             int damage = atc.damage;
             takeDamage(damage);
             onHurt();
             // atc.endAttack();
-            std::cout << "attacking( " << getHealth() << "/ " << getMaxHealth() << ")" << std::endl;
+            std::cout << atc.attacker << "attacking, "<< _name <<" ( " << getHealth() << "/ " << getMaxHealth() << ")" << std::endl;
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../ECS/ECS.h"
 #include "../ECS/Components.h"
+#include "../ECS/AIComponent.h"
 #include "../EventManager.h"
 #include "Skill.h"
 

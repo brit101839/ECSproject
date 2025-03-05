@@ -42,7 +42,7 @@ public:
 		attacking = true;
 		mboundingBox = box;
 
-		std::cout << "trigger start attack" << std::endl;
+		// std::cout << "trigger start attack" << std::endl;
 		AttackStepEvent event("startAttack");
 		_componentEventManager.notify<AttackStepEvent>(event);
 

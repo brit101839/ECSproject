@@ -8,9 +8,14 @@ void StatsComponent::takeDamage(int damage)
 	if (_health < 0) {
 		_health = 0;
 		// entity->getComponent<SpriteComponent>().setAnimate("dying");
-		entity->getComponent<AIComponent>().enemyDying();
-		std::cout << "dying" << std::endl;
+		if (entity->hasComponent<AIComponent>()) {
+			entity->getComponent<AIComponent>().enemyDying();
+			std::cout << "dying" << std::endl;
+		}
 	}
 	mhealthPercent = float(_health) / _maxHealth;
-	entity->getComponent<HealthBarComponent>().mDroppingBlood = float(damage) / _maxHealth;
+	if (entity->hasComponent<HealthBarComponent>()) {
+		entity->getComponent<HealthBarComponent>().mDroppingBlood = float(damage) / _maxHealth;
+	}
+	
 }

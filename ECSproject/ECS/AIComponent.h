@@ -4,13 +4,14 @@
 #include "AIContext.h"
 #include "../StateMaching/StateMaching.h"
 
-class AIComponent :public Component, public AIContext
+class AIComponent :public Component
 {
 private:
 
-	TransformComponent* _transform;
-	SpriteComponent* _sprite;
-	Vector2D _defaltPos;
+	AIContext* _aiContext;
+	//TransformComponent* _transform;
+	//SpriteComponent* _sprite;
+	//Vector2D _defaltPos;
 
 	const TransformComponent& _playerTrans;
 
@@ -20,16 +21,16 @@ public:
 
 	EnemyState _state;
 
-	AIComponent(TransformComponent& playerT)
-		:_playerTrans(playerT)
-	{
+	AIComponent(const TransformComponent& playerTrans)
+		:_playerTrans(playerTrans) {
+		
 	}
 
 	void init() override {
-		_transform = &entity->getComponent<TransformComponent>();
-		_sprite = &entity->getComponent<SpriteComponent>();
-		_defaltPos = _transform->position;
-
+		TransformComponent* transform = &entity->getComponent<TransformComponent>();
+		SpriteComponent* sprite = &entity->getComponent<SpriteComponent>();
+		AttackComponent* attack = &entity->getComponent<AttackComponent>();
+		_aiContext = new AIContext(transform, sprite, attack, _playerTrans);
 		_stateMaching.changeState(new TrackingState());
 	};
 
@@ -38,12 +39,14 @@ public:
 	}
 
 	void update(GLFWwindow* window) override {
-		_stateMaching.update(*this);
+		_stateMaching.update(*_aiContext);
 	}
 
-	TransformComponent* getTransform() const override { return _transform; }
+	AIContext* getAIContext() const { return _aiContext; };
+
+	/*TransformComponent* getTransform() const override { return _transform; }
 	SpriteComponent* getSprite() const override { return _sprite; }
 	Vector2D getDefaultPos() const override { return _defaltPos; }
-	const Vector2D& getPlayerPos() const override { return _playerTrans.position; }
+	const Vector2D& getPlayerPos() const override { return _playerTrans.position; }*/
 };
 

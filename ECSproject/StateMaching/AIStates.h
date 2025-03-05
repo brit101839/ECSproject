@@ -38,7 +38,11 @@ class FightingState : public AIState {
 public:
     void update(AIContext& ai) override {
         ai.getTransform()->velocity = Vector2D(0.f, 0.f);
-        ai.getSprite()->setAnimate("attack_1");
+        BoundingBox box;
+        if (ai.getSprite()->getFlip()) box = { ai.getTransform()->position - Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height};
+        else box = { ai.getTransform()->position + Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };
+        ai.getAttack()->startAttack(box);
+        // ai.getSprite()->setAnimate("attack_1");
     }
 
     EnemyState getNextState(AIContext& ai) override {

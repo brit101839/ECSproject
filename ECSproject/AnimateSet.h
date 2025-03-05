@@ -101,7 +101,7 @@ public:
 		auto& animateEvent = static_cast<AttackStepEvent&>(event);
 		// Handle the attack event
 		if (animateEvent.attackStep == "startAttack") {
-			std::cout << "attack event: " << animateEvent.attackStep << std::endl;
+			// std::cout << "attack event: " << animateEvent.attackStep << std::endl;
 			setAnimation("attack_1");
 		}
 	}

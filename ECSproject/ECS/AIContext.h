@@ -2,14 +2,24 @@
 
 #include "TransformComponent.h"
 #include "SpriteComponent.h"
+#include "AttackComponent.h"
 
 class AIContext {
+private:
+    TransformComponent* _transform;
+    SpriteComponent* _sprite;
+    AttackComponent* _attack;
+    Vector2D _defaultPos;
+    const TransformComponent& _playerTrans;
+
 public:
-    virtual TransformComponent* getTransform() const = 0;
-    virtual SpriteComponent* getSprite() const = 0;
-    virtual Vector2D getDefaultPos() const = 0;
-    virtual const Vector2D& getPlayerPos() const = 0;
+    AIContext(TransformComponent* transform, SpriteComponent* sprite, AttackComponent* attack, const TransformComponent& playerTrans)
+        : _transform(transform), _sprite(sprite), _attack(attack), _defaultPos(transform->position), _playerTrans(playerTrans) {
+    }
 
-    virtual ~AIContext() = default;
-
+    TransformComponent* getTransform() const { return _transform; }
+    SpriteComponent* getSprite() const { return _sprite; }
+    AttackComponent* getAttack() const { return _attack; }
+    Vector2D getDefaultPos() const { return _defaultPos; }
+    const Vector2D& getPlayerPos() const { return _playerTrans.position; }
 };

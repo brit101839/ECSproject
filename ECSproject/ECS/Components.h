@@ -12,7 +12,6 @@
 #include "TileComponent.h"
 #include "TextRenderComponent.h"
 #include "CameraComponent.h"
-#include "AIComponent.h"
 #include "StatsComponent.h"
 #include "AttackComponent.h"
 #include "HealthBarComponet.h"
