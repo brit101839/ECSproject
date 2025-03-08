@@ -184,7 +184,7 @@ void Sprite::renderRectangle(Vector2D position, Vector2D size, Shader& shader, V
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Sprite::renderUI(Vector2D position, GLfloat rotation, Shader& shader)
+void Sprite::renderUI(Vector2D position, GLfloat rotation, Vector2D size, Shader& shader)
 {
 	// bind Texture
 	glBindTexture(GL_TEXTURE_2D, _textureID);
@@ -192,9 +192,7 @@ void Sprite::renderUI(Vector2D position, GLfloat rotation, Shader& shader)
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
 	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	if (_flip) {
-		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));  // Flip horizontally
-	}
+	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));  // Flip horizontally
 
 	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	glm::mat4 view = glm::mat4(1.0f); // camera dont move in UI render

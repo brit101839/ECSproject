@@ -136,7 +136,7 @@ Game::Game()
     // player->addcomponent<AttackComponent>(_enemyManager);
     // player->addcomponent<HealthBarComponent>(Vector2D(25.f,4.f), Vector2D(40.f, 700.f), true);
     
-    _UIManager = new UIManager(manager);
+    _UIManager = new UIManager(manager, *player);
     _UIManager->init();
 }
 
@@ -234,6 +234,8 @@ void Game::update()
 {
     manager.refresh();
     manager.update(_window);
+
+    _UIManager->update();
 
     quadtree::Box<float> cameraBound = Camera->getComponent<CameraComponent>().getBox();
     _colliderManager->checkCollisions(&player->getEntity(), cameraBound, _window);

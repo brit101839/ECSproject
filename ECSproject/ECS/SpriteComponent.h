@@ -29,6 +29,7 @@ private:
 	GLfloat _cutWidth, _cutHeight;
 	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
+	Vector2D _scale = Vector2D(1.0f, 1.0f);
 
 	SpriteType _spriteType = SpriteType::Default;
 	bool _map = false;
@@ -132,13 +133,15 @@ public:
 	void draw(Shader& shader, Vector2D cameraPos) override
 	{
 		// if (_animated) _sprite->animateRender(_transform->position, 0.0f);
-		if (_spriteType == SpriteType::UI) _sprite->renderUI(_transform->position, 0.0f, shader);
+		if (_spriteType == SpriteType::UI) _sprite->renderUI(_transform->position, 0.0f, _scale, shader);
 		else _sprite->render(_transform->position, 0.0f, shader, cameraPos);
 	}
 
 	bool isanimated() { return _animated; }
 	bool getFlip() { return _sprite->getFlip(); }
 	GLfloat getCutWidth() { return _cutWidth; }
+
+	void setUIScale(Vector2D v) { _scale = v; }
 };
 
 

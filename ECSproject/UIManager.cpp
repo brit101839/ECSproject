@@ -8,7 +8,7 @@ void UIManager::init()
 	std::string fullPath = UIPath + "HealthBarPanel_160x41.png";
 	auto& stateBarPanel = this->buildUI(Vector2D(50.f, 120.f), 160.f * 2, 41.f * 2, fullPath);
 	fullPath = UIPath + "ValueRed_120x8.png";
-	auto& bloodBar = this->buildUI(Vector2D(102.f, 77.f), 120.f * 2, 8.f * 2, fullPath);
+	buildUI(*_bloodBar, Vector2D(102.f, 77.f), 120.f * 2, 8.f * 2, fullPath);
 	fullPath = UIPath + "ValueBar_128x16.png";
 	auto& bloodBarFrame = this->buildUI(Vector2D(94.f, 85.f), 128.f * 2, 16.f * 2, fullPath);
 	fullPath = UIPath + "ValueBlue_120x8.png";
@@ -37,4 +37,18 @@ Entity& UIManager::buildUI(Vector2D pos, GLfloat w, GLfloat h, std::string path)
 	UIentity.addGroup(groupUI);
 	_uiEntities.push_back(&UIentity);
 	return UIentity;
+}
+
+void UIManager::buildUI(Entity& entity, Vector2D pos, GLfloat w, GLfloat h, std::string path)
+{
+	entity.addcomponent<TransformComponent>(pos, w, h);
+	entity.addcomponent<SpriteComponent>(path.c_str(), SpriteType::UI);
+	entity.addGroup(groupUI);
+	_uiEntities.push_back(&entity);
+}
+
+void UIManager::update()
+{
+	float bloodPercent = _player.getEntity().getComponent<StatsComponent>().mhealthPercent;
+	_bloodBar->getComponent<SpriteComponent>().setUIScale(Vector2D(bloodPercent, 1.0f));
 }
