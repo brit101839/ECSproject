@@ -131,7 +131,9 @@ Game::Game()
     Camera->addGroup(groupCamera);
 
     _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager);
-    _enemyManager->addEnemy(Vector2D(550.0f, 100.f), "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png");
+    _enemyManager->addEnemy("Minotaur", Vector2D(550.0f, 100.f));
+    _enemyManager->addEnemy("Cacodaemon", Vector2D(3300.0f, -1200.f));
+    // _enemyManager->addEnemy("Ratflok Axe", Vector2D(1500.0f, -1500.f));
 
     // player->addcomponent<AttackComponent>(_enemyManager);
     // player->addcomponent<HealthBarComponent>(Vector2D(25.f,4.f), Vector2D(40.f, 700.f), true);

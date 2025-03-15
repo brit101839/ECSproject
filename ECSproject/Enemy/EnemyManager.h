@@ -26,7 +26,7 @@ public:
 			onAttackEvent(event); });
 	}
 
-	Enemy* addEnemy(const Vector2D& position, const char* spritePath);
+	Enemy* addEnemy(std::string name, const Vector2D& position);
 
 	void renderEnemies(Shader& shader, const Vector2D& cameraPos) {
 		for (auto* enemy : _enemies) {

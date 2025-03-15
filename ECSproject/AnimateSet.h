@@ -54,13 +54,19 @@ public:
 		if (_currentAnimation && !_currentAnimation->canInterrupt) {
 			if (name == "attack_1") {
 				if (_currentAnimation == &animations.at("attack_1")) {
-					_nextAnimate = "attack_2";
+					if (animations.find("attack_2") == animations.end()) _nextAnimate = "attack_1";
+					else _nextAnimate = "attack_2";
 				}
 				else if (_currentAnimation == &animations.at("attack_2")) {
-					_nextAnimate = "attack_3";
+					if(animations.find("attack_3") == animations.end()) _nextAnimate = "attack_1";
+					else _nextAnimate = "attack_3";
 				}
-				else if (_currentAnimation == &animations.at("attack_3") && animations.find("attack_4") != animations.end()) {
-					_nextAnimate = "attack_4";
+				else if (_currentAnimation == &animations.at("attack_3")) {
+					if (animations.find("attack_4") == animations.end()) _nextAnimate = "attack_1";
+					else _nextAnimate = "attack_4";
+				}
+				else {
+					_nextAnimate = "attack_1";
 				}
 			}
 			return;
