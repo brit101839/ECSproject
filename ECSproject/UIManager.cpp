@@ -2,7 +2,7 @@
 #include "ECS/Components.h"
 #include <string>
 
-void UIManager::init()
+void UIManager::init(TextRender* t)
 {
 	std::string UIPath = "D:/dependencies/resource/UI/Fantasy Minimal Pixel Art GUI by eta-commercial-free/UI/";
 	std::string fullPath = UIPath + "HealthBarPanel_160x41.png";
@@ -20,12 +20,13 @@ void UIManager::init()
 	fullPath = UIPath + "HeartIcons_32x32.png";
 	auto& heartIcon = this->buildUI(Vector2D(29.f, 111.f), 32.f * 2, 32.f * 2, fullPath);
 	fullPath = UIPath + "CoinIcon_16x18.png";
-	auto& CoinIcon = this->buildUI(Vector2D(1250.f, 740.f), 16.f * 3, 18.f * 3, fullPath);
+	auto& CoinIcon = this->buildUI(Vector2D(1150.f, 740.f), 16.f * 3, 18.f * 3, fullPath);
 
 	auto& CoinNumber = _manager.addEntity();
-	CoinNumber.addcomponent<TransformComponent>(Vector2D(1250.f, 740.f), 16.f * 1, 18.f * 1);
-	CoinNumber.addcomponent<TextRenderComponent>();
+	CoinNumber.addcomponent<TransformComponent>(Vector2D(1210.f, 730.f), 16.f * 1, 18.f * 1);
+	CoinNumber.addcomponent<TextRenderComponent>(t);
 	CoinNumber.addGroup(groupUI);
+	CoinNumber.getComponent<TextRenderComponent>().mText = "1235";
 	_uiEntities.push_back(&CoinNumber);
 }
 

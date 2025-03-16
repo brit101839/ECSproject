@@ -17,6 +17,7 @@
 #include "UIManager.h"
 #include "EventManager.h"
 #include "player.h"
+#include "TextRender.h"
 
 class ColliderComponent;
 class Map;
@@ -33,7 +34,10 @@ private:
 
 	GLFWwindow* _window;
 
-	Shader _shader;
+	Shader _spriteShader;
+	Shader _textShader;
+
+	TextRender* _textRender;
 
 	bool initFlow(const char* title, bool fullscreen);
 	void setupGL();

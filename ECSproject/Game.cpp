@@ -4,6 +4,7 @@
 #include "ECS/Components.h"
 #include "ECS/Collision.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Quadtree/Quadtree.h"
 #include "Map.h"
 
@@ -30,7 +31,7 @@ bool Game::initFlow(const char* title, bool fullscreen)
     glfwDefaultWindowHints();
 
     /* Create a windowed mode window and its OpenGL context */
-    _window = glfwCreateWindow(Window_w_Size, Window_h_Size, title, NULL, NULL);
+    _window = glfwCreateWindow(SRC_WIDTH, SRC_HEIGHT, title, NULL, NULL);
 
     if (!_window) {
         std::cerr << "Error: Failed to create GLFW window!" << std::endl;
@@ -59,7 +60,7 @@ void Game::setupGL()
 {
     // glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glViewport(0.0f, 0.0f, Window_w_Size, Window_h_Size);
+    glViewport(0.0f, 0.0f, SRC_WIDTH, SRC_HEIGHT);
 
     // glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
@@ -114,7 +115,17 @@ Game::Game()
 
     setupGL();
 
-    _shader.init("shader/shader.vert", "shader/shader.frag");
+    _spriteShader.init("shader/sprite.vs", "shader/sprite.fs");
+    _textShader.init("shader/text.vs", "shader/text.fs");
+
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SRC_WIDTH), static_cast<float>(SRC_HEIGHT), 0.0f);
+    _textShader.use();
+    glUniformMatrix4fv(glGetUniformLocation(_textShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+    _textRender = new TextRender(_textShader);
+
+    _textRender->initFont("D:/dependencies/resource/text/brewed_coffee/Brewed Coffee.ttf");
+    _textRender->initTextRendering();
 
     initEntityGroup();
 
@@ -139,7 +150,7 @@ Game::Game()
     // player->addcomponent<HealthBarComponent>(Vector2D(25.f,4.f), Vector2D(40.f, 700.f), true);
     
     _UIManager = new UIManager(manager, *player);
-    _UIManager->init();
+    _UIManager->init(_textRender);
 }
 
 Game::~Game()
@@ -156,7 +167,7 @@ bool Game::getRunning()
 
 Shader& Game::getShader()
 {
-    return _shader;
+    return _spriteShader;
 }
 
 void Game::handleEvents()
@@ -221,11 +232,11 @@ void Game::render()
     
 
     // for (auto& t : tiles) { t->draw(_shader, cameraPos); }
-    for (auto& r : _renderManager->query(cameraBound)) { r->entity->draw(_shader, cameraPos); }
-    _enemyManager->renderEnemies(_shader, cameraPos);
-    for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_shader, cameraPos); }
+    for (auto& r : _renderManager->query(cameraBound)) { r->entity->draw(_spriteShader, cameraPos); }
+    _enemyManager->renderEnemies(_spriteShader, cameraPos);
+    for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_spriteShader, cameraPos); }
     // for (auto& e : manager.getGroup(groupEnemies)) { e->draw(_shader, cameraPos); }
-    _UIManager->render(_shader, cameraPos);
+    _UIManager->render(_spriteShader, cameraPos);
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------

@@ -147,7 +147,7 @@ void Sprite::render(Vector2D position, GLfloat rotation, Shader& shader, Vector2
 
 	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraPos.x, -cameraPos.y, 0.0f));
-	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, 0.0f, (float)Window_h_Size, -1.0f, 1.0f);
+	glm::mat4 projection = glm::ortho(0.0f, (float)SRC_WIDTH, 0.0f, (float)SRC_HEIGHT, -1.0f, 1.0f);
 
 	// render container
 	shader.use();
@@ -170,7 +170,7 @@ void Sprite::renderRectangle(Vector2D position, Vector2D size, Shader& shader, V
 
 	// 設置視圖和投影矩陣
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraPos.x, -cameraPos.y, 0.0f));
-	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, 0.0f, (float)Window_h_Size, -1.0f, 1.0f);
+	glm::mat4 projection = glm::ortho(0.0f, (float)SRC_WIDTH, 0.0f, (float)SRC_HEIGHT, -1.0f, 1.0f);
 
 	// 使用著色器並設置 uniform
 	shader.use();
@@ -196,33 +196,7 @@ void Sprite::renderUI(Vector2D position, GLfloat rotation, Vector2D size, Shader
 
 	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	glm::mat4 view = glm::mat4(1.0f); // camera dont move in UI render
-	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, (float)Window_h_Size, 0.0f, -1.0f, 1.0f);
-
-	// render container
-	shader.use();
-	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	shader.setMat4("projection", projection);
-	shader.setVec3("overlayColor", _overlayColor);
-	glBindVertexArray(_VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
-
-void Sprite::renderNumber(Vector2D position, GLfloat rotation, Shader& shader, GLuint texture)
-{
-	// bind Texture
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
-	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	if (_flip) {
-		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));  // Flip horizontally
-	}
-
-	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::mat4 view = glm::mat4(1.0f); // camera dont move in UI render
-	glm::mat4 projection = glm::ortho(0.0f, (float)Window_w_Size, (float)Window_h_Size, 0.0f, -1.0f, 1.0f);
+	glm::mat4 projection = glm::ortho(0.0f, (float)SRC_WIDTH, (float)SRC_HEIGHT, 0.0f, -1.0f, 1.0f);
 
 	// render container
 	shader.use();

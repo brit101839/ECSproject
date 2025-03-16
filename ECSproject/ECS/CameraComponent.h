@@ -27,8 +27,8 @@ public:
 	}
 
 	quadtree::Box<float> getBox() const {
-		float width = Window_w_Size;
-		float height = Window_h_Size;
+		float width = SRC_WIDTH;
+		float height = SRC_HEIGHT;
 		// std::cout << "{ {" << CameraPos.x << "," << CameraPos.y << " }, {" << CameraPos.x + width << "," << CameraPos.y + height << " } }" << std::endl;
 		return { {CameraPos.x, CameraPos.y},{width, height+100.0f} };
 	}
@@ -37,10 +37,10 @@ public:
 	{
 		if (_followTarget) {
 			Vector2D playerPos = _target->position;
-			CameraPos = playerPos - Vector2D(Window_w_Size / 2, Window_h_Size / 2);
+			CameraPos = playerPos - Vector2D(SRC_WIDTH / 2, SRC_HEIGHT / 2);
 
-			CameraPos.x = std::max(0.0f, std::min(CameraPos.x, mapWidth - Window_w_Size));
-			CameraPos.y = std::max(Window_h_Size - mapHeight, std::min(CameraPos.y, 0.0f));
+			CameraPos.x = std::max(0.0f, std::min(CameraPos.x, mapWidth - SRC_WIDTH));
+			CameraPos.y = std::max(SRC_HEIGHT - mapHeight, std::min(CameraPos.y, 0.0f));
 			// std::cout << "cameraPos: " << CameraPos.y << "," << std::endl;
 		}
 	}

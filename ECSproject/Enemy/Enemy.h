@@ -77,6 +77,7 @@ public:
 	}
 
 	void onHurt() {
+		_sprite->OnInjuried();
 		// takeDamage()
 	}
 

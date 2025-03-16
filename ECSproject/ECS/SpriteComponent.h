@@ -106,7 +106,7 @@ public:
 		return nullptr;
 	}
 
-	void OnAttack() {
+	void OnInjuried() {
 		beginAttackTime = glfwGetTime();
 		_OnAttack = true;
 	}

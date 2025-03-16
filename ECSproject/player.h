@@ -57,7 +57,7 @@ public:
     }
 
     void onHurt() {
-        // takeDamage()
+        _entity->getComponent<SpriteComponent>().OnInjuried();
     }
 
     void handleHurtEvent(AttackEvent& atc) {

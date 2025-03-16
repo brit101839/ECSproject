@@ -19,7 +19,7 @@ public:
 		_bloodBar = &_manager.addEntity();
 	}
 
-	void init();
+	void init(TextRender* t);
 
 	Entity& buildUI(Vector2D pos, GLfloat w, GLfloat h, std::string path);
 

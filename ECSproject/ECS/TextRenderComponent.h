@@ -1,28 +1,31 @@
 #pragma once
 #include "ECS.h"
-#include "Components.h"
-#include <vector>
+#include "../TextRender.h"
 
 class TextRenderComponent : public Component {
 private:
 
+	TextRender* _textRender;
 	TransformComponent* _transform;
-	GLuint _texture;
-	Sprite* _sprite;
-	std::vector<GLuint> _numberTextures;
-	int _textureWidth = 0, _textureHeight = 0;
-	int _renderNumber = 4235;
 
 public:
 
-	TextRenderComponent() = default;
+	std::string mText = "123";
 
-	void init() override;
+	TextRenderComponent(TextRender* t) : _textRender(t) {
+
+	}
+
+	void init() override {
+		_transform = &entity->getComponent<TransformComponent>();
+	}
 	
 	void update(GLFWwindow* window) override
 	{
 
 	}
 
-	void draw(Shader& shader, Vector2D cameraPos) override;
+	void draw(Shader& shader, Vector2D cameraPos) override {
+		_textRender->renderText(mText, _transform->position, 1.0f, { 1.0f, 1.0f, 1.0f });
+	}
 };
