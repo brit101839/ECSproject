@@ -31,7 +31,7 @@ public:
     }
 };
 
-class EventManager {
+class EventSystem {
 public:
     using Callback = std::function<void(Event&)>;
 
@@ -42,7 +42,7 @@ public:
     }
 
     template <typename EventType>
-    void notify(EventType& event) {
+    void publish(EventType& event) {
         auto& subscribers = _subscribers[typeid(EventType).hash_code()];
         for (auto& callback : subscribers) {
             callback(event);

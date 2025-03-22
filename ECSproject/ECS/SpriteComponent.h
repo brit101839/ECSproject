@@ -7,9 +7,10 @@
 #include "ECS.h"
 #include "../textureManager.h"
 #include "TransformComponent.h"
+#include "LocalEventComponent.h"
 #include "../AnimateSet.h"
 #include "../shader/Shader.h"
-#include "../EventManager.h"
+#include "../EventSystem.h"
 
 enum class SpriteType
 {
@@ -41,16 +42,9 @@ public:
 
 	SpriteComponent() = default;
 
-	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight, EventManager* e = nullptr)
+	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight)
 		:_animated(isAnimated), _cutWidth(cutWidth), _cutHeight(cutHeight)
 	{
-		if (_animated) {
-			_spriteType = SpriteType::Animate;
-			_animationSet = new AnimationSet(e);
-			if (!e) {
-				std::cerr << "event manager not inject successfully" << std::endl;
-			}
-		}
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
 		if (_texture == -1) {
@@ -81,6 +75,18 @@ public:
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
+
+		if (_animated) {
+			_spriteType = SpriteType::Animate;
+			if (entity->hasComponent<LocalEventComponent>()) {
+				EventSystem* e = &entity->getComponent<LocalEventComponent>().getEventSystem();
+				_animationSet = new AnimationSet(e);
+			}
+			else {
+				std::cerr << "event manager not inject successfully" << std::endl;
+			}
+		}
+
 		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
 		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
 		else if (_spriteType == SpriteType::UI) _sprite = new Sprite(_texture, _transform->width, _transform->height, Origin::TopLeft);

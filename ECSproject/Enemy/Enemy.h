@@ -2,33 +2,31 @@
 #include "../ECS/ECS.h"
 #include "../ECS/Components.h"
 #include "../ECS/AIComponent.h"
-#include "../EventManager.h"
-#include "Skill.h"
+#include "../EventSystem.h"
 
 class Enemy
 {
 private:
 	std::string _name;
 	Entity* _entity;
-	Skill* _skill; // 使用策略模式的技能
 
 	TransformComponent* _transform;
 	StatsComponent* _stats;
 	ColliderComponent* _collider;
 	SpriteComponent* _sprite;
 	
-	EventManager& _globalEventSys;
-	EventManager _componentEventSys;
+	EventSystem& _globalEventSys;
+	//EventSystem _componentEventSys;
 
 public:
-	Enemy(std::string name, Skill* skill, EventManager& globalEventSys)
-		: _name(name), _skill(skill), _globalEventSys(globalEventSys)
+	Enemy(std::string name, EventSystem& globalEventSys)
+		: _name(name), _globalEventSys(globalEventSys)
 	{
 	}
 
 	void init(Entity* entity, TransformComponent& playerTrans) {
 		_entity = entity;
-		_entity->addcomponent<AttackComponent>(_name, _globalEventSys, _componentEventSys);
+		_entity->addcomponent<AttackComponent>(_name, _globalEventSys);
 		_entity->addcomponent<AIComponent>(playerTrans);
 
 		_transform = &_entity->getComponent<TransformComponent>();
@@ -42,17 +40,19 @@ public:
 	}
 
 	SpriteComponent* addSpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight) {
-		return &_entity->addcomponent<SpriteComponent>(path, isAnimated, cutWidth, cutHeight, &_componentEventSys);
+		return &_entity->addcomponent<SpriteComponent>(path, isAnimated, cutWidth, cutHeight);
 	}
 
 	void useSkill() {
-		if (_skill) {
-			_skill->execute();
+		if (_entity->hasComponent<SkillCompnent>()){
+			_entity->getComponent<SkillCompnent>().UseSkill();
 		}
 	}
 
-	void setSkill(Skill* newSkill) {
-		_skill = newSkill;
+	void setSkill(std::unique_ptr<Skill> newSkill) {
+		if (_entity->hasComponent<SkillCompnent>()) {
+			_entity->getComponent<SkillCompnent>().setSkill(std::move(newSkill));
+		}
 	}
 
 	bool checkAttack(BoundingBox& box) {
@@ -92,5 +92,5 @@ public:
 	ColliderComponent& getCollider() { return *_collider; }
 	int getHealth() const { return _stats->getHealth(); }
 	int getMaxHealth() const { return _stats->getMaxHealth(); }
-	EventManager &getLocalEventSys() { return _componentEventSys; }
+	// EventSystem &getLocalEventSys() { return _componentEventSys; }
 };

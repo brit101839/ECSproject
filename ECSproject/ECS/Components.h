@@ -7,6 +7,7 @@
 #include "ECS.h"
 #include "SpriteComponent.h"
 #include "TransformComponent.h"
+#include "LocalEventComponent.h"
 #include "KeyboardController.h"
 #include "ColliderComponent.h"
 #include "TileComponent.h"
@@ -15,6 +16,7 @@
 #include "StatsComponent.h"
 #include "AttackComponent.h"
 #include "HealthBarComponet.h"
+#include "SkillComponent.h"
 
 enum GroupLabels : std::size_t
 {

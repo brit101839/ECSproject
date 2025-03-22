@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include "shader/Shader.h"
+#include "Sprite.h"
 
 struct Character {
     GLuint TextureID;    // ¦r²Å¯¾²z ID
@@ -43,8 +44,7 @@ public:
         }
 
         // find path to font
-        std::string font_name = "D:/dependencies/resource/text/brewed_coffee/Brewed Coffee.ttf";
-        if (font_name.empty())
+        if (fontPath.empty())
         {
             std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
             return;
@@ -52,13 +52,13 @@ public:
 
         // load font as face
         FT_Face face;
-        if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
+        if (FT_New_Face(ft, fontPath.c_str(), 0, &face)) {
             std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
             return;
         }
         else {
             // set size to load glyphs as
-            FT_Set_Pixel_Sizes(face, 0, 48);
+            FT_Set_Pixel_Sizes(face, 0, 32);
 
             // disable byte-alignment restriction
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -139,12 +139,12 @@ public:
             Character ch = Characters[*c];
 
             float xpos = position.x + ch.Bearing.x * scale;
-            float ypos = position.y - (ch.Size.y - ch.Bearing.y) * scale;
+            float ypos = static_cast<float>(SRC_HEIGHT) - position.y - (ch.Size.y - ch.Bearing.y) * scale;
 
             float w = ch.Size.x * scale;
             float h = ch.Size.y * scale;
             // update VBO for each character
-            float vertices[6][4] = {
+            /*float vertices[6][4] = {
                 { xpos,     ypos,       0.0f, 1.0f },
                 { xpos,     ypos - h,   0.0f, 0.0f },
                 { xpos + w, ypos - h,   1.0f, 0.0f },
@@ -152,6 +152,15 @@ public:
                 { xpos,     ypos,       0.0f, 1.0f },
                 { xpos + w, ypos - h,   1.0f, 0.0f },
                 { xpos + w, ypos,       1.0f, 1.0f }
+            };*/
+            float vertices[6][4] = {
+            { xpos,     ypos + h,   0.0f, 0.0f },
+            { xpos,     ypos,       0.0f, 1.0f },
+            { xpos + w, ypos,       1.0f, 1.0f },
+
+            { xpos,     ypos + h,   0.0f, 0.0f },
+            { xpos + w, ypos,       1.0f, 1.0f },
+            { xpos + w, ypos + h,   1.0f, 0.0f }
             };
             // render glyph texture over quad
             glBindTexture(GL_TEXTURE_2D, ch.TextureID);

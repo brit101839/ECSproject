@@ -98,6 +98,8 @@ bool Game::initEntityGroup()
 {
     Entity* playerEntity = &manager.addEntity();
     player = new Player(playerEntity, _globalEventManager);
+    Entity* backPackEntity = &manager.addEntity();
+    backpack = new BackPack(backPackEntity);
     wall = &manager.addEntity();
     Camera = &manager.addEntity();
 
@@ -118,13 +120,13 @@ Game::Game()
     _spriteShader.init("shader/sprite.vs", "shader/sprite.fs");
     _textShader.init("shader/text.vs", "shader/text.fs");
 
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SRC_WIDTH), static_cast<float>(SRC_HEIGHT), 0.0f);
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SRC_WIDTH), 0.0f, static_cast<float>(SRC_HEIGHT));
     _textShader.use();
     glUniformMatrix4fv(glGetUniformLocation(_textShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     _textRender = new TextRender(_textShader);
 
-    _textRender->initFont("D:/dependencies/resource/text/brewed_coffee/Brewed Coffee.ttf");
+    _textRender->initFont("D:\\dependencies\\resource\\text\\minecraftia\\Minecraftia-Regular.ttf");
     _textRender->initTextRendering();
 
     initEntityGroup();
@@ -202,6 +204,9 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
 
         player->getEntity().getComponent<KeyboardController>().onLeftMouse();
     }
+    else if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        backpack->disable();
+    }
 }
 
 void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
@@ -237,6 +242,7 @@ void Game::render()
     for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_spriteShader, cameraPos); }
     // for (auto& e : manager.getGroup(groupEnemies)) { e->draw(_shader, cameraPos); }
     _UIManager->render(_spriteShader, cameraPos);
+    backpack->render(_spriteShader, cameraPos);
 
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------

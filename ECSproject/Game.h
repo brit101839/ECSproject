@@ -15,8 +15,9 @@
 #include "CollisionManager.h"
 #include "Enemy/EnemyManager.h"
 #include "UIManager.h"
-#include "EventManager.h"
+#include "EventSystem.h"
 #include "player.h"
+#include "BackPack.h"
 #include "TextRender.h"
 
 class ColliderComponent;
@@ -56,9 +57,10 @@ private:
 	RenderQuadtreeManager* _renderManager;
 	CollisionManager* _colliderManager;
 	UIManager* _UIManager;
-	EventManager _globalEventManager;
+	EventSystem _globalEventManager;
 
 	Player* player = nullptr;
+	BackPack* backpack = nullptr;
 	Entity* wall = nullptr;
 	Entity* Camera = nullptr;
 

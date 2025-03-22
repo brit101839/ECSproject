@@ -176,16 +176,22 @@
     <ClInclude Include="Enemy\Enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy\Skill.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy\EnemyFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EventManager.h">
+    <ClInclude Include="EventSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BackPack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\SkillComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS\LocalEventComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

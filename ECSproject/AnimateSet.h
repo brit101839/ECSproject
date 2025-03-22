@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include <functional>
-#include "EventManager.h"
+#include "EventSystem.h"
 
 class AnimationSet {
 private:
@@ -15,11 +15,11 @@ private:
 	int _currentFrame = 0;
 	std::string _nextAnimate = "idle";
 	bool _flip = false;
-	EventManager* _componentEventManager;
+	EventSystem* _componentEventManager;
 
 public:
 
-	AnimationSet(EventManager* eventManager) : _componentEventManager(eventManager) {
+	AnimationSet(EventSystem* eventManager) : _componentEventManager(eventManager) {
 		if (_componentEventManager) {
 			_componentEventManager->subscribe<AttackStepEvent>([this](Event& event) {
 				onAnimationEvent(event); });
@@ -89,7 +89,7 @@ public:
 		{
 		case AnimateState::Attacking:
 			// if (attackingCheck) { attackingCheck(); }
-			_componentEventManager->notify<AttackStepEvent&>(event);
+			_componentEventManager->publish<AttackStepEvent&>(event);
 			break;
 		case AnimateState::Dying:
 			_nextAnimate = "died";

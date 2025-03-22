@@ -30,7 +30,7 @@ Animation parseAnimation(const json& animJson) {
 
 class EnemyFactory {
 public:
-    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position, EventManager& eventM) {
+    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position) {
         std::ifstream file("C:/Users/brit/source/repos/ECSproject/ECSproject/Enemy/enemy_config.json");
         if (!file.is_open()) {
             std::cerr << "Failed to open enemy_config.json" << std::endl;
@@ -50,11 +50,12 @@ public:
 
                 Entity* enemyEntity = &manager.addEntity();
 
+                enemyEntity->addcomponent<LocalEventComponent>();
                 auto& trans = enemyEntity->addcomponent<TransformComponent>(position, enemyData["speed"], enemyData["width"], enemyData["height"]);
                 auto& stats = enemyEntity->addcomponent<StatsComponent>(enemyData["hp"], enemyData["atk"], enemyData["def"]);
                 auto& spriteData = enemyData["sprite"];
                 std::string path = spriteData["path"];
-                auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"], &eventM);
+                auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"]);
                 for (auto& [name, anim] : enemyData["animations"].items()) {
                     sprite.addAnimation(name, parseAnimation(anim));
                 }

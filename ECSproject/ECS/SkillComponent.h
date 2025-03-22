@@ -1,14 +1,35 @@
 #pragma once
-#include <iostream>
 
-// 策略基類
+#include "ECS.h"
+
 class Skill {
 public:
 	virtual void execute() = 0;
 	virtual ~Skill() = default;
 };
 
-// 近戰攻擊
+class SkillCompnent : public Component {
+private:
+	std::unique_ptr<Skill> _skill;
+
+public:
+	SkillCompnent(std::unique_ptr<Skill> initialSkill)
+		:_skill(std::move(initialSkill)) { }
+
+	void setSkill(std::unique_ptr<Skill> newSkill) {
+		_skill = std::move(newSkill);
+	}
+		
+	void UseSkill() {
+		if (_skill) {
+			_skill.get()->execute();
+		}
+	}
+
+};
+
+
+// confused fight
 class MeleeAttack : public Skill {
 public:
 	void execute() override {

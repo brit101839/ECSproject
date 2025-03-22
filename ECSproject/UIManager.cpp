@@ -26,7 +26,7 @@ void UIManager::init(TextRender* t)
 	CoinNumber.addcomponent<TransformComponent>(Vector2D(1210.f, 730.f), 16.f * 1, 18.f * 1);
 	CoinNumber.addcomponent<TextRenderComponent>(t);
 	CoinNumber.addGroup(groupUI);
-	CoinNumber.getComponent<TextRenderComponent>().mText = "1235";
+	CoinNumber.getComponent<TextRenderComponent>().mText = "apd0";
 	_uiEntities.push_back(&CoinNumber);
 }
 

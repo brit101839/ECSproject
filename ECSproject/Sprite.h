@@ -10,7 +10,7 @@
 #include "stb/stb_image.h"
 #include "vector2D/Vector2D.h"
 #include "shader/Shader.h"
-#include "TextRender.h"
+// #include "TextRender.h"
 
 #define SRC_WIDTH 1351
 #define SRC_HEIGHT 760

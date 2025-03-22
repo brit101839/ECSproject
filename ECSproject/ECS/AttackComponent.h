@@ -4,7 +4,7 @@
 #include "Quadtree/Box.h"
 #include "Components.h"
 #include "../BoundingBox.h"
-#include "../EventManager.h"
+#include "../EventSystem.h"
 
 class AttackComponent : public Component {
 private:
@@ -12,9 +12,10 @@ private:
 	std::string _entityName;
 	int _damage;
 	quadtree::Box<float> _attackHitBox;
-	EventManager& _globalEventManager;
-	EventManager& _componentEventManager;
+	EventSystem& _globalEventManager;
+	//EventSystem& _componentEventManager;
 	TransformComponent* _trans;
+	LocalEventComponent* _localEvent;
 
 public:
 
@@ -22,15 +23,27 @@ public:
 	BoundingBox mboundingBox;
 
 	// AttackComponent(EnemyManager* EnemyM) : _enemyManager(EnemyM) {}
-	AttackComponent(std::string entityName, EventManager& GeventM, EventManager& CeventM) 
-		: _entityName(entityName), _globalEventManager(GeventM), _componentEventManager(CeventM) {}
+	AttackComponent(std::string entityName, EventSystem& GeventM) 
+		: _entityName(entityName), _globalEventManager(GeventM) 
+	{
+		
+	}
 
 	void init() override {
 		if (entity->hasComponent<StatsComponent>()) {
 			_damage = entity->getComponent<StatsComponent>().getAttack();
 		}
+
+		if (entity->hasComponent<LocalEventComponent>()) {
+			_localEvent = &entity->getComponent<LocalEventComponent>();
+			
+		}
+		else {
+			std::cerr << "not init local event component" << std::endl;
+		}
+		
 		_trans = &entity->getComponent<TransformComponent>();
-		_componentEventManager.subscribe<AttackStepEvent>([this](Event& event) {
+		_localEvent->subscribe<AttackStepEvent>([this](Event& event) {
 			onAttackEvent(event); });
 	}
 
@@ -44,7 +57,8 @@ public:
 
 		// std::cout << "trigger start attack" << std::endl;
 		AttackStepEvent event("startAttack");
-		_componentEventManager.notify<AttackStepEvent>(event);
+		_localEvent->publish<AttackStepEvent>(event);
+		// _componentEventManager.publish<AttackStepEvent>(event);
 
 		attacking = false;
 	}
@@ -55,7 +69,7 @@ public:
 			std::cout << "Attack by entity: " << _entityName
 				<< ", skill: " << attackEvent.attackStep << std::endl;
 			AttackEvent event(_entityName, mboundingBox, _damage);
-			_globalEventManager.notify<AttackEvent&>(event);
+			_globalEventManager.publish<AttackEvent&>(event);
 		}
 	}
 

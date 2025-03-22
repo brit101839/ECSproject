@@ -16,11 +16,11 @@ private:
 	Manager& _manager;
 	TransformComponent& _playerTrans;
 	CollisionManager* _colliderManager;
-	EventManager& _globalEventManager;
+	EventSystem& _globalEventManager;
 
 public:
 
-	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM, EventManager& GeventM)
+	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM, EventSystem& GeventM)
 		: _manager(m), _playerTrans(playerT), _colliderManager(colM), _globalEventManager(GeventM) {
 		_globalEventManager.subscribe<AttackEvent>([this](Event& event) {
 			onAttackEvent(event); });
@@ -57,7 +57,7 @@ public:
 			enemy->handleHurt(atc);
 		}
 		AttackStepEvent event("enemyHurtCheckComplete");
-		_globalEventManager.notify<AttackStepEvent>(event);
+		_globalEventManager.publish<AttackStepEvent>(event);
 	}
 
 	std::vector<Enemy*>& getEnemies() { return _enemies; }
