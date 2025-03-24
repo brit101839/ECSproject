@@ -22,22 +22,26 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 	vel = Vector2D(0.0f, 0.0f);
 	_sprite->setAnimate("idle");
 
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		std::cout << "position:" << _transform->position.x << ", " << _transform->position.y << std::endl;
+	}
+
 	if (!_transform->canMove) { return; }
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		vel.y = 1.0f;
+		vel.y = 3.0f;
 		_sprite->setAnimate("walkUp");
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		vel.y = -1.0f;
+		vel.y = -3.0f;
 		_sprite->setAnimate("walkR");
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		vel.x = -1.0f;
+		vel.x = -3.0f;
 		_sprite->setAnimate("walkL");
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		vel.x = 1.0f;
+		vel.x = 3.0f;
 		_sprite->setAnimate("walkR");
 	}
 }

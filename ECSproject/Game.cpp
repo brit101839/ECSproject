@@ -131,12 +131,12 @@ Game::Game()
 
     initEntityGroup();
 
-    Box<float> interBox{ {-5000.0f, -5000.0f} , {10000.0f, 10000.0f} };
+    Box<float> interBox{ {-10000.0f, -10000.0f} , {20000.0f, 20000.0f} };
     std::cout << "{ {" << interBox.left << "," << interBox.getBottom() << " }, {" << interBox.getRight() << "," << interBox.top << " } }" << std::endl;
     _renderManager = new RenderQuadtreeManager(interBox);
     _colliderManager = new CollisionManager(interBox);
 
-    _map = new Map(*this, "D:/dependencies/resource/map_town/map_town/map.json");
+    _map = new Map(*this, "D:/dependencies/resource/map/map_town/map.json");
 
     player->componentSetting(_colliderManager);
 
@@ -144,8 +144,10 @@ Game::Game()
     Camera->addGroup(groupCamera);
 
     _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager);
-    _enemyManager->addEnemy("Minotaur", Vector2D(550.0f, 100.f));
-    _enemyManager->addEnemy("Cacodaemon", Vector2D(3300.0f, -1200.f));
+    _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
+    //_enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
+    //_enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
+    //_enemyManager->addEnemy("Minotaur", Vector2D(1230.0f, -4800.f));
     // _enemyManager->addEnemy("Ratflok Axe", Vector2D(1500.0f, -1500.f));
 
     // player->addcomponent<AttackComponent>(_enemyManager);
@@ -211,7 +213,7 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
 
 void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
 {
-    const char* sheetPath = "D:/dependencies/resource/map_town/map_town/spritesheet.png";
+    const char* sheetPath = "D:/dependencies/resource/map/map_town/spritesheet.png";
     auto& tile(manager.addEntity());
     tile.addcomponent<TileComponent>(position, tileSize, tileSize, id, sheetPath);
     

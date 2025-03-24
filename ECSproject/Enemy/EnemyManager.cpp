@@ -11,7 +11,6 @@ Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
     
     // Skill* defaultSkill = new MeleeAttack();
     std::unique_ptr<Skill> defaultSkill = std::make_unique<MeleeAttack>();
-    Enemy* enemy = new Enemy(name, _globalEventManager);
 
     Entity* enemyEntity = EnemyFactory::createEnemyFromJson(_manager, name, position);
 
@@ -20,10 +19,13 @@ Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
     enemyEntity->addcomponent<StatsComponent>(100, 10, 1);
     enemyEntity->addcomponent<HealthBarComponent>();
     enemyEntity->addcomponent<SkillCompnent>(std::make_unique<MeleeAttack>());
+    enemyEntity->addcomponent<AttackComponent>(name, _globalEventManager);
+    enemyEntity->addcomponent<AIComponent>(_playerTrans);
     // enemy.addcomponent<AttackComponent>(this);
     enemyEntity->addGroup(groupEnemies);
 
-    enemy->init(enemyEntity, _playerTrans);
+    Enemy* enemy = new Enemy(name, _globalEventManager);
+    enemy->init(enemyEntity);
 
     // enemy->init();
 

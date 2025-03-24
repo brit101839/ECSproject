@@ -38,32 +38,36 @@
           "frames": 6,
           "speed": 10,
           "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking"
+          "state": "Attacking",
+          "attackFrame": 4,
+          "damage": 5
         },
         "attack_2": {
           "row": 3,
           "frames": 9,
           "speed": 10,
           "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking"
+          "state": "Attacking",
+          "attackFrame": 2,
+          "damage": 15
         },
         "attack_3": {
           "row": 4,
           "frames": 5,
           "speed": 10,
           "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking"
+          "state": "Attacking",
+          "attackFrame": 2,
+          "damage": 10
         },
         "attack_4": {
           "row": 6,
           "frames": 9,
           "speed": 10,
           "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking"
+          "state": "Attacking",
+          "attackFrame": 5,
+          "damage": 15
         },
         "dying": {
           "row": 9,
@@ -122,9 +126,11 @@
           "speed": 8,
           "flip": false,
           "canInterrupt": false,
-          "state": "Attacking"
+          "state": "Attacking",
+          "attackFrame": 3,
+          "damage": 15
         },
-        
+
         "dying": {
           "row": 3,
           "frames": 8,
@@ -182,7 +188,9 @@
           "speed": 10,
           "flip": false,
           "canInterrupt": false,
-          "state": "Attacking"
+          "state": "Attacking",
+          "attackFrame": 3,
+          "damage": 10
         },
         "dying": {
           "row": 4,
@@ -196,6 +204,148 @@
           "row": 4,
           "frames": 5,
           "speed": 5,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Died"
+        }
+      }
+    },
+    {
+      "name": "Night Borne",
+      "hp": 100,
+      "atk": 10,
+      "def": 1,
+      "speed": 0.8,
+      "width": 400.0,
+      "height": 400.0,
+      "sprite": {
+        "path": "D:\\dependencies\\resource\\enemy\\NightBorne\\NightBorne.png",
+        "animated": true,
+        "cutWidth": 80.0,
+        "cutHeight": 80.0
+      },
+      "animations": {
+        "idle": {
+          "row": 0,
+          "frames": 9,
+          "speed": 10,
+          "flip": false
+        },
+        "walkR": {
+          "row": 1,
+          "frames": 6,
+          "speed": 10,
+          "flip": false
+        },
+        "walkL": {
+          "row": 1,
+          "frames": 6,
+          "speed": 10,
+          "flip": true
+        },
+        "attack_1": {
+          "row": 2,
+          "frames": 12,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking",
+          "attackFrame": 9,
+          "damage": 20
+        },
+        "dying": {
+          "row": 4,
+          "frames": 23,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Dying"
+        },
+        "died": {
+          "row": 4,
+          "frames": 23,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Died"
+        }
+      }
+    },
+    {
+      "name": "Necromancer",
+      "hp": 100,
+      "atk": 10,
+      "def": 1,
+      "speed": 0.8,
+      "width": 640.0,
+      "height": 512.0,
+      "sprite": {
+        "path": "D:\\dependencies\\resource\\enemy\\Necromancer_creativekind-Sheet.png",
+        "animated": true,
+        "cutWidth": 160.0,
+        "cutHeight": 128.0
+      },
+      "animations": {
+        "idle": {
+          "row": 0,
+          "frames": 8,
+          "speed": 10,
+          "flip": false
+        },
+        "walkR": {
+          "row": 1,
+          "frames": 8,
+          "speed": 10,
+          "flip": false
+        },
+        "walkL": {
+          "row": 1,
+          "frames": 8,
+          "speed": 10,
+          "flip": true
+        },
+        "attack_1": {
+          "row": 2,
+          "frames": 13,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking",
+          "attackFrame": 8,
+          "damage": 20
+        },
+        "attack_2": {
+          "row": 3,
+          "frames": 13,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking",
+          "attackFrame": 8,
+          "damage": 10
+        },
+        "attack_3": {
+          "row": 4,
+          "frames": 17,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Attacking",
+          "attackFrame": 8,
+          "damage": 15
+        },
+        "dying": {
+          "row": 6,
+          "frames": 6,
+          "speed": 10,
+          "flip": false,
+          "canInterrupt": false,
+          "state": "Dying"
+        },
+        "died": {
+          "row": 4,
+          "frames": 6,
+          "speed": 10,
           "flip": false,
           "canInterrupt": false,
           "state": "Died"

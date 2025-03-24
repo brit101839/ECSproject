@@ -16,7 +16,6 @@ private:
 	SpriteComponent* _sprite;
 	
 	EventSystem& _globalEventSys;
-	//EventSystem _componentEventSys;
 
 public:
 	Enemy(std::string name, EventSystem& globalEventSys)
@@ -24,10 +23,8 @@ public:
 	{
 	}
 
-	void init(Entity* entity, TransformComponent& playerTrans) {
+	void init(Entity* entity) {
 		_entity = entity;
-		_entity->addcomponent<AttackComponent>(_name, _globalEventSys);
-		_entity->addcomponent<AIComponent>(playerTrans);
 
 		_transform = &_entity->getComponent<TransformComponent>();
 		_sprite = &_entity->getComponent<SpriteComponent>();
@@ -92,5 +89,4 @@ public:
 	ColliderComponent& getCollider() { return *_collider; }
 	int getHealth() const { return _stats->getHealth(); }
 	int getMaxHealth() const { return _stats->getMaxHealth(); }
-	// EventSystem &getLocalEventSys() { return _componentEventSys; }
 };

@@ -13,7 +13,6 @@ private:
 	int _damage;
 	quadtree::Box<float> _attackHitBox;
 	EventSystem& _globalEventManager;
-	//EventSystem& _componentEventManager;
 	TransformComponent* _trans;
 	LocalEventComponent* _localEvent;
 
@@ -24,10 +23,7 @@ public:
 
 	// AttackComponent(EnemyManager* EnemyM) : _enemyManager(EnemyM) {}
 	AttackComponent(std::string entityName, EventSystem& GeventM) 
-		: _entityName(entityName), _globalEventManager(GeventM) 
-	{
-		
-	}
+		: _entityName(entityName), _globalEventManager(GeventM) {}
 
 	void init() override {
 		if (entity->hasComponent<StatsComponent>()) {

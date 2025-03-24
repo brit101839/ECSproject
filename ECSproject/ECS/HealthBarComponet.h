@@ -52,9 +52,9 @@ public:
 			_sprite->renderRectangle(position, _barSize, shader, cameraPos, glm::vec3(0.4f, 0.4f, 0.4f));
 
 			// ´è¬V«e´º
-			_sprite->renderRectangle(position, Vector2D(_barSize.x * healthPercentage, _barSize.y), shader, cameraPos, glm::vec3(0.0f, 1.0f, 0.0f));
+			_sprite->renderRectangle(position, Vector2D(_barSize.x * healthPercentage, _barSize.y), shader, cameraPos, glm::vec3(0.8f, 0.2f, 0.2f));
 			position += Vector2D(_barSize.x * _barSize.x * healthPercentage, 0.0f);
-			_sprite->renderRectangle(position, Vector2D(_barSize.x * mDroppingBlood, _barSize.y), shader, cameraPos, glm::vec3(1.0f, 0.0f, 0.0f));
+			_sprite->renderRectangle(position, Vector2D(_barSize.x * mDroppingBlood, _barSize.y), shader, cameraPos, glm::vec3(0.8f, 0.8f, 0.8f));
 			// std::cout << healthPercentage << std::endl;
 		}
 	}
