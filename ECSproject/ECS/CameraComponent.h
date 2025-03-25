@@ -31,6 +31,7 @@ public:
 		float height = SRC_HEIGHT;
 		// std::cout << "{ {" << CameraPos.x << "," << CameraPos.y << " }, {" << CameraPos.x + width << "," << CameraPos.y + height << " } }" << std::endl;
 		return { {CameraPos.x, CameraPos.y},{width, height+100.0f} };
+		/*return { {CameraPos.x, CameraPos.y},{width-100.f, height-100.f} };*/
 	}
 
 	void update(GLFWwindow* window) override 

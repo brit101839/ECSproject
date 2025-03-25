@@ -148,6 +148,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="readTileMap\readTileMap_json.cpp" />
+    <ClCompile Include="Skill\Skill.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="textureManager.cpp" />
@@ -189,6 +190,9 @@
     <ClInclude Include="RenderQuadtreeManager.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="shader\Shader.h" />
+    <ClInclude Include="Skill\Skill.h" />
+    <ClInclude Include="Skill\SpawnSystem.h" />
+    <ClInclude Include="Skill\SummonedItem.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StateMaching\AIStates.h" />
     <ClInclude Include="StateMaching\StateMaching.h" />

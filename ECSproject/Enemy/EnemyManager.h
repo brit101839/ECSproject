@@ -17,11 +17,12 @@ private:
 	TransformComponent& _playerTrans;
 	CollisionManager* _colliderManager;
 	EventSystem& _globalEventManager;
+	std::shared_ptr<SpawnSystem> _spawnSys;
 
 public:
 
-	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM, EventSystem& GeventM)
-		: _manager(m), _playerTrans(playerT), _colliderManager(colM), _globalEventManager(GeventM) {
+	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM, EventSystem& GeventM, std::shared_ptr<SpawnSystem> spawnSys)
+		: _manager(m), _playerTrans(playerT), _colliderManager(colM), _globalEventManager(GeventM), _spawnSys(spawnSys) {
 		_globalEventManager.subscribe<AttackEvent>([this](Event& event) {
 			onAttackEvent(event); });
 	}

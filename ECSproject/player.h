@@ -12,11 +12,14 @@ private:
     Entity* _entity;
     EventSystem& _globalEventManager;
     // EventSystem _localEventManager;
+    std::shared_ptr<SpawnSystem> _spawnSys;
     std::string _name = "player";
     StatsComponent* _stats;
 
 public:
-    Player(Entity* entity, EventSystem& eventManager) : _entity(entity), _globalEventManager(eventManager) {
+    Player(Entity* entity, EventSystem& eventManager, std::shared_ptr<SpawnSystem> spawnSys)
+        : _entity(entity), _globalEventManager(eventManager), _spawnSys(spawnSys)
+    {
         _globalEventManager.subscribe<AttackStepEvent>([this](Event& event) {
             onAttackStepEvent(event); });
         _globalEventManager.subscribe<AttackEvent>([this](Event& event) {
@@ -29,6 +32,7 @@ public:
         auto trans = _entity->addcomponent<TransformComponent>(Vector2D(4500.0f, -2340.0f), Vector2D(0.0f, 0.0f), 1.0f, 100.0f, 100.0f);
         
         auto& playerSprite = _entity->addcomponent<SpriteComponent>("D:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true, 32.f, 32.f);
+        _entity->addcomponent<SkillCompnent>("fire ball", _spawnSys);
         
         playerSprite.addAnimation("idle", Animation(0, 13, 10, false));
         playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));

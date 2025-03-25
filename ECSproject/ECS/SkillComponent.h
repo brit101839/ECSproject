@@ -1,20 +1,30 @@
 #pragma once
 
 #include "ECS.h"
-
-class Skill {
-public:
-	virtual void execute() = 0;
-	virtual ~Skill() = default;
-};
+#include "LocalEventComponent.h"
+#include "../Skill/Skill.h"
 
 class SkillCompnent : public Component {
 private:
+	std::string _skillname;
 	std::unique_ptr<Skill> _skill;
+	LocalEventComponent* _localEvent;
+	std::shared_ptr<SpawnSystem> _spawnSys;
 
 public:
-	SkillCompnent(std::unique_ptr<Skill> initialSkill)
-		:_skill(std::move(initialSkill)) { }
+	SkillCompnent(std::string skillName, std::shared_ptr<SpawnSystem> spawnSys)
+		: _skillname(skillName), _spawnSys(spawnSys){
+	}
+
+	void init() override {
+		if (entity->hasComponent<LocalEventComponent>()) {
+			_localEvent = &entity->getComponent<LocalEventComponent>();
+		}
+		else {
+			std::cerr << "not init local event component" << std::endl;
+		}
+		setSkill(SkillFactory::CreateSkill(_skillname, &_localEvent->getEventSystem(), _spawnSys));
+	}
 
 	void setSkill(std::unique_ptr<Skill> newSkill) {
 		_skill = std::move(newSkill);
@@ -26,29 +36,4 @@ public:
 		}
 	}
 
-};
-
-
-// confused fight
-class MeleeAttack : public Skill {
-public:
-	void execute() override {
-		std::cout << "Enemy uses melee attack!" << std::endl;
-	}
-};
-
-// »·µ{§ðÀ»
-class RangedAttack : public Skill {
-public:
-	void execute() override {
-		std::cout << "Enemy uses ranged attack!" << std::endl;
-	}
-};
-
-// Å]ªk§ðÀ»
-class MagicAttack : public Skill {
-public:
-	void execute() override {
-		std::cout << "Enemy casts a magic spell!" << std::endl;
-	}
 };

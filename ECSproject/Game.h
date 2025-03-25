@@ -16,6 +16,7 @@
 #include "Enemy/EnemyManager.h"
 #include "UIManager.h"
 #include "EventSystem.h"
+#include "Skill/SpawnSystem.h"
 #include "player.h"
 #include "BackPack.h"
 #include "TextRender.h"
@@ -58,6 +59,7 @@ private:
 	CollisionManager* _colliderManager;
 	UIManager* _UIManager;
 	EventSystem _globalEventManager;
+	std::shared_ptr<SpawnSystem> _spawnSystem;
 
 	Player* player = nullptr;
 	BackPack* backpack = nullptr;

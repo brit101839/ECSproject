@@ -22,6 +22,17 @@ public:
     }
 };
 
+class SkillEvent : public Event {
+public:
+    std::string skillName;
+    int damage;
+
+    SkillEvent(std::string skillName, int damage)
+        : skillName(skillName), damage(damage) {
+
+    }
+};
+
 class AttackStepEvent : public Event {
 public:
     std::string attackStep;

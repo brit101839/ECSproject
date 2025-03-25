@@ -97,7 +97,7 @@ void Game::cleanup()
 bool Game::initEntityGroup()
 {
     Entity* playerEntity = &manager.addEntity();
-    player = new Player(playerEntity, _globalEventManager);
+    player = new Player(playerEntity, _globalEventManager, _spawnSystem);
     Entity* backPackEntity = &manager.addEntity();
     backpack = new BackPack(backPackEntity);
     wall = &manager.addEntity();
@@ -129,6 +129,8 @@ Game::Game()
     _textRender->initFont("D:\\dependencies\\resource\\text\\minecraftia\\Minecraftia-Regular.ttf");
     _textRender->initTextRendering();
 
+    _spawnSystem = std::make_shared<SpawnSystem>(manager);
+
     initEntityGroup();
 
     Box<float> interBox{ {-10000.0f, -10000.0f} , {20000.0f, 20000.0f} };
@@ -143,7 +145,7 @@ Game::Game()
     Camera->addcomponent<CameraComponent>(&player->getEntity().getComponent<TransformComponent>());
     Camera->addGroup(groupCamera);
 
-    _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager);
+    _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager, _spawnSystem);
     _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
     _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
     _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
@@ -243,6 +245,7 @@ void Game::render()
     _enemyManager->renderEnemies(_spriteShader, cameraPos);
     for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_spriteShader, cameraPos); }
     // for (auto& e : manager.getGroup(groupEnemies)) { e->draw(_shader, cameraPos); }
+    _spawnSystem.get()->render(_spriteShader, cameraPos);
     _UIManager->render(_spriteShader, cameraPos);
     backpack->render(_spriteShader, cameraPos);
 

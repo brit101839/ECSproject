@@ -3,6 +3,7 @@
 #include "ECS.h"
 #include "Quadtree/Box.h"
 #include "Components.h"
+#include "SkillComponent.h"
 #include "../BoundingBox.h"
 #include "../EventSystem.h"
 
@@ -41,6 +42,8 @@ public:
 		_trans = &entity->getComponent<TransformComponent>();
 		_localEvent->subscribe<AttackStepEvent>([this](Event& event) {
 			onAttackEvent(event); });
+		_localEvent->subscribe<SkillEvent>([this](Event& event) {
+			onSkillEvent(event); });
 	}
 
 	/*quadtree::Box<float> getBox() const {
@@ -55,6 +58,9 @@ public:
 		AttackStepEvent event("startAttack");
 		_localEvent->publish<AttackStepEvent>(event);
 		// _componentEventManager.publish<AttackStepEvent>(event);
+		if (entity->hasComponent<SkillCompnent>()) {
+			entity->getComponent<SkillCompnent>().UseSkill();
+		}
 
 		attacking = false;
 	}
@@ -64,9 +70,17 @@ public:
 		if (attackEvent.attackStep != "startAttack") {
 			std::cout << "Attack by entity: " << _entityName
 				<< ", skill: " << attackEvent.attackStep << std::endl;
-			AttackEvent event(_entityName, mboundingBox, _damage);
-			_globalEventManager.publish<AttackEvent&>(event);
+			AttackEvent publishEvent(_entityName, mboundingBox, _damage);
+			_globalEventManager.publish<AttackEvent&>(publishEvent);
 		}
+	}
+
+	void onSkillEvent(Event& event) {
+		auto& skillEvent = static_cast<SkillEvent&>(event);
+		std::cout << "Attack by entity: " << _entityName
+			<< ", skill: " << skillEvent.skillName << std::endl;
+		AttackEvent publishEvent(_entityName, mboundingBox, skillEvent.damage);
+		_globalEventManager.publish<AttackEvent&>(publishEvent);
 	}
 
 	void endAttack() {

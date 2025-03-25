@@ -131,14 +131,6 @@ public:
 			}
 			// std::cout << _currentAnimation->speed << "/" << _currentFrame << "/" << currentTime - _lastFrameTime << "/" << currentTime << std::endl;
 			if (currentTime - _lastFrameTime > frameInterval) {
-				if (_currentAnimation->state == AnimateState::Attacking) {
-					if(_currentFrame == _currentAnimation->atcDetail->attackFrame){
-						AttackStepEvent event("normal attack");
-						_componentEventManager->publish<AttackStepEvent&>(event);
-						std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << std::endl;
-					}
-				}
-
 				if (!_currentAnimation->canInterrupt && _currentFrame + 1 >= totalFrames) {
 					_currentAnimation = &animations[_nextAnimate];
 					animateSwitching();
@@ -146,6 +138,14 @@ public:
 				_currentFrame = (_currentFrame + 1) % totalFrames; // 循环播放
 				sprite->updateAnimateVertex(_currentFrame, _currentAnimation->tileY, framesPerRow);
 				_lastFrameTime = currentTime;
+
+				if (_currentAnimation->state == AnimateState::Attacking) {
+					if (_currentFrame == _currentAnimation->atcDetail.get()->attackFrame) {
+						SkillEvent event("normal attack", _currentAnimation->atcDetail.get()->damage);
+						_componentEventManager->publish<SkillEvent&>(event);
+						// std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << ")" << std::endl;
+					}
+				}
 			}
 			// sprite->setFlip(_currentAnimation->flip);
 			sprite->setFlip(_flip);
