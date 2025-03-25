@@ -145,9 +145,9 @@ Game::Game()
 
     _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager);
     _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
-    //_enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
-    //_enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
-    //_enemyManager->addEnemy("Minotaur", Vector2D(1230.0f, -4800.f));
+    _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
+    _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
+    _enemyManager->addEnemy("Minotaur", Vector2D(1230.0f, -4800.f));
     // _enemyManager->addEnemy("Ratflok Axe", Vector2D(1500.0f, -1500.f));
 
     // player->addcomponent<AttackComponent>(_enemyManager);

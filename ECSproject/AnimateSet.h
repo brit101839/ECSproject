@@ -31,6 +31,7 @@ public:
 
 	void addAnimation(const std::string& name, const Animation& anim) {
 		animations[name] = anim;
+		// animations[name] = std::move(anim);
 	}
 
 	const Animation& getAnimation(const std::string& name) const {
@@ -84,12 +85,12 @@ public:
 
 	void animateSwitching() {
 		_nextAnimate = "idle";
-		AttackStepEvent event("normal attack");
+		/*AttackStepEvent event("normal attack");*/
 		switch (_currentAnimation->state)
 		{
 		case AnimateState::Attacking:
 			// if (attackingCheck) { attackingCheck(); }
-			_componentEventManager->publish<AttackStepEvent&>(event);
+			/*_componentEventManager->publish<AttackStepEvent&>(event);*/
 			break;
 		case AnimateState::Dying:
 			_nextAnimate = "died";
@@ -130,6 +131,14 @@ public:
 			}
 			// std::cout << _currentAnimation->speed << "/" << _currentFrame << "/" << currentTime - _lastFrameTime << "/" << currentTime << std::endl;
 			if (currentTime - _lastFrameTime > frameInterval) {
+				if (_currentAnimation->state == AnimateState::Attacking) {
+					if(_currentFrame == _currentAnimation->atcDetail->attackFrame){
+						AttackStepEvent event("normal attack");
+						_componentEventManager->publish<AttackStepEvent&>(event);
+						std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << std::endl;
+					}
+				}
+
 				if (!_currentAnimation->canInterrupt && _currentFrame + 1 >= totalFrames) {
 					_currentAnimation = &animations[_nextAnimate];
 					animateSwitching();

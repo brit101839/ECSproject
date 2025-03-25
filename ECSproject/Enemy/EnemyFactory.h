@@ -28,6 +28,19 @@ Animation parseAnimation(const json& animJson) {
     );
 }
 
+Animation parseAttackAnimation(const json& animJson) {
+   
+    return Animation(
+        animJson.value("row", 0),
+        animJson.value("frames", 1),
+        animJson.value("speed", 10),
+        animJson.value("flip", false),
+        std::make_shared<AttackDetail>(
+            animJson.value("attackFrame", 0),
+            animJson.value("damage", 0))
+    );
+}
+
 class EnemyFactory {
 public:
     static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position) {
@@ -57,7 +70,12 @@ public:
                 std::string path = spriteData["path"];
                 auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"]);
                 for (auto& [name, anim] : enemyData["animations"].items()) {
-                    sprite.addAnimation(name, parseAnimation(anim));
+                    if (anim.value("state", "") == "Attacking") {
+                        sprite.addAnimation(name, parseAttackAnimation(anim));
+                    }
+                    else {
+                        sprite.addAnimation(name, parseAnimation(anim));
+                    }
                 }
                 sprite.setAnimate("idle"); // 預設為 idle 動畫
 

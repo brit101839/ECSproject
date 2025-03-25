@@ -34,9 +34,9 @@ public:
         playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
         playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
         playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
-        playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, false, AnimateState::Attacking));
-        playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, false, AnimateState::Attacking));
-        playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, false, AnimateState::Attacking));
+        playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, makeAttackDetail(2, 10)));
+        playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, makeAttackDetail(1, 10)));
+        playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, makeAttackDetail(3, 20)));
         playerSprite.setAnimate("idle");
         _entity->addcomponent<KeyboardController>();
 
@@ -90,6 +90,11 @@ public:
         if (attackStepEvent.attackStep == "enemyHurtCheckComplete") {
             _entity->getComponent<AttackComponent>().endAttack();
         }
+    }
+
+    std::shared_ptr<AttackDetail> makeAttackDetail(int attackFrame, int damage) {
+        // AttackDetail atcD(attackFrame, damage);
+        return std::make_shared<AttackDetail>(attackFrame, damage);
     }
 
     Entity& getEntity() { return *_entity; }
