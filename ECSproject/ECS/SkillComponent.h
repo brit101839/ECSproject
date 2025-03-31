@@ -2,10 +2,14 @@
 
 #include "ECS.h"
 #include "LocalEventComponent.h"
+#include "TransformComponent.h"
+#include "SpriteComponent.h"
 #include "../Skill/Skill.h"
 
 class SkillCompnent : public Component {
 private:
+	bool _usingSkill;
+
 	std::string _skillname;
 	std::unique_ptr<Skill> _skill;
 	LocalEventComponent* _localEvent;
@@ -23,7 +27,12 @@ public:
 		else {
 			std::cerr << "not init local event component" << std::endl;
 		}
-		setSkill(SkillFactory::CreateSkill(_skillname, &_localEvent->getEventSystem(), _spawnSys));
+		auto& trans = entity->getComponent<TransformComponent>();
+		auto& sprite = entity->getComponent<SpriteComponent>();
+		setSkill(SkillFactory::CreateSkill(_skillname, &_localEvent->getEventSystem(), _spawnSys, &trans, &sprite));
+
+		_localEvent->subscribe<SkillStepEvent>([this](Event& event) {
+			triggerSkill(event); });
 	}
 
 	void setSkill(std::unique_ptr<Skill> newSkill) {
@@ -32,8 +41,18 @@ public:
 		
 	void UseSkill() {
 		if (_skill) {
-			_skill.get()->execute();
+			SkillStepEvent event(SkillStep::startSkill);
+			_localEvent->publish<SkillStepEvent>(event);
+			// _skill.get()->execute();
 		}
 	}
 
+	void triggerSkill(Event& event) {
+		auto& skillEvent = static_cast<SkillStepEvent&>(event);
+		if (skillEvent.step == SkillStep::SkillTrigger) {
+			if (_skill) {
+				_skill.get()->execute();
+			}
+		}
+	}
 };

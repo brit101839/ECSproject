@@ -5,7 +5,7 @@
 
 enum class EnemyState
 {
-    patrol, tracking, fighting, backing, dying
+    patrol, tracking, fighting, skillfight, normalAttack, backing, dying
 };
 
 class AIState {
@@ -13,11 +13,37 @@ public:
 
     virtual ~AIState() = default;
 
-    virtual void enter() {}
+    virtual void enter(AIContext& ai) {}
     virtual void update(AIContext& ai) = 0;
     virtual void exit() {}
 
     virtual EnemyState getNextState(AIContext& ai) { return EnemyState::patrol; }
+};
+
+class ParentState : public AIState {
+protected:
+    AIState* _currentChildState = nullptr;
+
+public:
+    void setChildState(AIState* newChildState, AIContext& ai) {
+        if (_currentChildState) {
+            _currentChildState->exit();
+            delete _currentChildState;
+        }
+        _currentChildState = newChildState;
+        _currentChildState->enter(ai);
+    }
+
+    virtual void update(AIContext& ai) override {
+        if (_currentChildState) {
+            _currentChildState->update(ai);
+        }
+        else std::cout << "miss child state" << std::endl;
+    }
+
+    virtual ~ParentState() {
+        if (_currentChildState) delete _currentChildState;
+    }
 };
 
 class PatrolState : public AIState {
@@ -34,15 +60,43 @@ public:
     }
 };
 
-class FightingState : public AIState {
+class SkillFightingState : public AIState {
 public:
+    void update(AIContext& ai) override {
+        /*ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+        BoundingBox box;
+        if (ai.getSprite()->getFlip()) box = { ai.getTransform()->position - Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };
+        else box = { ai.getTransform()->position + Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };*/
+        ai.getSkill()->UseSkill();
+    }
+};
+
+class NormalAttackState : public AIState {
     void update(AIContext& ai) override {
         ai.getTransform()->velocity = Vector2D(0.f, 0.f);
         BoundingBox box;
-        if (ai.getSprite()->getFlip()) box = { ai.getTransform()->position - Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height};
+        if (ai.getSprite()->getFlip()) box = { ai.getTransform()->position - Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };
         else box = { ai.getTransform()->position + Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };
         ai.getAttack()->startAttack(box);
         // ai.getSprite()->setAnimate("attack_1");
+    }
+};
+
+class FightingState : public ParentState {
+public:
+    void enter(AIContext& ai) override {
+        switch (ai.getBehavior()) {
+        case AIPreferBehavior::SkillOnly:
+            setChildState(new SkillFightingState, ai);
+            break;
+        case AIPreferBehavior::NormalAttackOnly:
+            setChildState(new NormalAttackState, ai);
+            break;
+        }
+    }
+
+    void update(AIContext& ai) override {
+        ParentState::update(ai);
     }
 
     EnemyState getNextState(AIContext& ai) override {
@@ -108,5 +162,31 @@ public:
 
     EnemyState getNextState(AIContext& ai) override {
         return EnemyState::dying;
+    }
+};
+
+class AIStateFactory {
+public:
+    static AIState* createState(EnemyState stateName) {
+        switch (stateName)
+        {
+        case EnemyState::patrol:
+            return new PatrolState();
+        case EnemyState::tracking:
+            return new TrackingState();
+        case EnemyState::fighting:
+            return new FightingState();
+        case EnemyState::backing:
+            return new BackingState();
+        case EnemyState::dying:
+            return new DyingState();
+        case EnemyState::skillfight:
+            return new SkillFightingState();
+        case EnemyState::normalAttack:
+            return new NormalAttackState();
+        default:
+            break;
+        }
+        return nullptr;
     }
 };

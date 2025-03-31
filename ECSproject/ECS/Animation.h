@@ -5,7 +5,7 @@
 
 enum class AnimateState
 {
-	Idle, Attacking, Dodging, Dying, Died
+	Idle, Attacking, usingSkill, Dodging, Dying, Died
 };
 
 struct AttackDetail
@@ -33,9 +33,9 @@ struct Animation
 
 	}
 
-	Animation(int ntileY, int nframe, int nspeed, bool nflip, std::shared_ptr<AttackDetail> atcDetail)
+	Animation(int ntileY, int nframe, int nspeed, bool nflip, std::shared_ptr<AttackDetail> atcDetail, AnimateState nState = AnimateState::Attacking)
 		:tileY(ntileY), frames(nframe), speed(nspeed), flip(nflip), 
-		canInterrupt(false), state(AnimateState::Attacking), atcDetail(atcDetail)
+		canInterrupt(false), atcDetail(atcDetail), state(nState)
 	{
 
 	}

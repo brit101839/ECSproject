@@ -3,44 +3,23 @@
 #include "../ECS/AIContext.h"
 #include "AIStates.h"
 
-class AIStateFactory {
-public:
-    static AIState* createState(EnemyState stateName) {
-        if (stateName == EnemyState::patrol) {
-            return new PatrolState();
-        }
-        else if (stateName == EnemyState::fighting) {
-            return new FightingState();
-        }
-        else if (stateName == EnemyState::tracking) {
-            return new TrackingState();
-        }
-        else if (stateName == EnemyState::backing) {
-            return new BackingState();
-        }
-        else if (stateName == EnemyState::dying) {
-            return new DyingState();
-        }
-        return nullptr;
-    }
-};
-
 class AIStateMachine {
 private:
     EnemyState _currentStateName = EnemyState::patrol;
     AIState* _currentState = AIStateFactory::createState(_currentStateName);
 
 public:
+
     ~AIStateMachine() { delete _currentState; }
 
-    void changeState(AIState* newState) {
+    void changeState(AIState* newState, AIContext& ai) {
         if (_currentState) {
             _currentState->exit();
             delete _currentState;
         }
         _currentState = newState;
         if (_currentState) {
-            _currentState->enter();
+            _currentState->enter(ai);
         }
     }
 
@@ -65,9 +44,7 @@ public:
         if (nextState != _currentStateName) {
             _currentStateName = nextState;
             AIState* newState = AIStateFactory::createState(nextState);
-            changeState(newState);
+            changeState(newState, ai);
         }
     }
-
-    
 };

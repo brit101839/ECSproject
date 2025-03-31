@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include "textureManager.h"
-#include "GameObject.h"
 #include "shader/Shader.h"
 #include "RenderQuadtreeManager.h"
 #include "CollisionManager.h"

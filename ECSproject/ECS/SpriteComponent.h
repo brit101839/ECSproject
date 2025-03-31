@@ -145,6 +145,7 @@ public:
 
 	bool isanimated() { return _animated; }
 	bool getFlip() { return _sprite->getFlip(); }
+	void setFlip(bool flip) { _sprite->setFlip(flip); }
 	GLfloat getCutWidth() { return _cutWidth; }
 
 	void setUIScale(Vector2D v) { _scale = v; }

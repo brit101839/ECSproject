@@ -36,9 +36,6 @@
     <ClCompile Include="vector2D\Vector2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vector2D\Vector2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
@@ -206,7 +200,7 @@
     <ClInclude Include="Skill\SpawnSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Skill\SummonedItem.h">
+    <ClInclude Include="Skill\MagicItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\DefenseComponent.h">

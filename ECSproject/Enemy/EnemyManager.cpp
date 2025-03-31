@@ -11,7 +11,7 @@ Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
     
     // std::unique_ptr<Skill> defaultSkill = std::make_unique<MeleeAttack>();
 
-    Entity* enemyEntity = EnemyFactory::createEnemyFromJson(_manager, name, position);
+    Entity* enemyEntity = EnemyFactory::createEnemyFromJson(_manager, name, position, _playerTrans, _spawnSys);
 
     BoundingBox bound{ position, 80.0f, 80.0f };
     enemyEntity->addcomponent<ColliderComponent>(_colliderManager, "enemy", bound, Vector2D(0.f, -40.f));
@@ -20,7 +20,6 @@ Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
     // enemyEntity->addcomponent<SkillCompnent>("fire ball", _spawnSys);
     enemyEntity->addcomponent<AttackComponent>(name, _globalEventManager);
     enemyEntity->addcomponent<DefenseComponent>(name);
-    enemyEntity->addcomponent<AIComponent>(_playerTrans);
     // enemy.addcomponent<AttackComponent>(this);
     enemyEntity->addGroup(groupEnemies);
 

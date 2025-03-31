@@ -33,6 +33,20 @@ public:
     }
 };
 
+enum class SkillStep
+{
+    startSkill, SkillTrigger, endSkill
+};
+
+class SkillStepEvent :public Event {
+public:
+    SkillStep step;
+
+    SkillStepEvent(SkillStep step)
+        : step(step) {
+    }
+};
+
 enum class AttackStep
 {
     startAttack, Checking, endAttack

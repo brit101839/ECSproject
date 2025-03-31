@@ -2,6 +2,7 @@
   "enemies": [
     {
       "name": "Minotaur",
+      "behavior": "NormalAttackOnly",
       "hp": 100,
       "atk": 10,
       "def": 1,
@@ -89,10 +90,11 @@
     },
     {
       "name": "Cacodaemon",
+      "behavior": "SkillOnly",
       "hp": 100,
       "atk": 10,
       "def": 1,
-      "speed": 0.5,
+      "speed": 1.0,
       "width": 300.0,
       "height": 300.0,
       "sprite": {
@@ -120,13 +122,13 @@
           "speed": 8,
           "flip": true
         },
-        "attack_1": {
+        "useSkill": {
           "row": 1,
           "frames": 6,
           "speed": 8,
           "flip": false,
           "canInterrupt": false,
-          "state": "Attacking",
+          "state": "useSkill",
           "attackFrame": 3,
           "damage": 15
         },
@@ -151,6 +153,7 @@
     },
     {
       "name": "Ratflok Axe",
+      "behavior": "NormalAttackOnly",
       "hp": 100,
       "atk": 10,
       "def": 1,
@@ -212,6 +215,7 @@
     },
     {
       "name": "Night Borne",
+      "behavior": "NormalAttackOnly",
       "hp": 100,
       "atk": 10,
       "def": 1,
@@ -273,6 +277,7 @@
     },
     {
       "name": "Necromancer",
+      "behavior": "NormalAttackOnly",
       "hp": 100,
       "atk": 10,
       "def": 1,
@@ -354,6 +359,7 @@
     },
     {
       "name": "Orc",
+      "behavior": "NormalAttackOnly",
       "hp": 200,
       "speed": 1.5,
       "animations": {

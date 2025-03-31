@@ -11,10 +11,16 @@ using json = nlohmann::json;
 
 AnimateState parseState(const std::string& stateStr) {
     if (stateStr == "Attacking") return AnimateState::Attacking;
+    if (stateStr == "useSkill") return AnimateState::usingSkill;
     if (stateStr == "Dying") return AnimateState::Dying;
     if (stateStr == "Died") return AnimateState::Died;
     std::cerr << "no selecting animation state" << std::endl;
     return AnimateState::Idle;
+}
+
+AIPreferBehavior parseAIBehavior(const std::string& behavior) {
+    if (behavior == "NormalAttackOnly") return AIPreferBehavior::NormalAttackOnly;
+    if (behavior == "SkillOnly") return AIPreferBehavior::SkillOnly;
 }
 
 Animation parseAnimation(const json& animJson) {
@@ -29,7 +35,8 @@ Animation parseAnimation(const json& animJson) {
 }
 
 Animation parseAttackAnimation(const json& animJson) {
-   
+    AnimateState state = AnimateState::Attacking;
+    if (animJson.value("state", "") == "useSkill") state = AnimateState::usingSkill;
     return Animation(
         animJson.value("row", 0),
         animJson.value("frames", 1),
@@ -37,13 +44,14 @@ Animation parseAttackAnimation(const json& animJson) {
         animJson.value("flip", false),
         std::make_shared<AttackDetail>(
             animJson.value("attackFrame", 0),
-            animJson.value("damage", 0))
+            animJson.value("damage", 0)),
+        state
     );
 }
 
 class EnemyFactory {
 public:
-    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position) {
+    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position, const TransformComponent& playerTrans, std::shared_ptr<SpawnSystem> spawnSys) {
         std::ifstream file("C:/Users/brit/source/repos/ECSproject/ECSproject/Enemy/enemy_config.json");
         if (!file.is_open()) {
             std::cerr << "Failed to open enemy_config.json" << std::endl;
@@ -65,12 +73,13 @@ public:
 
                 enemyEntity->addcomponent<LocalEventComponent>();
                 auto& trans = enemyEntity->addcomponent<TransformComponent>(position, enemyData["speed"], enemyData["width"], enemyData["height"]);
+                enemyEntity->addcomponent<AIComponent>(playerTrans, parseAIBehavior(enemyData["behavior"]));
                 auto& stats = enemyEntity->addcomponent<StatsComponent>(enemyData["hp"], enemyData["atk"], enemyData["def"]);
                 auto& spriteData = enemyData["sprite"];
                 std::string path = spriteData["path"];
                 auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"]);
                 for (auto& [name, anim] : enemyData["animations"].items()) {
-                    if (anim.value("state", "") == "Attacking") {
+                    if (anim.value("state", "") == "Attacking" || anim.value("state", "") == "useSkill") {
                         sprite.addAnimation(name, parseAttackAnimation(anim));
                     }
                     else {
@@ -78,6 +87,8 @@ public:
                     }
                 }
                 sprite.setAnimate("idle"); // 預設為 idle 動畫
+
+                enemyEntity->addcomponent<SkillCompnent>("fire ball", spawnSys);
 
                 return enemyEntity;
             }

@@ -143,7 +143,6 @@
     <ClCompile Include="ECS\StatsComponent.cpp" />
     <ClCompile Include="ECS\TileComponent.cpp" />
     <ClCompile Include="Enemy\EnemyManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="Enemy\EnemyFactory.h" />
     <ClInclude Include="Enemy\EnemyManager.h" />
     <ClInclude Include="EventSystem.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="Map.h" />
@@ -194,7 +192,7 @@
     <ClInclude Include="shader\Shader.h" />
     <ClInclude Include="Skill\Skill.h" />
     <ClInclude Include="Skill\SpawnSystem.h" />
-    <ClInclude Include="Skill\SummonedItem.h" />
+    <ClInclude Include="Skill\MagicItem.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StateMaching\AIStates.h" />
     <ClInclude Include="StateMaching\StateMaching.h" />

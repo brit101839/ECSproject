@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../ECS/ECS.h"
-#include "SummonedItem.h"
+#include "MagicItem.h"
 #include <vector>
 
 class SpawnSystem {
@@ -19,14 +19,14 @@ private:
 public:
 
 	SpawnSystem(Manager& m)
-		:_manager(m)
-	{
+		:_manager(m) {}
 
-	}
-
-	std::unique_ptr<MagicItem> createItem(std::string name) {
+	std::unique_ptr<MagicItem> createItem(std::string name, Vector2D position, bool flip) {
 		if (name == "fire ball") {
-			return std::make_unique<FireBall>(createEntity(), Vector2D(2270.0f, -2700.f));
+			return std::make_unique<FireBall>(createEntity(), position, flip);
+		}
+		else if (name == "ice ball") {
+			return std::make_unique<IceBall>(createEntity(), position, flip);
 		}
 	}
 

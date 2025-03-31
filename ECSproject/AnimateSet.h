@@ -11,7 +11,7 @@ private:
 
 	std::unordered_map<std::string, Animation> animations;
 	Animation* _currentAnimation = nullptr;
-	float _lastFrameTime = 0.f;
+	double _lastFrameTime = 0.f;
 	int _currentFrame = 0;
 	std::string _nextAnimate = "idle";
 	bool _flip = false;
@@ -25,6 +25,8 @@ public:
 				startAttackEvent(event); });
 			_localEvent->subscribe<DodgeStepEvent>([this](Event& event) {
 				startDodgeEvent(event); });
+			_localEvent->subscribe<SkillStepEvent>([this](Event& event) {
+				startSkillEvent(event); });
 		}
 		else {
 			std::cerr << "event manager not inject successfully" << std::endl;
@@ -78,7 +80,7 @@ public:
 		if (animations.find(name) != animations.end()) {
 			_currentAnimation = &animations[name];
 			OnAnimateStart();
-			if (name == "walkL" || name == "walkR") { _flip = _currentAnimation->flip; }
+			if (name == "walkL" || name == "walkR" || name == "idle") { _flip = _currentAnimation->flip; }
 			if (!_currentAnimation->canInterrupt) {
 				_currentFrame = 0;
 			}
@@ -117,6 +119,13 @@ public:
 		return;
 	}
 
+	void startSkillEvent(Event& event) {
+		auto& skillEvent = static_cast<SkillStepEvent&>(event);
+		if (skillEvent.step == SkillStep::startSkill) {
+			setAnimation("useSkill");
+		}
+	}
+
 	void startAttackEvent(Event& event) {
 		auto& animateEvent = static_cast<AttackStepEvent&>(event);
 		// Handle the attack event
@@ -152,7 +161,7 @@ public:
 			int totalFrames = _currentAnimation->frames; // 动画总帧数
 			int framesPerRow = _currentAnimation->frames; // 每行的帧数
 
-			float currentTime = glfwGetTime();
+			double currentTime = glfwGetTime();
 
 			if (_currentAnimation->state == AnimateState::Died) {
 				sprite->updateAnimateVertex(totalFrames - 1, _currentAnimation->tileY, framesPerRow);
@@ -174,6 +183,13 @@ public:
 					if (_currentFrame == _currentAnimation->atcDetail.get()->attackFrame) {
 						AttackDamageEvent event("normal attack", _currentAnimation->atcDetail.get()->damage);
 						_localEvent->publish<AttackDamageEvent&>(event);
+						// std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << ")" << std::endl;
+					}
+				}
+				else if (_currentAnimation->state == AnimateState::usingSkill) {
+					if (_currentFrame == _currentAnimation->atcDetail.get()->attackFrame) {
+						SkillStepEvent event(SkillStep::SkillTrigger);
+						_localEvent->publish<SkillStepEvent&>(event);
 						// std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << ")" << std::endl;
 					}
 				}
