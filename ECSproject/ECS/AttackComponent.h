@@ -2,7 +2,8 @@
 
 #include "ECS.h"
 #include "Quadtree/Box.h"
-#include "Components.h"
+#include "TransformComponent.h"
+#include "StatsComponent.h"
 #include "SkillComponent.h"
 #include "../BoundingBox.h"
 #include "../EventSystem.h"
@@ -20,7 +21,7 @@ private:
 public:
 
 	bool attacking;
-	BoundingBox mboundingBox;
+	BoundingBox mdefaultBoundingBox;
 
 	// AttackComponent(EnemyManager* EnemyM) : _enemyManager(EnemyM) {}
 	AttackComponent(std::string entityName, EventSystem& GeventM) 
@@ -33,17 +34,16 @@ public:
 
 		if (entity->hasComponent<LocalEventComponent>()) {
 			_localEvent = &entity->getComponent<LocalEventComponent>();
-			
 		}
 		else {
 			std::cerr << "not init local event component" << std::endl;
 		}
 		
 		_trans = &entity->getComponent<TransformComponent>();
+		_localEvent->subscribe<AttackDamageEvent>([this](Event& event) {
+			startCheckingAttack(event); });
 		_localEvent->subscribe<AttackStepEvent>([this](Event& event) {
-			onAttackEvent(event); });
-		_localEvent->subscribe<SkillEvent>([this](Event& event) {
-			onSkillEvent(event); });
+			endAttack(event); });
 	}
 
 	/*quadtree::Box<float> getBox() const {
@@ -52,39 +52,36 @@ public:
 
 	void startAttack(BoundingBox box) {
 		attacking = true;
-		mboundingBox = box;
+		mdefaultBoundingBox = box;
 
 		// std::cout << "trigger start attack" << std::endl;
-		AttackStepEvent event("startAttack");
+
+		// notify the animate component play attack animate
+		AttackStepEvent event(AttackStep::startAttack);
 		_localEvent->publish<AttackStepEvent>(event);
+
 		// _componentEventManager.publish<AttackStepEvent>(event);
-		if (entity->hasComponent<SkillCompnent>()) {
+		/*if (entity->hasComponent<SkillCompnent>()) {
 			entity->getComponent<SkillCompnent>().UseSkill();
-		}
+		}*/
 
-		attacking = false;
+		// attacking = false;
 	}
 
-	void onAttackEvent(Event& event) {
-		auto& attackEvent = static_cast<AttackStepEvent&>(event);
-		if (attackEvent.attackStep != "startAttack") {
-			std::cout << "Attack by entity: " << _entityName
-				<< ", skill: " << attackEvent.attackStep << std::endl;
-			AttackEvent publishEvent(_entityName, mboundingBox, _damage);
-			_globalEventManager.publish<AttackEvent&>(publishEvent);
-		}
-	}
-
-	void onSkillEvent(Event& event) {
-		auto& skillEvent = static_cast<SkillEvent&>(event);
+	// nofify all enemy check defense or got hurt
+	void startCheckingAttack(Event& event) {
+		auto& skillEvent = static_cast<AttackDamageEvent&>(event);
 		std::cout << "Attack by entity: " << _entityName
 			<< ", skill: " << skillEvent.skillName << std::endl;
-		AttackEvent publishEvent(_entityName, mboundingBox, skillEvent.damage);
-		_globalEventManager.publish<AttackEvent&>(publishEvent);
+		AttackCheckingEvent publishEvent(_entityName, mdefaultBoundingBox, skillEvent.damage);
+		_globalEventManager.publish<AttackCheckingEvent&>(publishEvent);
 	}
 
-	void endAttack() {
-		attacking = false;
+	void endAttack(Event& event) {
+		auto& attackStepEvent = static_cast<AttackStepEvent&>(event);
+		if (attackStepEvent.attackStep == AttackStep::endAttack) {
+			attacking = false;
+		}
 	}
 
 	void update(GLFWwindow* window) override {}

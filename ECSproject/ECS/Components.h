@@ -15,6 +15,7 @@
 #include "CameraComponent.h"
 #include "StatsComponent.h"
 #include "AttackComponent.h"
+#include "DefenseComponent.h"
 #include "HealthBarComponet.h"
 #include "SkillComponent.h"
 

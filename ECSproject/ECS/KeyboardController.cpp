@@ -19,14 +19,26 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 	}
 
 	Vector2D& vel = _transform->velocity;
-	vel = Vector2D(0.0f, 0.0f);
-	_sprite->setAnimate("idle");
 
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		std::cout << "position:" << _transform->position.x << ", " << _transform->position.y << std::endl;
 	}
 
-	if (!_transform->canMove) { return; }
+	if (_atc->attacking) {
+		vel = Vector2D(0.0f, 0.0f);
+		return;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		_def->startDodge();
+		if (entity->getComponent<SpriteComponent>().getFlip()) vel.x = -3.0f;
+		else vel.x = 3.0f;
+		return;
+	}
+
+	// if (!_transform->canMove) { return; }
+	vel = Vector2D(0.0f, 0.0f);
+	_sprite->setAnimate("idle");
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		vel.y = 3.0f;

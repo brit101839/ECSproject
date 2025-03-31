@@ -24,7 +24,7 @@ public:
 
 	}
 
-	std::unique_ptr<SummonedItem> createItem(std::string name) {
+	std::unique_ptr<MagicItem> createItem(std::string name) {
 		if (name == "fire ball") {
 			return std::make_unique<FireBall>(createEntity(), Vector2D(2270.0f, -2700.f));
 		}

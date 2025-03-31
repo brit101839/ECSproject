@@ -5,7 +5,7 @@
 
 enum class AnimateState
 {
-	Idle, Attacking, Dying, Died
+	Idle, Attacking, Dodging, Dying, Died
 };
 
 struct AttackDetail

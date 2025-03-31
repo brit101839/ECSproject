@@ -15,14 +15,16 @@ private:
 	int _currentFrame = 0;
 	std::string _nextAnimate = "idle";
 	bool _flip = false;
-	EventSystem* _componentEventManager;
+	EventSystem* _localEvent;
 
 public:
 
-	AnimationSet(EventSystem* eventManager) : _componentEventManager(eventManager) {
-		if (_componentEventManager) {
-			_componentEventManager->subscribe<AttackStepEvent>([this](Event& event) {
-				onAnimationEvent(event); });
+	AnimationSet(EventSystem* eventManager) : _localEvent(eventManager) {
+		if (_localEvent) {
+			_localEvent->subscribe<AttackStepEvent>([this](Event& event) {
+				startAttackEvent(event); });
+			_localEvent->subscribe<DodgeStepEvent>([this](Event& event) {
+				startDodgeEvent(event); });
 		}
 		else {
 			std::cerr << "event manager not inject successfully" << std::endl;
@@ -75,7 +77,7 @@ public:
 		// playing can interrupt animate
 		if (animations.find(name) != animations.end()) {
 			_currentAnimation = &animations[name];
-			animateSwitching();
+			OnAnimateStart();
 			if (name == "walkL" || name == "walkR") { _flip = _currentAnimation->flip; }
 			if (!_currentAnimation->canInterrupt) {
 				_currentFrame = 0;
@@ -83,7 +85,18 @@ public:
 		}
 	}
 
-	void animateSwitching() {
+	void onAnimateEnd() {
+		if (_currentAnimation->state == AnimateState::Dodging) {
+			endDodgeEvent();
+		}
+		if (_currentAnimation->state == AnimateState::Attacking) {
+			if (animations.at(_nextAnimate).state != AnimateState::Attacking) {
+				endAttackEvent();
+			}
+		}
+	}
+
+	void OnAnimateStart() {
 		_nextAnimate = "idle";
 		/*AttackStepEvent event("normal attack");*/
 		switch (_currentAnimation->state)
@@ -104,13 +117,30 @@ public:
 		return;
 	}
 
-	void onAnimationEvent(Event& event) {
+	void startAttackEvent(Event& event) {
 		auto& animateEvent = static_cast<AttackStepEvent&>(event);
 		// Handle the attack event
-		if (animateEvent.attackStep == "startAttack") {
+		if (animateEvent.attackStep == AttackStep::startAttack) {
 			// std::cout << "attack event: " << animateEvent.attackStep << std::endl;
 			setAnimation("attack_1");
 		}
+	}
+
+	void endAttackEvent() {
+		AttackStepEvent event(AttackStep::endAttack);
+		_localEvent->publish<AttackStepEvent>(event);
+	}
+
+	void startDodgeEvent(Event& event) {
+		auto& dodgeStep = static_cast<DodgeStepEvent&>(event);
+		if (dodgeStep.dodgeStep == DodgeStep::startDodge) {
+			setAnimation("dodge");
+		}
+	}
+
+	void endDodgeEvent() {
+		DodgeStepEvent event(DodgeStep::endDodge);
+		_localEvent->publish<DodgeStepEvent>(event);
 	}
 
 	bool getFrameInterrupt() { return _currentAnimation->canInterrupt; }
@@ -132,8 +162,9 @@ public:
 			// std::cout << _currentAnimation->speed << "/" << _currentFrame << "/" << currentTime - _lastFrameTime << "/" << currentTime << std::endl;
 			if (currentTime - _lastFrameTime > frameInterval) {
 				if (!_currentAnimation->canInterrupt && _currentFrame + 1 >= totalFrames) {
+					onAnimateEnd();
 					_currentAnimation = &animations[_nextAnimate];
-					animateSwitching();
+					OnAnimateStart();
 				}
 				_currentFrame = (_currentFrame + 1) % totalFrames; // 循环播放
 				sprite->updateAnimateVertex(_currentFrame, _currentAnimation->tileY, framesPerRow);
@@ -141,8 +172,8 @@ public:
 
 				if (_currentAnimation->state == AnimateState::Attacking) {
 					if (_currentFrame == _currentAnimation->atcDetail.get()->attackFrame) {
-						SkillEvent event("normal attack", _currentAnimation->atcDetail.get()->damage);
-						_componentEventManager->publish<SkillEvent&>(event);
+						AttackDamageEvent event("normal attack", _currentAnimation->atcDetail.get()->damage);
+						_localEvent->publish<AttackDamageEvent&>(event);
 						// std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << ")" << std::endl;
 					}
 				}

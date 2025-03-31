@@ -11,35 +11,53 @@ public:
     virtual ~Event() = default;
 };
 
-class AttackEvent : public Event {
+class AttackCheckingEvent : public Event {
 public:
     std::string attacker;
     BoundingBox boundingBox;
     int damage;
 
-    AttackEvent(std::string attacker, BoundingBox boundingBox, int damage)
+    AttackCheckingEvent(std::string attacker, BoundingBox boundingBox, int damage)
         : attacker(attacker), boundingBox(boundingBox), damage(damage) {
     }
 };
 
-class SkillEvent : public Event {
+class AttackDamageEvent : public Event {
 public:
     std::string skillName;
     int damage;
 
-    SkillEvent(std::string skillName, int damage)
+    AttackDamageEvent(std::string skillName, int damage)
         : skillName(skillName), damage(damage) {
 
     }
 };
 
+enum class AttackStep
+{
+    startAttack, Checking, endAttack
+};
+
 class AttackStepEvent : public Event {
 public:
-    std::string attackStep;
+    AttackStep attackStep;
 
-    AttackStepEvent(std::string attackStep)
+    AttackStepEvent(AttackStep attackStep)
         : attackStep(attackStep) {
     }
+};
+
+enum class DodgeStep
+{
+    startDodge, startInvincibility, endInvincibility, endDodge
+};
+
+class DodgeStepEvent : public Event {
+public:
+    DodgeStep dodgeStep;
+
+    DodgeStepEvent(DodgeStep dodgeStep) 
+        :dodgeStep(dodgeStep) {}
 };
 
 class EventSystem {

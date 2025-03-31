@@ -19,6 +19,7 @@ Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
     enemyEntity->addcomponent<HealthBarComponent>();
     // enemyEntity->addcomponent<SkillCompnent>("fire ball", _spawnSys);
     enemyEntity->addcomponent<AttackComponent>(name, _globalEventManager);
+    enemyEntity->addcomponent<DefenseComponent>(name);
     enemyEntity->addcomponent<AIComponent>(_playerTrans);
     // enemy.addcomponent<AttackComponent>(this);
     enemyEntity->addGroup(groupEnemies);

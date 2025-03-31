@@ -23,7 +23,7 @@ public:
 
 	explicit EnemyManager(Manager& m, TransformComponent& playerT, CollisionManager* colM, EventSystem& GeventM, std::shared_ptr<SpawnSystem> spawnSys)
 		: _manager(m), _playerTrans(playerT), _colliderManager(colM), _globalEventManager(GeventM), _spawnSys(spawnSys) {
-		_globalEventManager.subscribe<AttackEvent>([this](Event& event) {
+		_globalEventManager.subscribe<AttackCheckingEvent>([this](Event& event) {
 			onAttackEvent(event); });
 	}
 
@@ -46,19 +46,19 @@ public:
 	}
 
 	void onAttackEvent(Event& event) {
-		auto& attackEvent = static_cast<AttackEvent&>(event);
+		auto& attackEvent = static_cast<AttackCheckingEvent&>(event);
 		if (attackEvent.attacker == "player") {
 			handleHurtEvent(attackEvent);
 		}
 	}
 
-	void handleHurtEvent(AttackEvent& atc) {
+	void handleHurtEvent(AttackCheckingEvent& atc) {
 		std::cout << "checking attack by: " << atc.attacker << std::endl;
 		for (auto* enemy : _enemies) {
-			enemy->handleHurt(atc);
+			enemy->UnderAttack(atc);
 		}
-		AttackStepEvent event("enemyHurtCheckComplete");
-		_globalEventManager.publish<AttackStepEvent>(event);
+		/*AttackStepEvent event("enemyHurtCheckComplete");
+		_globalEventManager.publish<AttackStepEvent>(event);*/
 	}
 
 	std::vector<Enemy*>& getEnemies() { return _enemies; }
