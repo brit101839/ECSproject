@@ -10,6 +10,11 @@ enum class AIPreferBehavior
     NormalAttackOnly, SkillOnly
 };
 
+enum class EnemyState
+{
+    patrol, tracking, fighting, skillfight, normalAttack, backing, dying
+};
+
 class AIContext {
 private:
     AIPreferBehavior _behavior;
@@ -30,4 +35,5 @@ public:
     SkillCompnent* getSkill() const { return &_entity->getComponent<SkillCompnent>(); }
     Vector2D getDefaultPos() const { return _defaultPos; }
     const Vector2D& getPlayerPos() const { return _playerTrans.position; }
+    const GLfloat getDist() const { return getTransform()->position.distanceTo(getPlayerPos()); }
 };

@@ -149,7 +149,8 @@ Game::Game()
     _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
     _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
     _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
-    _enemyManager->addEnemy("Minotaur", Vector2D(1230.0f, -4800.f));
+    _enemyManager->addEnemy("Minotaur", Vector2D(4530.0f, -950.f));
+    _enemyManager->addEnemy("BringOfDeath", Vector2D(1120.f, -4600.f));
     // _enemyManager->addEnemy("Ratflok Axe", Vector2D(1500.0f, -1500.f));
 
     // player->addcomponent<AttackComponent>(_enemyManager);

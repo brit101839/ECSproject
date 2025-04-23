@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviorTree\BehaviorTreeFactory.h" />
     <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\DefenseComponent.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackPack.h" />
+    <ClInclude Include="BehaviorTree\tinybehaviortree.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ECS\AIComponent.h" />

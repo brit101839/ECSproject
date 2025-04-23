@@ -3,11 +3,6 @@
 // #include "StateMaching.h"
 #include "../ECS/AIContext.h"
 
-enum class EnemyState
-{
-    patrol, tracking, fighting, skillfight, normalAttack, backing, dying
-};
-
 class AIState {
 public:
 
