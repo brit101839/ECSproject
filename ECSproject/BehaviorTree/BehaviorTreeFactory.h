@@ -48,7 +48,7 @@ public:
             else box = { context.getTransform()->position + Vector2D(40.f, 0.f), context.getTransform()->width, context.getTransform()->height };
             context.getAttack()->startAttack(box);
         }
-        std::cout << "fighting" << std::endl;
+        // std::cout << "fighting" << std::endl;
         return BehaviorResult::RUNNING;
     }
 };
@@ -67,7 +67,7 @@ public:
         auto direction = (playerPos - context.getTransform()->position).normalize();
         context.getTransform()->velocity = direction;
         context.getSprite()->setAnimate(direction.x >= 0 ? "walkR" : "walkL");
-        std::cout << "tracking" << context.getDist() << std::endl;
+        // std::cout << "tracking" << context.getDist() << std::endl;
         return BehaviorResult::RUNNING;
     }
 };
@@ -89,7 +89,7 @@ public:
         context.getTransform()->velocity = (defaultPos - context.getTransform()->position).normalize();
         if (context.getTransform()->velocity.x >= 0) { context.getSprite()->setAnimate("walkR"); }
         else { context.getSprite()->setAnimate("walkL"); }
-        std::cout << "backing" << context.getTransform()->position.distanceTo(defaultPos) << std::endl;
+        // std::cout << "backing" << context.getTransform()->position.distanceTo(defaultPos) << std::endl;
         return BehaviorResult::RUNNING;
     }
 };

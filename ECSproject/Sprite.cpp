@@ -139,11 +139,19 @@ void Sprite::render(Vector2D position, GLfloat rotation, Shader& shader, Vector2
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
-	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	GLfloat offsetX = _offsetX;
+	if (_flip) offsetX = -_offsetX;
+
+	model = glm::translate(model, glm::vec3(position.x + offsetX, position.y, 0.0f));
 	if (_flip) {
 		model = glm::scale(model, glm::vec3(-1.0f, 1.0f, 1.0f));  // Flip horizontally
 	}
+	else {
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));  // Flip horizontally
+	}
+		
+	model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+	
 
 	// glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraPos.x, -cameraPos.y, 0.0f));
@@ -159,14 +167,14 @@ void Sprite::render(Vector2D position, GLfloat rotation, Shader& shader, Vector2
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-void Sprite::renderRectangle(Vector2D position, Vector2D size, Shader& shader, Vector2D cameraPos, glm::vec3 color) {
+void Sprite::renderRectangle(Vector2D position, Vector2D scale, Shader& shader, Vector2D cameraPos, glm::vec3 color) {
 	
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 
 	// 設置矩形的模型矩陣
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(position.x, position.y, 0.0f));
-	model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
+	model = glm::scale(model, glm::vec3(scale.x, scale.y, 1.0f));
 
 	// 設置視圖和投影矩陣
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-cameraPos.x, -cameraPos.y, 0.0f));

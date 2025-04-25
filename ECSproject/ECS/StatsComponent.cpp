@@ -13,9 +13,9 @@ void StatsComponent::takeDamage(int damage)
 			std::cout << "dying" << std::endl;
 		}
 	}
-	mhealthPercent = float(_health) / _maxHealth;
+	mhealthPercent = float(_health) / float(_maxHealth);
 	if (entity->hasComponent<HealthBarComponent>()) {
-		entity->getComponent<HealthBarComponent>().mDroppingBlood = float(damage) / _maxHealth;
+		entity->getComponent<HealthBarComponent>().mDroppingBlood = float(damage) / float(_maxHealth);
 	}
-	
+	std::cout << "health persent" << mhealthPercent << std::endl;
 }

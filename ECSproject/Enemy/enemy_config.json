@@ -360,7 +360,7 @@
     {
       "name": "BringOfDeath",
       "behavior": "NormalAttackOnly",
-      "hp": 100,
+      "hp": 500,
       "atk": 10,
       "def": 1,
       "speed": 0.8,
@@ -370,7 +370,8 @@
         "path": "D:\\dependencies\\resource\\enemy\\Bringer-Of-Death\\SpriteSheet\\Bringer-of-Death-SpritSheet.png",
         "animated": true,
         "cutWidth": 140.0,
-        "cutHeight": 93.0
+        "cutHeight": 93.0,
+        "offsetX":  -240.0
       },
       "animations": {
         "idle": {
@@ -383,13 +384,13 @@
           "row": 1,
           "frames": 8,
           "speed": 10,
-          "flip": false
+          "flip": true
         },
         "walkL": {
           "row": 1,
           "frames": 8,
           "speed": 10,
-          "flip": true
+          "flip": false
         },
         "attack_1": {
           "row": 2,

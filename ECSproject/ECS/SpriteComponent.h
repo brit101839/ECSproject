@@ -28,6 +28,7 @@ private:
 	
 	std::string _currentAnimation;
 	GLfloat _cutWidth, _cutHeight;
+	GLfloat _offsetX = 0;
 	int _textureWidth = 0, _textureHeight = 0;
 	int _id;
 	Vector2D _scale = Vector2D(1.0f, 1.0f);
@@ -42,8 +43,8 @@ public:
 
 	SpriteComponent() = default;
 
-	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight)
-		:_animated(isAnimated), _cutWidth(cutWidth), _cutHeight(cutHeight)
+	SpriteComponent(const char* path, bool isAnimated, GLfloat cutWidth, GLfloat cutHeight, GLfloat offsetX = 0.f)
+		:_animated(isAnimated), _cutWidth(cutWidth), _cutHeight(cutHeight), _offsetX(offsetX)
 	{
 		TextureManager& textureManager = TextureManager::getInstance();
 		_texture = textureManager.textureManager(path, _textureWidth, _textureHeight);
@@ -91,6 +92,8 @@ public:
 		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
 		else if (_spriteType == SpriteType::UI) _sprite = new Sprite(_texture, _transform->width, _transform->height, Origin::TopLeft);
 		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
+
+		_sprite->setOffsetX(_offsetX);
 	}
 
 	void addAnimation(const std::string& name, const Animation& anim) {

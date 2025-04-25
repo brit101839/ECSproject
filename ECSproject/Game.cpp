@@ -146,15 +146,12 @@ Game::Game()
     Camera->addGroup(groupCamera);
 
     _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager, _spawnSystem);
-    _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
-    _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
-    _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
+     _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
+     _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
+     _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
     _enemyManager->addEnemy("Minotaur", Vector2D(4530.0f, -950.f));
-    _enemyManager->addEnemy("BringOfDeath", Vector2D(1120.f, -4600.f));
+     _enemyManager->addEnemy("BringOfDeath", Vector2D(1120.f, -4600.f));
     // _enemyManager->addEnemy("Ratflok Axe", Vector2D(1500.0f, -1500.f));
-
-    // player->addcomponent<AttackComponent>(_enemyManager);
-    // player->addcomponent<HealthBarComponent>(Vector2D(25.f,4.f), Vector2D(40.f, 700.f), true);
     
     _UIManager = new UIManager(manager, *player);
     _UIManager->init(_textRender);

@@ -35,6 +35,7 @@ private:
 
 	GLfloat _width, _height, _cutWidth, _cutHeight;
 	GLuint _textureID;
+	GLfloat _offsetX = 0.f;
 	unsigned int _VBO, _VAO, _EBO;
 	VertexData _vertices[4];
 	unsigned int _indices[6] = {
@@ -61,6 +62,7 @@ public:
 
 	void setFlip(bool flip) { _flip = flip; }
 	bool getFlip() { return _flip; }
+	void setOffsetX(GLfloat newOffset) { _offsetX = newOffset; }
 	void setOverlapColor(glm::vec3 newColor) { _overlayColor = newColor; }
 
 	void setVAO(bool animated);
@@ -70,7 +72,7 @@ public:
 	void setTile(int index, int tilePerRow);
 
 	void render(Vector2D position, GLfloat rotation, Shader& shader, Vector2D cameraPos);
-	void renderRectangle(Vector2D position, Vector2D size, Shader& shader, Vector2D cameraPos, glm::vec3 color);
+	void renderRectangle(Vector2D position, Vector2D scale, Shader& shader, Vector2D cameraPos, glm::vec3 color);
 	void renderUI(Vector2D position, GLfloat rotation, Vector2D size, Shader& shader);
 	void updateAnimateVertex(int frameIndex, int tileY, int framePerRow);
 	void updateVertex(int index, int tilePerRow);

@@ -77,7 +77,9 @@ public:
                 auto& stats = enemyEntity->addcomponent<StatsComponent>(enemyData["hp"], enemyData["atk"], enemyData["def"]);
                 auto& spriteData = enemyData["sprite"];
                 std::string path = spriteData["path"];
-                auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], spriteData["cutWidth"], spriteData["cutHeight"]);
+                auto& sprite = enemyEntity->addcomponent<SpriteComponent>(path.c_str(), spriteData["animated"], 
+                    spriteData["cutWidth"], spriteData["cutHeight"], spriteData.value("offsetX", 0.f));
+
                 for (auto& [name, anim] : enemyData["animations"].items()) {
                     if (anim.value("state", "") == "Attacking" || anim.value("state", "") == "useSkill") {
                         sprite.addAnimation(name, parseAttackAnimation(anim));
@@ -89,6 +91,8 @@ public:
                 sprite.setAnimate("idle"); // 預設為 idle 動畫
 
                 enemyEntity->addcomponent<SkillCompnent>("fire ball", spawnSys);
+                enemyEntity->addcomponent<StatsComponent>(100, 10, 1);
+                enemyEntity->addcomponent<HealthBarComponent>(Vector2D(enemyData["width"], 10.f));
 
                 return enemyEntity;
             }
