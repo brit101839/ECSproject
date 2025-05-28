@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 #include <tuple>
+#include <string>
+#include <iostream>
 
 namespace TBT{
 
@@ -33,45 +35,66 @@ public:
 template<typename... Payload>
 class SequenceNode : public BehaviorNode<Payload...> {
 public:
-	SequenceNode(){}
+	SequenceNode() : currentIndex(0){}
 	SequenceNode(const SequenceNode&) = delete;
 	void addChild(std::unique_ptr<BehaviorNode<Payload...>>&& node) {
 		BehaviorNodeBase::setParent(&*node, this);
 		children.push_back(std::move(node));
 	}
 	BehaviorResult tick(Payload... payload) override {
-		for (auto it = children.begin(); it != children.end(); ++it) {
-			auto& node = *it;
+		// for (auto it = children.begin(); it != children.end(); ++it) {
+		for (size_t i = currentIndex; i < children.size(); ++i) {
+			auto& node = children[i];
+			// auto& node = *it;
 			auto result = node->tick(payload...);
-			if(result == BehaviorResult::FAILURE)
+			if (result == BehaviorResult::FAILURE) {
+				currentIndex = 0;  // Reset the index on failure
 				return BehaviorResult::FAILURE;
+			}
+			if (result == BehaviorResult::RUNNING) {
+				currentIndex = i;  // Remember the current index if RUNNING
+				return BehaviorResult::RUNNING;
+			}
 		}
+		currentIndex = 0;  // Reset the index on failure
 		return BehaviorResult::SUCCESS;
 	}
 protected:
 	std::vector<std::unique_ptr<BehaviorNode<Payload...>>> children;
+	size_t currentIndex = 0; // Track the index of the currently running child node
 };
 
 template<typename... Payload>
 class FallbackNode : public BehaviorNode<Payload...> {
 public:
-	FallbackNode(){}
+	FallbackNode() : currentIndex(0){}
 	FallbackNode(const FallbackNode&) = delete;
 	void addChild(std::unique_ptr<BehaviorNode<Payload...>>&& node) {
 		BehaviorNodeBase::setParent(&*node, this);
 		children.push_back(std::move(node));
 	}
 	BehaviorResult tick(Payload... payload) override {
-		for (auto it = children.begin(); it != children.end(); ++it) {
-			auto& node = *it;
+		for (size_t i = currentIndex; i < children.size(); ++i) {
+		// for (auto it = children.begin(); it != children.end(); ++it) {
+			auto& node = children[i];
+			// auto& node = *it;
 			auto result = node->tick(payload...);
-			if(result == BehaviorResult::SUCCESS)
+			if (result == BehaviorResult::SUCCESS) {
+				currentIndex = 0;
 				return BehaviorResult::SUCCESS;
+			}
+			if (result == BehaviorResult::RUNNING) {
+				currentIndex = i;
+				return BehaviorResult::RUNNING;
+			}
+				
 		}
+		currentIndex = 0;  // Reset the index on failure
 		return BehaviorResult::FAILURE;
 	}
 protected:
 	std::vector<std::unique_ptr<BehaviorNode<Payload...>>> children;
+	size_t currentIndex = 0; // Track the index of the currently running child node
 };
 
 
@@ -107,6 +130,37 @@ public:
 
 private:
 	std::unique_ptr<BehaviorNode<Args...>> _child;
+};
+
+template<typename... Args>
+class LoggingDecorator : public BehaviorNode<Args...> {
+private:
+	std::unique_ptr<BehaviorNode<Args...>> _child;
+	std::string _name;
+
+public:
+	LoggingDecorator(std::string name, std::unique_ptr<BehaviorNode<Args...>> child)
+		: _name(std::move(name)), _child(std::move(child)) {
+	}
+
+	void setChild(std::unique_ptr<BehaviorNode<Args...>> child) {
+		_child = std::move(child);
+	}
+
+	BehaviorResult tick(Args&... args) override {
+		BehaviorResult result = _child->tick(args...);
+		std::cout << "[Log] Node '" << _name << "' returned " << behaviorResultToString(result) << std::endl;
+		return result;
+	}
+
+	static std::string behaviorResultToString(BehaviorResult result) {
+		switch (result) {
+		case BehaviorResult::SUCCESS: return "SUCCESS";
+		case BehaviorResult::FAILURE: return "FAILURE";
+		case BehaviorResult::RUNNING: return "RUNNING";
+		default: return "UNKNOWN";
+		}
+	}
 };
 
 // Template metaprogramming helpers to unpack tuple into argument list

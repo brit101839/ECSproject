@@ -91,7 +91,7 @@ public:
                 sprite.setAnimate("idle"); // 預設為 idle 動畫
 
                 enemyEntity->addcomponent<SkillCompnent>("fire ball", spawnSys);
-                enemyEntity->addcomponent<StatsComponent>(100, 10, 1);
+                // enemyEntity->addcomponent<StatsComponent>(100, 10, 1);
                 enemyEntity->addcomponent<HealthBarComponent>(Vector2D(enemyData["width"], 10.f));
 
                 return enemyEntity;

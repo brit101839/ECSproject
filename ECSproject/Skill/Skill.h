@@ -4,16 +4,22 @@
 #include "../ECS/TransformComponent.h"
 #include "../ECS/SpriteComponent.h"
 
+enum class SkillType
+{
+	ParallelRange, Range, Melee
+};
+
 class Skill {
 private:
+	SkillType _type;
 	EventSystem* _localEventSys;
 	std::shared_ptr<SpawnSystem> _spawnSystem;
 	TransformComponent* _trans;
 	SpriteComponent* _sprite;
 
 public:
-	Skill(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
-		: _localEventSys(localEventSys), _spawnSystem(spawnSys), _trans(trans), _sprite(sprite){}
+	Skill(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite, SkillType type)
+		: _localEventSys(localEventSys), _spawnSystem(spawnSys), _trans(trans), _sprite(sprite), _type(type){}
 
 	virtual void execute() = 0;
 	virtual ~Skill() = default;
@@ -25,15 +31,17 @@ public:
 		else createPos = _trans->position;
 		_spawnSystem.get()->createItem(name, createPos, _sprite->getFlip());
 	}
+
+	SkillType getType() { return _type; }
 };
 
 
 // confused fight
-class NormalAttack : public Skill {
+class MeleeAttack : public Skill {
 public:
-	/*NormalAttack(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
-		: Skill(localEventSys, spawnSys, trans, sprite) {}*/
-	using Skill::Skill;
+	MeleeAttack(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
+		: Skill(localEventSys, spawnSys, trans, sprite, SkillType::Melee) {}
+	// using Skill::Skill;
 
 	void execute() override {
 		std::cout << "Enemy uses normal attack!" << std::endl;
@@ -42,10 +50,10 @@ public:
 
 class FireBallSkill : public Skill {
 public:
-	/*FireBallSkill(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
-		: Skill(localEventSys, spawnSys, trans, sprite) {
-	}*/
-	using Skill::Skill;
+	FireBallSkill(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
+		: Skill(localEventSys, spawnSys, trans, sprite, SkillType::ParallelRange) {
+	}
+	// using Skill::Skill;
 
 	void execute() override{
 		spawner("fire ball");
@@ -54,7 +62,12 @@ public:
 };
 
 class IceBallSkill : public Skill {
-	using Skill::Skill;
+public:
+	IceBallSkill(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
+		: Skill(localEventSys, spawnSys, trans, sprite, SkillType::ParallelRange) {
+	}
+
+	// using Skill::Skill;
 
 	void execute() override {
 		spawner("ice ball");
@@ -65,6 +78,10 @@ class IceBallSkill : public Skill {
 // »·µ{§ðÀ»
 class RangedAttack : public Skill {
 public:
+	RangedAttack(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
+		: Skill(localEventSys, spawnSys, trans, sprite, SkillType::Range) {
+	}
+
 	void execute() override {
 		std::cout << "Enemy uses ranged attack!" << std::endl;
 	}
@@ -88,6 +105,6 @@ public:
 		else if (skillName == "ice ball") {
 			return std::make_unique<IceBallSkill>(localEventSys, spawnSys, trans, sprite);
 		}
-		return std::make_unique<NormalAttack>(localEventSys, spawnSys, trans, sprite);
+		return std::make_unique<MeleeAttack>(localEventSys, spawnSys, trans, sprite);
 	}
 };

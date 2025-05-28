@@ -15,6 +15,12 @@ enum class EnemyState
     patrol, tracking, fighting, skillfight, normalAttack, backing, dying
 };
 
+struct AIstate {
+    bool fighting = false;
+    // bool attacking = false;
+    float attackCooldown = 0.f;
+};
+
 class AIContext {
 private:
     AIPreferBehavior _behavior;

@@ -212,6 +212,9 @@
     <ClInclude Include="BehaviorTree\tinybehaviortree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviorTree\FightingTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Enemy\enemy_config.json" />

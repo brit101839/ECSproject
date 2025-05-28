@@ -16,6 +16,9 @@ private:
 	std::shared_ptr<SpawnSystem> _spawnSys;
 
 public:
+
+	bool usingSkill = false;
+
 	SkillCompnent(std::string skillName, std::shared_ptr<SpawnSystem> spawnSys)
 		: _skillname(skillName), _spawnSys(spawnSys){
 	}
@@ -32,7 +35,7 @@ public:
 		setSkill(SkillFactory::CreateSkill(_skillname, &_localEvent->getEventSystem(), _spawnSys, &trans, &sprite));
 
 		_localEvent->subscribe<SkillStepEvent>([this](Event& event) {
-			triggerSkill(event); });
+			handleSkillStep(event); });
 	}
 
 	void setSkill(std::unique_ptr<Skill> newSkill) {
@@ -41,18 +44,24 @@ public:
 		
 	void UseSkill() {
 		if (_skill) {
+			usingSkill = true;
 			SkillStepEvent event(SkillStep::startSkill);
 			_localEvent->publish<SkillStepEvent>(event);
 			// _skill.get()->execute();
 		}
 	}
 
-	void triggerSkill(Event& event) {
+	void handleSkillStep(Event& event) {
 		auto& skillEvent = static_cast<SkillStepEvent&>(event);
 		if (skillEvent.step == SkillStep::SkillTrigger) {
 			if (_skill) {
 				_skill.get()->execute();
 			}
 		}
+		if (skillEvent.step == SkillStep::endSkill) {
+			usingSkill = false;
+		}
 	}
+
+	SkillType getType() { return _skill.get()->getType(); }
 };

@@ -91,9 +91,15 @@ public:
 		if (_currentAnimation->state == AnimateState::Dodging) {
 			endDodgeEvent();
 		}
-		if (_currentAnimation->state == AnimateState::Attacking) {
+		else if (_currentAnimation->state == AnimateState::Attacking) {
 			if (animations.at(_nextAnimate).state != AnimateState::Attacking) {
 				endAttackEvent();
+			}
+		}
+		else if (_currentAnimation->state == AnimateState::usingSkill)
+		{
+			if (animations.at(_nextAnimate).state != AnimateState::usingSkill) {
+				endSkillEvent();
 			}
 		}
 	}
@@ -124,6 +130,11 @@ public:
 		if (skillEvent.step == SkillStep::startSkill) {
 			setAnimation("useSkill");
 		}
+	}
+
+	void endSkillEvent() {
+		SkillStepEvent event(SkillStep::endSkill);
+		_localEvent->publish<SkillStepEvent>(event);
 	}
 
 	void startAttackEvent(Event& event) {
