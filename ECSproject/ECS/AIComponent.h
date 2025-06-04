@@ -48,7 +48,7 @@ public:
 		// _stateMaching.changeState(AIStateFactory::createState(EnemyState::dying), *_aiContext);
 	}
 
-	void update(GLFWwindow* window) override {
+	void update(GLFWwindow* window, double deltaTime) override {
 		// _stateMaching.update(*_aiContext);
 		_tree.get()->tickRoot(_currentstate, *_aiContext);
 	}

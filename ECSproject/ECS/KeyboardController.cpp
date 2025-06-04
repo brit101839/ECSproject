@@ -18,47 +18,55 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 		Game::_isRunning = false;
 	}
 
-	Vector2D& vel = _transform->velocity;
-
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		std::cout << "position:" << _transform->position.x << ", " << _transform->position.y << std::endl;
 	}
 
+	Vector2D inputDir = Vector2D(0.f, 0.f);
+
 	if (_atc->attacking) {
-		vel = Vector2D(0.0f, 0.0f);
+		_transform->setDirection(Vector2D(0.f, 0.f));
 		return;
 	}
 
+	/*if (_def->doging()) {
+		return;
+	}*/
+
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		_transform->setDirection(Vector2D(0.f, 0.f));
 		_def->startDodge();
-		if (entity->getComponent<SpriteComponent>().getFlip()) vel.x = -3.0f;
-		else vel.x = 3.0f;
+		if (entity->getComponent<SpriteComponent>().getFlip()) inputDir.x = -1.0f;
+		else inputDir.x = 1.0f;
+		_transform->setDirection(inputDir);
 		return;
 	}
 
 	// if (!_transform->canMove) { return; }
-	vel = Vector2D(0.0f, 0.0f);
+	
 	_sprite->setAnimate("idle");
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		vel.y = 3.0f;
+		inputDir.y = 1.0f;
 		_sprite->setAnimate("walkUp");
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-		vel.y = -3.0f;
+		inputDir.y = -1.0f;
 		_sprite->setAnimate("walkR");
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		vel.x = -3.0f;
+		inputDir.x = -1.0f;
 		_sprite->setAnimate("walkL");
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		vel.x = 3.0f;
+		inputDir.x = 1.0f;
 		_sprite->setAnimate("walkR");
 	}
+
+	_transform->setDirection(inputDir);
 }
 
-void KeyboardController::update(GLFWwindow* window)
+void KeyboardController::update(GLFWwindow* window, double deltaTime)
 {
 	
 }

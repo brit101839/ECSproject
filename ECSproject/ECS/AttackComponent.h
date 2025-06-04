@@ -84,7 +84,7 @@ public:
 		}
 	}
 
-	void update(GLFWwindow* window) override {}
+	void update(GLFWwindow* window, double deltaTime) override {}
 
 	int getDamage() const { return _damage; }
 };

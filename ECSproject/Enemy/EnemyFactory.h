@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <filesystem>
 #include "../ECS/Animation.h"
 #include "../ECS/ECS.h"
 #include "Enemy.h"
@@ -52,7 +53,7 @@ Animation parseAttackAnimation(const json& animJson) {
 class EnemyFactory {
 public:
     static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position, const TransformComponent& playerTrans, std::shared_ptr<SpawnSystem> spawnSys) {
-        std::ifstream file("C:/Users/brit/source/repos/ECSproject/ECSproject/Enemy/enemy_config.json");
+        std::ifstream file("Enemy/enemy_config.json");
         if (!file.is_open()) {
             std::cerr << "Failed to open enemy_config.json" << std::endl;
             return nullptr;

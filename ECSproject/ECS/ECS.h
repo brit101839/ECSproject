@@ -47,7 +47,7 @@ public:
 	Entity* entity;
 
 	virtual void init() {};
-	virtual void update(GLFWwindow* window) {};
+	virtual void update(GLFWwindow* window, double deltaTime) {};
 	virtual void draw(Shader& shader, Vector2D cameraPos) {};
 
 	virtual ~Component() {};
@@ -70,9 +70,9 @@ public:
 
 	Entity(Manager& mManager) : _manager(mManager) {}
 
-	void update(GLFWwindow* window)
+	void update(GLFWwindow* window, double deltaTime)
 	{
-		for (auto& c : _components) c->update(window);
+		for (auto& c : _components) c->update(window, deltaTime);
 	}
 	void draw(Shader& shader, Vector2D cameraPos)
 	{
@@ -132,9 +132,9 @@ private:
 
 public:
 
-	void update(GLFWwindow* window)
+	void update(GLFWwindow* window, double deltaTime)
 	{
-		for (auto& e : entities) e->update(window);
+		for (auto& e : entities) e->update(window, deltaTime);
 	}
 
 	void draw(Shader& shader, Vector2D cameraPos)

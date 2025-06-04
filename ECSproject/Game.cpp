@@ -126,7 +126,7 @@ Game::Game()
 
     _textRender = new TextRender(_textShader);
 
-    _textRender->initFont("D:\\dependencies\\resource\\text\\minecraftia\\Minecraftia-Regular.ttf");
+    _textRender->initFont("C:\\dependencies\\resource\\text\\minecraftia\\Minecraftia-Regular.ttf");
     _textRender->initTextRendering();
 
     _spawnSystem = std::make_shared<SpawnSystem>(manager);
@@ -138,7 +138,7 @@ Game::Game()
     _renderManager = new RenderQuadtreeManager(interBox);
     _colliderManager = new CollisionManager(interBox);
 
-    _map = new Map(*this, "D:/dependencies/resource/map/map_town/map.json");
+    _map = new Map(*this, "C:/dependencies/resource/map/map_town/map.json");
 
     player->componentSetting(_colliderManager);
 
@@ -146,11 +146,11 @@ Game::Game()
     Camera->addGroup(groupCamera);
 
     _enemyManager = new EnemyManager(manager, player->getEntity().getComponent<TransformComponent>(), _colliderManager, _globalEventManager, _spawnSystem);
-     _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
-     _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
-     _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
+    _enemyManager->addEnemy("Necromancer", Vector2D(4500.0f, 600.f));
+    _enemyManager->addEnemy("Night Borne", Vector2D(580.0f, -1300.f));
+    _enemyManager->addEnemy("Cacodaemon", Vector2D(2270.0f, -2700.f));
     _enemyManager->addEnemy("Minotaur", Vector2D(4530.0f, -950.f));
-     _enemyManager->addEnemy("BringOfDeath", Vector2D(1120.f, -4600.f));
+    _enemyManager->addEnemy("BringOfDeath", Vector2D(1120.f, -4600.f));
     // _enemyManager->addEnemy("Ratflok Axe", Vector2D(1500.0f, -1500.f));
     
     _UIManager = new UIManager(manager, *player);
@@ -213,7 +213,7 @@ void Game::keyCallback(GLFWwindow* window, int button, int action)
 
 void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
 {
-    const char* sheetPath = "D:/dependencies/resource/map/map_town/spritesheet.png";
+    const char* sheetPath = "C:/dependencies/resource/map/map_town/spritesheet.png";
     auto& tile(manager.addEntity());
     tile.addcomponent<TileComponent>(position, tileSize, tileSize, id, sheetPath);
     
@@ -252,15 +252,18 @@ void Game::render()
     glfwSwapBuffers(_window);
 }
 
-void Game::update()
+void Game::update(double deltaTime)
 {
     manager.refresh();
-    manager.update(_window);
+    manager.update(_window, deltaTime);
 
     _UIManager->update();
 
     quadtree::Box<float> cameraBound = Camera->getComponent<CameraComponent>().getBox();
     _colliderManager->checkCollisions(&player->getEntity(), cameraBound, _window);
+
+  //  std::cout << "player velocity: " << player->getEntity().getComponent<TransformComponent>().getVelocity().x << ", "
+		//<< player->getEntity().getComponent<TransformComponent>().getVelocity().y << std::endl;
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

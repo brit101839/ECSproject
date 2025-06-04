@@ -11,10 +11,11 @@ class TransformComponent : public Component
 {
 private:
 
+	Vector2D velocity = Vector2D(0.f, 0.f);
+
 public:
 
 	Vector2D position;
-	Vector2D velocity = Vector2D(0.f, 0.f);
 	GLfloat width, height;
 
 	float speed;
@@ -51,11 +52,24 @@ public:
 		return { {position.x - width * 100 / 2, position.y + height * 100 / 2},{width * 100, height * 100} };
 	}
 
-	void update(GLFWwindow* window) override
+	void update(GLFWwindow* window, double deltaTime) override
 	{
-		Vector2D tempVec = velocity * speed;
-		position+=(tempVec);
+		Vector2D tempVec = velocity * speed * deltaTime;
+		position+= tempVec;
 	}
+
+	void setDirection(Vector2D newVelocity)
+	{
+		// std::cout << "[setDirection] Input: (" << newVelocity.x << ", " << newVelocity.y << ")\n";
+
+		if (newVelocity.x == 0 && newVelocity.y == 0) {
+			velocity = Vector2D(0.f, 0.f);
+			return;
+		}
+		velocity = newVelocity.normalize();
+	}
+
+	Vector2D getVelocity() const { return velocity; }
 };
 
 #endif // !__TransformComponent__

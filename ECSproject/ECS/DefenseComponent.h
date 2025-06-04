@@ -77,4 +77,5 @@ public:
 	bool checkAttack(BoundingBox& box);
 	int getHealth() const { return _stats->getHealth(); }
 	int getMaxHealth() const { return _stats->getMaxHealth(); }
+	bool doging() const { return _dodging; }
 };

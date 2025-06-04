@@ -64,7 +64,7 @@ public:
         else if (context.getDist() < 100.f) return BehaviorResult::SUCCESS;
         Vector2D playerPos = context.getPlayerPos();
         auto direction = (playerPos - context.getTransform()->position).normalize();
-        context.getTransform()->velocity = direction;
+        context.getTransform()->setDirection(direction);
         context.getSprite()->setAnimate(direction.x >= 0 ? "walkR" : "walkL");
         std::cout << "tracking" << context.getDist() << std::endl;
         return BehaviorResult::RUNNING;
@@ -87,8 +87,8 @@ public:
         Vector2D defaultPos = context.getDefaultPos();
         auto dist = context.getTransform()->position.distanceTo(defaultPos);
         if (dist < 80.f) return BehaviorResult::SUCCESS;
-        context.getTransform()->velocity = (defaultPos - context.getTransform()->position).normalize();
-        if (context.getTransform()->velocity.x >= 0) { context.getSprite()->setAnimate("walkR"); }
+        context.getTransform()->setDirection((defaultPos - context.getTransform()->position).normalize());
+        if (context.getTransform()->getVelocity().x >= 0) { context.getSprite()->setAnimate("walkR"); }
         else { context.getSprite()->setAnimate("walkL"); }
         // std::cout << "backing" << context.getTransform()->position.distanceTo(defaultPos) << std::endl;
         return BehaviorResult::RUNNING;
@@ -98,7 +98,7 @@ public:
 class Patrol : public BehaviorNode<AIContext&> {
 public:
     BehaviorResult tick(AIContext& context) override {
-        context.getTransform()->velocity = Vector2D(0.f, 0.f);
+        context.getTransform()->setDirection(Vector2D(0.f, 0.f));
         context.getSprite()->setAnimate("idle");
         // std::cout << "patrol" << std::endl;
         return BehaviorResult::SUCCESS;

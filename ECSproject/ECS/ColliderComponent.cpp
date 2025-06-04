@@ -32,7 +32,7 @@ void ColliderComponent::init()
 	_colliderManager->addCollider(this);
 }
 
-void ColliderComponent::update(GLFWwindow* window)
+void ColliderComponent::update(GLFWwindow* window, double deltaTime)
 {
 	auto& position = _trans->position;
 	boundingBox.position = position + _shift;

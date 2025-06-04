@@ -37,7 +37,7 @@ public:
 	Vector2D& operator*=(const Vector2D& vec);
 	Vector2D& operator/=(const Vector2D& vec);
 
-	Vector2D& operator*(const float& i);
+	Vector2D operator*(const float& i);
 	Vector2D& zero();
 	GLfloat distanceTo(const Vector2D& other) const;
 	GLfloat magnitude() const;

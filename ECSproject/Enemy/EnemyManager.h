@@ -37,10 +37,10 @@ public:
 		}
 	}
 
-	void updateEnemies(GLFWwindow* window) {
+	void updateEnemies(GLFWwindow* window, double deltaTime) {
 		for (auto* enemy : _enemies) {
 			if (enemy->getEntity()->isActive()) {
-				enemy->getEntity()->update(window);
+				enemy->getEntity()->update(window, deltaTime);
 			}
 		}
 	}

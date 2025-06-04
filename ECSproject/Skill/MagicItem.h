@@ -20,15 +20,15 @@ public:
 		Vector2D posOffset, velocity;
 		if (!flip) {
 			posOffset = Vector2D(50.f, 0.f);
-			velocity = Vector2D(2.0f, 0.0f);
+			velocity = Vector2D(1.0f, 0.0f);
 		}
 		else {
 			posOffset = Vector2D(-50.f, 0.f);
-			velocity = Vector2D(-2.0f, 0.0f);
+			velocity = Vector2D(-1.0f, 0.0f);
 		}
-		entity->addcomponent<TransformComponent>(position + posOffset, velocity, 1.0f, 300.0f, 300.0f);
+		entity->addcomponent<TransformComponent>(position + posOffset, velocity, 400.0f, 300.0f, 300.0f);
 		entity->addcomponent<LocalEventComponent>();
-		auto& sprite = entity->addcomponent<SpriteComponent>("D:/dependencies/resource/skill/Fire Effect 1/Firebolt SpriteSheet.png", true, 48.f, 48.f);
+		auto& sprite = entity->addcomponent<SpriteComponent>("C:/dependencies/resource/skill/Fire Effect 1/Firebolt SpriteSheet.png", true, 48.f, 48.f);
 		sprite.addAnimation("idle", Animation(0, 4, 10, flip));
 		sprite.setAnimate("idle");
 	}
@@ -40,15 +40,15 @@ public:
 		Vector2D posOffset, velocity;
 		if (!flip) {
 			posOffset = Vector2D(50.f, 0.f);
-			velocity = Vector2D(2.0f, 0.0f);
+			velocity = Vector2D(1.0f, 0.0f);
 		}
 		else {
 			posOffset = Vector2D(-50.f, 0.f);
-			velocity = Vector2D(-2.0f, 0.0f);
+			velocity = Vector2D(-1.0f, 0.0f);
 		}
-		entity->addcomponent<TransformComponent>(position + posOffset, velocity, 1.0f, 300.0f, 300.0f);
+		entity->addcomponent<TransformComponent>(position + posOffset, velocity, 400.0f, 300.0f, 300.0f);
 		entity->addcomponent<LocalEventComponent>();
-		auto& sprite = entity->addcomponent<SpriteComponent>("D:/dependencies/resource/skill/Ice Effect 01/Ice VFX 1/IceVFX 1 Repeatable.png", true, 48.f, 32.f);
+		auto& sprite = entity->addcomponent<SpriteComponent>("C:/dependencies/resource/skill/Ice Effect 01/Ice VFX 1/IceVFX 1 Repeatable.png", true, 48.f, 32.f);
 		sprite.addAnimation("idle", Animation(0, 10, 10, flip));
 		sprite.setAnimate("idle");
 	}

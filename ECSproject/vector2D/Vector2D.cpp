@@ -81,12 +81,9 @@ Vector2D& Vector2D::operator/=(const Vector2D& vec)
 	return this->Divide(vec);
 }
 
-Vector2D& Vector2D::operator*(const float& i)
+Vector2D Vector2D::operator*(const float& i)
 {
-	this->x *= i;
-	this->y *= i;
-
-	return *this;
+	return Vector2D(this->x * i, this->y * i);
 }
 
 Vector2D& Vector2D::zero()

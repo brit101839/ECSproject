@@ -82,7 +82,7 @@ public:
 	void addTile(int id, GLfloat tileSize, Vector2D position, bool collider);
 
 	void render();
-	void update();
+	void update(double deltaTime);
 };
 
 #endif // !__Game__

@@ -11,11 +11,11 @@ int main(int argc, char** argv)
 {
     game = new Game();
 
-    const double FPS = 60;
-    const double TIME_STEP = 1.0 / FPS;
+    const double updateRate = 60;
+    const double TIME_STEP = 1.0 / updateRate;
 
     double currentTime = glfwGetTime();
-    double accumulator = 0.0;
+    double lag = 0.0;
 
     /* Loop until the user closes the window */
     while (game->getRunning())
@@ -24,11 +24,11 @@ int main(int argc, char** argv)
         double frameTime = newTime - currentTime;
         currentTime = newTime;
 
-        accumulator += frameTime;
+        lag += frameTime;
 
-        while (accumulator >= TIME_STEP) {
-            game->update();
-            accumulator -= frameTime;
+        while (lag >= TIME_STEP) {
+            game->update(TIME_STEP);
+            lag -= TIME_STEP;
         }
 
         /* Render here */

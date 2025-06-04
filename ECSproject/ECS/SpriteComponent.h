@@ -122,7 +122,7 @@ public:
 
 	// void settexture() {};
 
-	void update(GLFWwindow* window) override
+	void update(GLFWwindow* window, double deltaTime) override
 	{
 		if (_animated) {
 			_animationSet->update(_sprite);

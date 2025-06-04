@@ -27,7 +27,7 @@ public:
 class UsingSkill : public BehaviorNode<AIContext&> {
 public:
     BehaviorResult tick(AIContext& context) override {
-        context.getTransform()->velocity = Vector2D(0.f, 0.f);
+        context.getTransform()->setDirection(Vector2D(0.f, 0.f));
         context.getSkill()->UseSkill();
         return BehaviorResult::SUCCESS;
     }
@@ -55,7 +55,7 @@ public:
     BehaviorResult tick(AIContext& context) override {
         if (context.getDist() > 100.0f) return BehaviorResult::SUCCESS;
 
-        context.getTransform()->velocity = Vector2D(0.f, 0.f);
+        context.getTransform()->setDirection(Vector2D(0.f, 0.f));
         BoundingBox box;
         if (context.getSprite()->getFlip()) box = { context.getTransform()->position - Vector2D(40.f, 0.f), context.getTransform()->width, context.getTransform()->height };
         else box = { context.getTransform()->position + Vector2D(40.f, 0.f), context.getTransform()->width, context.getTransform()->height };

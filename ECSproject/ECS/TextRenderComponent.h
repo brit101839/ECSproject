@@ -20,7 +20,7 @@ public:
 		_transform = &entity->getComponent<TransformComponent>();
 	}
 	
-	void update(GLFWwindow* window) override
+	void update(GLFWwindow* window, double deltaTime) override
 	{
 
 	}

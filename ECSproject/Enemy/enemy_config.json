@@ -6,11 +6,11 @@
       "hp": 100,
       "atk": 10,
       "def": 1,
-      "speed": 1.0,
+      "speed": 350.0,
       "width": 300.0,
       "height": 300.0,
       "sprite": {
-        "path": "D:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png",
+        "path": "C:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png",
         "animated": true,
         "cutWidth": 96.0,
         "cutHeight": 96.0
@@ -93,12 +93,12 @@
       "behavior": "SkillOnly",
       "hp": 100,
       "atk": 10,
-      "def": 1,
-      "speed": 1.0,
+      "def": 10,
+      "speed": 300.0,
       "width": 300.0,
       "height": 300.0,
       "sprite": {
-        "path": "D:/dependencies/resource/Dungeon/Cacodaemon Sprite Sheet.png",
+        "path": "C:/dependencies/resource/Dungeon/Cacodaemon Sprite Sheet.png",
         "animated": true,
         "cutWidth": 64.0,
         "cutHeight": 64.0
@@ -157,11 +157,11 @@
       "hp": 100,
       "atk": 10,
       "def": 1,
-      "speed": 0.8,
+      "speed": 350,
       "width": 200.0,
       "height": 100.0,
       "sprite": {
-        "path": "D:\\dependencies\\resource\\Dungeon\\Ratfolk Axe Sprite Sheet.png",
+        "path": "C:\\dependencies\\resource\\Dungeon\\Ratfolk Axe Sprite Sheet.png",
         "animated": true,
         "cutWidth": 64.0,
         "cutHeight": 32.0
@@ -219,11 +219,11 @@
       "hp": 100,
       "atk": 10,
       "def": 1,
-      "speed": 0.8,
+      "speed": 380,
       "width": 400.0,
       "height": 400.0,
       "sprite": {
-        "path": "D:\\dependencies\\resource\\enemy\\NightBorne\\NightBorne.png",
+        "path": "C:\\dependencies\\resource\\enemy\\NightBorne\\NightBorne.png",
         "animated": true,
         "cutWidth": 80.0,
         "cutHeight": 80.0
@@ -281,11 +281,11 @@
       "hp": 100,
       "atk": 10,
       "def": 1,
-      "speed": 0.8,
+      "speed": 300,
       "width": 640.0,
       "height": 512.0,
       "sprite": {
-        "path": "D:\\dependencies\\resource\\enemy\\Necromancer_creativekind-Sheet.png",
+        "path": "C:\\dependencies\\resource\\enemy\\Necromancer_creativekind-Sheet.png",
         "animated": true,
         "cutWidth": 160.0,
         "cutHeight": 128.0
@@ -363,11 +363,11 @@
       "hp": 500,
       "atk": 10,
       "def": 1,
-      "speed": 0.8,
+      "speed": 300,
       "width": 840.0,
       "height": 558.0,
       "sprite": {
-        "path": "D:\\dependencies\\resource\\enemy\\Bringer-Of-Death\\SpriteSheet\\Bringer-of-Death-SpritSheet.png",
+        "path": "C:\\dependencies\\resource\\enemy\\Bringer-Of-Death\\SpriteSheet\\Bringer-of-Death-SpritSheet.png",
         "animated": true,
         "cutWidth": 140.0,
         "cutHeight": 93.0,

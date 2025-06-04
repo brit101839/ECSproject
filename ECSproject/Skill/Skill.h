@@ -27,8 +27,8 @@ public:
 	void spawner(std::string name) {
 		Vector2D createPos, createVelocity;
 		if (_sprite->getFlip()) createPos = _trans->position - Vector2D(50.f, 0.f);
-			
 		else createPos = _trans->position;
+
 		_spawnSystem.get()->createItem(name, createPos, _sprite->getFlip());
 	}
 

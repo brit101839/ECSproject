@@ -34,7 +34,7 @@ public:
 		/*return { {CameraPos.x, CameraPos.y},{width-100.f, height-100.f} };*/
 	}
 
-	void update(GLFWwindow* window) override 
+	void update(GLFWwindow* window, double deltaTime) override
 	{
 		if (_followTarget) {
 			Vector2D playerPos = _target->position;

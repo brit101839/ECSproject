@@ -45,7 +45,7 @@ public:
 				std::cout << "position:" << player->getComponent<TransformComponent>().position.x << ", " << player->getComponent<TransformComponent>().position.y << std::endl;
 				Vector2D mtv = Collision::calculateMTV(player->getComponent<ColliderComponent>().boundingBox, cc->boundingBox);
 				player->getComponent<TransformComponent>().position += mtv;
-				player->getComponent<TransformComponent>().update(window);
+				// player->getComponent<TransformComponent>().update(window);
 			}
 		}
 	}

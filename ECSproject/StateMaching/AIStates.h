@@ -44,7 +44,7 @@ public:
 class PatrolState : public AIState {
 public:
     void update(AIContext& ai) override {
-        ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+        ai.getTransform()->setDirection(Vector2D(0.f, 0.f));
         ai.getSprite()->setAnimate("idle");
     }
 
@@ -68,7 +68,7 @@ public:
 
 class NormalAttackState : public AIState {
     void update(AIContext& ai) override {
-        ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+        ai.getTransform()->setDirection(Vector2D(0.f, 0.f));
         BoundingBox box;
         if (ai.getSprite()->getFlip()) box = { ai.getTransform()->position - Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };
         else box = { ai.getTransform()->position + Vector2D(40.f, 0.f), ai.getTransform()->width, ai.getTransform()->height };
@@ -107,12 +107,12 @@ class TrackingState : public AIState {
 public:
     void update(AIContext& ai) override {
         if (!ai.getTransform()->canMove) {
-            ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+            ai.getTransform()->setDirection(Vector2D(0.f, 0.f));
             return;
         }
         Vector2D playerPos = ai.getPlayerPos();
         auto direction = (playerPos - ai.getTransform()->position).normalize();
-        ai.getTransform()->velocity = direction;
+        ai.getTransform()->setDirection(direction);
         ai.getSprite()->setAnimate(direction.x >= 0 ? "walkR" : "walkL");
     }
 
@@ -132,12 +132,12 @@ class BackingState : public AIState {
 public:
     void update(AIContext& ai) override {
         if (!ai.getTransform()->canMove) {
-            ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+            ai.getTransform()->setDirection(Vector2D(0.f, 0.f));
             return;
         }
         Vector2D defaultPos = ai.getDefaultPos();
-        ai.getTransform()->velocity = (defaultPos - ai.getTransform()->position).normalize();
-        if (ai.getTransform()->velocity.x >= 0) { ai.getSprite()->setAnimate("walkR"); }
+        ai.getTransform()->setDirection((defaultPos - ai.getTransform()->position).normalize());
+        if (ai.getTransform()->getVelocity().x >= 0) { ai.getSprite()->setAnimate("walkR"); }
         else { ai.getSprite()->setAnimate("walkL"); }
     }
 
@@ -151,7 +151,7 @@ public:
 class DyingState : public AIState {
 public:
     void update(AIContext& ai) override {
-        ai.getTransform()->velocity = Vector2D(0.f, 0.f);
+        ai.getTransform()->setDirection(Vector2D(0.f, 0.f));
         ai.getSprite()->setAnimate("dying");
     }
 

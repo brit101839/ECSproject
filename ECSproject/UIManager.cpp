@@ -4,7 +4,7 @@
 
 void UIManager::init(TextRender* t)
 {
-	std::string UIPath = "D:/dependencies/resource/UI/Fantasy Minimal Pixel Art GUI by eta-commercial-free/UI/";
+	std::string UIPath = "C:/dependencies/resource/UI/Fantasy Minimal Pixel Art GUI by eta-commercial-free/UI/";
 	std::string fullPath = UIPath + "HealthBarPanel_160x41.png";
 	auto& stateBarPanel = this->buildUI(Vector2D(50.f, 120.f), 160.f * 2, 41.f * 2, fullPath);
 	fullPath = UIPath + "ValueRed_120x8.png";

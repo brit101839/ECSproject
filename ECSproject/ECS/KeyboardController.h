@@ -32,5 +32,5 @@ public:
 	void onLeftMouse();
 	void onKeyboard(GLFWwindow* window);
 
-	void update(GLFWwindow* window);
+	void update(GLFWwindow* window, double deltaTime);
 };
