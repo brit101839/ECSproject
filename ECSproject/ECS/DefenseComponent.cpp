@@ -3,5 +3,5 @@
 
 bool DefenseComponent::checkAttack(BoundingBox& box)
 {
-	return Collision::AABB(box, entity->getComponent<ColliderComponent>().boundingBox);
+	return Collision::AABB(box, entity->getComponent<ColliderComponent>().getBoundingBox());
 }

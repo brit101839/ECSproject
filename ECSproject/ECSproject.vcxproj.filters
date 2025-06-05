@@ -42,9 +42,6 @@
     <ClCompile Include="ECS\Collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ECS\ColliderComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="readTileMap\readTileMap_json.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -200,7 +197,7 @@
     <ClInclude Include="Skill\SpawnSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Skill\MagicItem.h">
+    <ClInclude Include="Skill\MagicProjectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\DefenseComponent.h">
@@ -210,6 +207,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\FightingTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

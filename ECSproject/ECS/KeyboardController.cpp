@@ -29,9 +29,9 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 		return;
 	}
 
-	/*if (_def->doging()) {
+	if (_def->doging()) {
 		return;
-	}*/
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
 		_transform->setDirection(Vector2D(0.f, 0.f));

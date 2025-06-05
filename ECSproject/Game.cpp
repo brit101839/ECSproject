@@ -129,14 +129,14 @@ Game::Game()
     _textRender->initFont("C:\\dependencies\\resource\\text\\minecraftia\\Minecraftia-Regular.ttf");
     _textRender->initTextRendering();
 
+    Box<float> interBox{ {-10000.0f, -10000.0f} , {20000.0f, 20000.0f} };
+    _colliderManager = new CollisionManager(interBox, _globalEventManager);
     _spawnSystem = std::make_shared<SpawnSystem>(manager);
 
     initEntityGroup();
-
-    Box<float> interBox{ {-10000.0f, -10000.0f} , {20000.0f, 20000.0f} };
+    
     std::cout << "{ {" << interBox.left << "," << interBox.getBottom() << " }, {" << interBox.getRight() << "," << interBox.top << " } }" << std::endl;
     _renderManager = new RenderQuadtreeManager(interBox);
-    _colliderManager = new CollisionManager(interBox);
 
     _map = new Map(*this, "C:/dependencies/resource/map/map_town/map.json");
 
@@ -220,7 +220,7 @@ void Game::addTile(int id, GLfloat tileSize, Vector2D position, bool collider)
 
     if (collider) {
         std::string tag = "tile id: ";
-        tile.addcomponent<ColliderComponent>(_colliderManager, tag.append(std::to_string(id)));
+        tile.addcomponent<ColliderComponent>(_globalEventManager, tag.append(std::to_string(id)));
         tile.addGroup(groupCollider);
     }
     else {
@@ -261,6 +261,7 @@ void Game::update(double deltaTime)
 
     quadtree::Box<float> cameraBound = Camera->getComponent<CameraComponent>().getBox();
     _colliderManager->checkCollisions(&player->getEntity(), cameraBound, _window);
+    // _colliderManager->removeOutOfBounds(cameraBound);
 
   //  std::cout << "player velocity: " << player->getEntity().getComponent<TransformComponent>().getVelocity().x << ", "
 		//<< player->getEntity().getComponent<TransformComponent>().getVelocity().y << std::endl;

@@ -136,7 +136,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BehaviorTree\BehaviorTreeFactory.h" />
-    <ClCompile Include="ECS\ColliderComponent.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\DefenseComponent.cpp" />
     <ClCompile Include="ECS\ECS.cpp" />
@@ -160,6 +159,7 @@
     <ClInclude Include="BehaviorTree\FightingTree.h" />
     <ClInclude Include="BehaviorTree\tinybehaviortree.h" />
     <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ECS\AIComponent.h" />
     <ClInclude Include="AnimateSet.h" />
@@ -194,7 +194,7 @@
     <ClInclude Include="shader\Shader.h" />
     <ClInclude Include="Skill\Skill.h" />
     <ClInclude Include="Skill\SpawnSystem.h" />
-    <ClInclude Include="Skill\MagicItem.h" />
+    <ClInclude Include="Skill\MagicProjectile.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StateMaching\AIStates.h" />
     <ClInclude Include="StateMaching\StateMaching.h" />

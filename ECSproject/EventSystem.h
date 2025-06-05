@@ -2,6 +2,7 @@
 
 #include "ECS/ECS.h"
 #include "BoundingBox.h"
+#include "Collider.h"
 #include <unordered_map>
 #include <string>
 #include <functional>
@@ -72,6 +73,15 @@ public:
 
     DodgeStepEvent(DodgeStep dodgeStep) 
         :dodgeStep(dodgeStep) {}
+};
+
+class AddColliderEvent : public Event {
+public:
+    std::shared_ptr<Collider> collider;
+
+    AddColliderEvent(const std::shared_ptr<Collider> c)
+        :collider(c) {
+    }
 };
 
 class EventSystem {

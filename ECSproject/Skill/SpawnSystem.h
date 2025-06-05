@@ -1,13 +1,14 @@
 #pragma once
 
 #include "../ECS/ECS.h"
-#include "MagicItem.h"
+#include "MagicProjectile.h"
 #include <vector>
 
 class SpawnSystem {
 private:
 
 	Manager& _manager;
+	// CollisionManager& _collisionM;
 	std::vector<Entity*> _entitys;
 
 	Entity* createEntity() {
@@ -18,10 +19,10 @@ private:
 
 public:
 
-	SpawnSystem(Manager& m)
+	SpawnSystem(Manager& m )
 		:_manager(m) {}
 
-	std::unique_ptr<MagicItem> createItem(std::string name, Vector2D position, bool flip) {
+	std::unique_ptr<MagicProjectile> createItem(std::string name, Vector2D position, bool flip) {
 		if (name == "fire ball") {
 			return std::make_unique<FireBall>(createEntity(), position, flip);
 		}

@@ -3,20 +3,23 @@
 #include "../ECS/ECS.h"
 #include "../ECS/TransformComponent.h"
 #include "../ECS/SpriteComponent.h"
+#include "../ECS/LocalEventComponent.h"
+//#include "../ECS/ColliderComponent.h"
+//#include "../CollisionManager.h"
 
-class MagicItem {
+class MagicProjectile {
 protected:
 	Entity* _entity;
-	MagicItem(Entity* entity) : _entity(entity) {}
+	MagicProjectile(Entity* entity) : _entity(entity) {}
 
 public:
 	// virtual void onSpawn(Entity* entity, Vector2D position) = 0; // Called when the object is spawned
-	virtual ~MagicItem() = default; // Ensure proper cleanup
+	virtual ~MagicProjectile() = default; // Ensure proper cleanup
 };
 
-class FireBall : public MagicItem {
+class FireBall : public MagicProjectile {
 public:
-	FireBall(Entity* entity, Vector2D position, bool flip) : MagicItem(entity) {
+	FireBall(Entity* entity, Vector2D position, bool flip) : MagicProjectile(entity) {
 		Vector2D posOffset, velocity;
 		if (!flip) {
 			posOffset = Vector2D(50.f, 0.f);
@@ -31,12 +34,15 @@ public:
 		auto& sprite = entity->addcomponent<SpriteComponent>("C:/dependencies/resource/skill/Fire Effect 1/Firebolt SpriteSheet.png", true, 48.f, 48.f);
 		sprite.addAnimation("idle", Animation(0, 4, 10, flip));
 		sprite.setAnimate("idle");
+
+		BoundingBox bound{ position + posOffset, 40.0f, 40.0f };
+		// entity->addcomponent<ColliderComponent>(mCollisionM, "player", bound, Vector2D(0.f, 0.f), ColliderType::spell);
 	}
 };
 
-class IceBall : public MagicItem {
+class IceBall : public MagicProjectile {
 public:
-	IceBall(Entity* entity, Vector2D position, bool flip) : MagicItem(entity) {
+	IceBall(Entity* entity, Vector2D position, bool flip) : MagicProjectile(entity) {
 		Vector2D posOffset, velocity;
 		if (!flip) {
 			posOffset = Vector2D(50.f, 0.f);

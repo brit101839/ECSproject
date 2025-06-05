@@ -1,6 +1,6 @@
 #include "EnemyManager.h"
 #include "../ECS/Components.h"
-#include "../CollisionManager.h"
+// #include "../CollisionManager.h"
 #include "EnemyFactory.h"
 
 Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
@@ -15,7 +15,7 @@ Enemy* EnemyManager::addEnemy(std::string name, const Vector2D& position)
 
     
     BoundingBox bound{ position, 80.0f, 80.0f };
-    enemyEntity->addcomponent<ColliderComponent>(_colliderManager, "enemy", bound, Vector2D(0.f, -40.f));
+    enemyEntity->addcomponent<ColliderComponent>(_globalEventManager, "enemy", bound, Vector2D(0.f, -40.f));
     // enemyEntity->addcomponent<SkillCompnent>("fire ball", _spawnSys);
     enemyEntity->addcomponent<AttackComponent>(name, _globalEventManager);
     enemyEntity->addcomponent<DefenseComponent>(name);

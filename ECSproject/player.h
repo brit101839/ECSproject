@@ -46,7 +46,7 @@ public:
         playerSprite.setAnimate("idle");
 
         BoundingBox bound{ trans.position, 40.0f, 40.0f };
-        _entity->addcomponent<ColliderComponent>(mCollisionM, "player", bound, Vector2D(0.f, -40.f));
+        _entity->addcomponent<ColliderComponent>(_globalEventManager, "player", bound, Vector2D(0.f, -40.f));
         _entity->addcomponent<StatsComponent>(500, 10, 1);
         _entity->addcomponent<AttackComponent>(_name, _globalEventManager);
         _defense = &_entity->addcomponent<DefenseComponent>(_name);
