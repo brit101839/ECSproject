@@ -23,8 +23,8 @@ private:
 
 	TransformComponent* _transform;
 	GLuint _texture;
-	Sprite* _sprite;
-	AnimationSet* _animationSet;
+	std::unique_ptr<Sprite> _sprite;
+	std::unique_ptr<AnimationSet> _animationSet;
 	
 	std::string _currentAnimation;
 	GLfloat _cutWidth, _cutHeight;
@@ -73,6 +73,11 @@ public:
 		}
 	}
 
+	~SpriteComponent() override
+	{
+		
+	}
+
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
@@ -81,17 +86,17 @@ public:
 			_spriteType = SpriteType::Animate;
 			if (entity->hasComponent<LocalEventComponent>()) {
 				EventSystem* e = &entity->getComponent<LocalEventComponent>().getEventSystem();
-				_animationSet = new AnimationSet(e);
+				_animationSet = std::make_unique<AnimationSet>(e);
 			}
 			else {
 				std::cerr << "event manager not inject successfully" << std::endl;
 			}
 		}
 
-		if (_animated) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
-		else if (_map) _sprite = new Sprite(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
-		else if (_spriteType == SpriteType::UI) _sprite = new Sprite(_texture, _transform->width, _transform->height, Origin::TopLeft);
-		else _sprite = new Sprite(_texture, _transform->width, _transform->height);
+		if (_animated) _sprite = std::make_unique<Sprite>(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, _cutWidth, _cutHeight);
+		else if (_map) _sprite = std::make_unique<Sprite>(_texture, _transform->width, _transform->height, _textureWidth, _textureHeight, 16.0f, 16.0f, _id);
+		else if (_spriteType == SpriteType::UI) _sprite = std::make_unique<Sprite>(_texture, _transform->width, _transform->height, Origin::TopLeft);
+		else _sprite = std::make_unique<Sprite>(_texture, _transform->width, _transform->height);
 
 		_sprite->setOffsetX(_offsetX);
 	}
@@ -107,7 +112,7 @@ public:
 
 	AnimationSet* getAnimationSet() {
 		if (_animationSet) {
-			return _animationSet;
+			return _animationSet.get();
 		}
 		else {
 			std::cerr << "animationSet not init" << std::endl;
@@ -125,7 +130,7 @@ public:
 	void update(GLFWwindow* window, double deltaTime) override
 	{
 		if (_animated) {
-			_animationSet->update(_sprite);
+			_animationSet->update(_sprite.get());
 			_transform->canMove = _animationSet->getFrameInterrupt();
 		}
 		if (_OnAttack) {

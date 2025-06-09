@@ -188,6 +188,7 @@
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="readTileMap\readTileMap_json.h" />
     <ClInclude Include="RenderQuadtreeManager.h" />
     <ClInclude Include="ResourceManager.h" />

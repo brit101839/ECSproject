@@ -84,6 +84,15 @@ public:
     }
 };
 
+class RemoveColliderEvent : public Event {
+public:
+    std::shared_ptr<Collider> collider;
+
+    RemoveColliderEvent(const std::shared_ptr<Collider> c)
+        :collider(c) {
+    }
+};
+
 class EventSystem {
 public:
     using Callback = std::function<void(Event&)>;

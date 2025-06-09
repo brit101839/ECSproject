@@ -2,40 +2,34 @@
 
 #include "../ECS/ECS.h"
 #include "MagicProjectile.h"
+#include "../ProjectileManager.h"
+#include "../EventSystem.h"
 #include <vector>
 
 class SpawnSystem {
 private:
 
 	Manager& _manager;
-	// CollisionManager& _collisionM;
-	std::vector<Entity*> _entitys;
+	ProjectileManager& _projectileManager;
+	EventSystem& _gEventSystem;
 
 	Entity* createEntity() {
 		Entity* newEntity = &_manager.addEntity();
-		_entitys.push_back(newEntity);
+		_projectileManager.addEntity(newEntity);
 		return newEntity;
 	}
 
 public:
 
-	SpawnSystem(Manager& m )
-		:_manager(m) {}
+	SpawnSystem(Manager& m, ProjectileManager& p, EventSystem& gEventSys)
+		:_manager(m), _projectileManager(p), _gEventSystem(gEventSys) {}
 
 	std::unique_ptr<MagicProjectile> createItem(std::string name, Vector2D position, bool flip) {
 		if (name == "fire ball") {
-			return std::make_unique<FireBall>(createEntity(), position, flip);
+			return std::make_unique<FireBall>(_gEventSystem, createEntity(), position, flip);
 		}
 		else if (name == "ice ball") {
-			return std::make_unique<IceBall>(createEntity(), position, flip);
-		}
-	}
-
-	void render(Shader& shader, const Vector2D& cameraPos) {
-		for (auto* entity : _entitys) {
-			if (entity->isActive()) {
-				entity->draw(shader, cameraPos);
-			}
+			return std::make_unique<IceBall>(_gEventSystem, createEntity(), position, flip);
 		}
 	}
 };

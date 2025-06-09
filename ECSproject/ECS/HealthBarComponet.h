@@ -38,7 +38,7 @@ public:
 	}
 
 	void update(GLFWwindow* window, double deltaTime) override {
-		mDroppingBlood = ((mDroppingBlood - 0.0005f) > 0) ? mDroppingBlood - 0.0005f : 0.f;
+		mDroppingBlood = ((mDroppingBlood - 0.05f * deltaTime) > 0) ? mDroppingBlood - 0.05f * deltaTime : 0.f;
 	}
 
 	void draw(Shader& shader, Vector2D cameraPos) override {

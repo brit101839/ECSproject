@@ -5,6 +5,7 @@
 #include "ECS/Collision.h"
 #include "Collider.h"
 #include "EventSystem.h"
+#include "ECS/ColliderComponent.h"
 
 class CollisionManager {
 private:
@@ -28,6 +29,9 @@ public:
 	{
 		_globalEventSys.subscribe<AddColliderEvent>([this](Event& event) {
 			addCollider(event); });
+
+		_globalEventSys.subscribe<RemoveColliderEvent>([this](Event& event) {
+			removeCollider(event); });
 	}
 
 	void addCollider(Event& event) {
@@ -39,6 +43,16 @@ public:
 			collidertree.add(collider);
 		}
 		else std::cerr << "collider adding event loss pointer!" << std::endl;
+	}
+
+	void removeCollider(Event& event) {
+		auto& colliderEvent = static_cast<RemoveColliderEvent&>(event);
+		ColliderPtr collider = colliderEvent.collider;
+
+		if (collider) {
+			collidertree.remove(collider);
+		}
+		else std::cerr << "collider removing event loss pointer!" << std::endl;
 	}
 
 	void updateCollider(ColliderPtr collider) {

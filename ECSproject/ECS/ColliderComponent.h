@@ -4,10 +4,10 @@
 #pragma once
 
 #include <string>
-#include "Components.h"
-#include "Quadtree/Box.h"
-#include "../BoundingBox.h"
+#include "TransformComponent.h"
+#include "../Collider.h"
 #include "../EventSystem.h"
+#include "Collision.h"
 
 class ColliderComponent : public Component
 {
@@ -31,6 +31,16 @@ public:
 		:_globalEventsys(GeventM), isInitialSize(true), _shift(shift)
 	{
 		_collider = std::make_shared<Collider>(boundingBox, getBox(boundingBox), t, type, entity);
+	}
+
+	~ColliderComponent() override 
+	{
+		RemoveColliderEvent event(_collider);
+		_globalEventsys.publish<RemoveColliderEvent>(event);
+		if (_collider.use_count() > 2) {
+			std::cout << "Warning: Collider is still used by other systems! use_count = "
+				<< _collider.use_count() << std::endl;
+		}
 	}
 
 	quadtree::Box<float> getBox(BoundingBox boundingBox) const {
@@ -63,6 +73,11 @@ public:
 		}
 	}
 
+	bool isOutOfBounds(quadtree::Box<float> cameraBound){
+		return Collision::isOutOfBound(cameraBound, _collider->boundingBox);
+	}
+
 	const ColliderType getType() const { return _collider->type; }
 	const BoundingBox getBoundingBox() const { return _collider->boundingBox; }
+	const quadtree::Box<float> getBox() const { return _collider->box; }
 };

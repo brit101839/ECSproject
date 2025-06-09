@@ -58,6 +58,7 @@ private:
 	CollisionManager* _colliderManager;
 	UIManager* _UIManager;
 	EventSystem _globalEventManager;
+	std::shared_ptr<ProjectileManager> _projectileManager;
 	std::shared_ptr<SpawnSystem> _spawnSystem;
 
 	Player* player = nullptr;

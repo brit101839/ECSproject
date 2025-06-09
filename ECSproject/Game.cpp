@@ -131,7 +131,8 @@ Game::Game()
 
     Box<float> interBox{ {-10000.0f, -10000.0f} , {20000.0f, 20000.0f} };
     _colliderManager = new CollisionManager(interBox, _globalEventManager);
-    _spawnSystem = std::make_shared<SpawnSystem>(manager);
+	_projectileManager = std::make_shared<ProjectileManager>();
+    _spawnSystem = std::make_shared<SpawnSystem>(manager, *_projectileManager, _globalEventManager);
 
     initEntityGroup();
     
@@ -243,10 +244,12 @@ void Game::render()
     _enemyManager->renderEnemies(_spriteShader, cameraPos);
     for (auto& p : manager.getGroup(groupPlayer)) { p->draw(_spriteShader, cameraPos); }
     // for (auto& e : manager.getGroup(groupEnemies)) { e->draw(_shader, cameraPos); }
-    _spawnSystem.get()->render(_spriteShader, cameraPos);
+    // _spawnSystem.get()->render(_spriteShader, cameraPos);
+    _projectileManager->render(_spriteShader, cameraPos);
     _UIManager->render(_spriteShader, cameraPos);
     backpack->render(_spriteShader, cameraPos);
 
+    manager.refresh();
     // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
     // -------------------------------------------------------------------------------
     glfwSwapBuffers(_window);
@@ -254,13 +257,14 @@ void Game::render()
 
 void Game::update(double deltaTime)
 {
-    manager.refresh();
+    // manager.refresh();
     manager.update(_window, deltaTime);
 
     _UIManager->update();
 
     quadtree::Box<float> cameraBound = Camera->getComponent<CameraComponent>().getBox();
     _colliderManager->checkCollisions(&player->getEntity(), cameraBound, _window);
+    _projectileManager->removeOutOfBounds(cameraBound);
     // _colliderManager->removeOutOfBounds(cameraBound);
 
   //  std::cout << "player velocity: " << player->getEntity().getComponent<TransformComponent>().getVelocity().x << ", "
