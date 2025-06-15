@@ -52,7 +52,7 @@ Animation parseAttackAnimation(const json& animJson) {
 
 class EnemyFactory {
 public:
-    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position, const TransformComponent& playerTrans, std::shared_ptr<SpawnSystem> spawnSys) {
+    static Entity* createEnemyFromJson(Manager& manager, const std::string& enemyType, const Vector2D& position, const TransformComponent& playerTrans, std::shared_ptr<SpawnSystem> spawnSys, EventSystem gEventSys) {
         std::ifstream file("Enemy/enemy_config.json");
         if (!file.is_open()) {
             std::cerr << "Failed to open enemy_config.json" << std::endl;
@@ -72,7 +72,7 @@ public:
 
                 Entity* enemyEntity = &manager.addEntity();
 
-                enemyEntity->addcomponent<LocalEventComponent>();
+                enemyEntity->addcomponent<LocalEventComponent>(gEventSys);
                 auto& trans = enemyEntity->addcomponent<TransformComponent>(position, enemyData["speed"], enemyData["width"], enemyData["height"]);
                 enemyEntity->addcomponent<AIComponent>(playerTrans, parseAIBehavior(enemyData["behavior"]));
                 auto& stats = enemyEntity->addcomponent<StatsComponent>(enemyData["hp"], enemyData["atk"], enemyData["def"]);

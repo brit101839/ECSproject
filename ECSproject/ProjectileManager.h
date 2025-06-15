@@ -2,13 +2,20 @@
 
 #include "ECS/ECS.h"
 #include "ECS/ColliderComponent.h"
+#include "EventSystem.h"
 
 class ProjectileManager {
 private:
+	EventSystem& _globalEventSys;
 	std::vector<Entity*> _entitys;
 
 public:
-	ProjectileManager() = default;
+	ProjectileManager(EventSystem& gEventSys) 
+		: _globalEventSys(gEventSys) {
+
+		_globalEventSys.subscribe<DestroyEntityEvent>([this](Event& event) {
+			removeEntityEvent(event); });
+	}
 
 	~ProjectileManager() = default;
 
@@ -20,6 +27,13 @@ public:
 		auto it = std::remove(_entitys.begin(), _entitys.end(), entity);
 		if (it != _entitys.end()) {
 			_entitys.erase(it, _entitys.end());
+		}
+	}
+
+	void removeEntityEvent(Event& event) {
+		auto* destroyEvent = dynamic_cast<DestroyEntityEvent*>(&event);
+		if (destroyEvent) {
+			removeEntity(destroyEvent->entity);
 		}
 	}
 

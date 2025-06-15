@@ -5,10 +5,11 @@
 
 class LocalEventComponent :public Component {
 private:
+	EventSystem& _globalEventsys;
 	EventSystem _eventManager;
 
 public:
-	LocalEventComponent() = default;
+	LocalEventComponent(EventSystem& g) : _globalEventsys(g) {};
 
 	template<typename EventType>
 	void subscribe(std::function<void(Event&)> callBack) {
@@ -22,5 +23,11 @@ public:
 
 	EventSystem& getEventSystem() {
 		return _eventManager;
+	}
+
+	void destroyEntity() {
+		DestroyEntityEvent event(entity);
+		_globalEventsys.publish<DestroyEntityEvent>(event);
+		entity->destroy(); // Destroy the entity when the explosion is complete
 	}
 };

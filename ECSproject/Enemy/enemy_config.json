@@ -93,7 +93,7 @@
       "behavior": "SkillOnly",
       "hp": 100,
       "atk": 10,
-      "def": 10,
+      "def": 1,
       "speed": 300.0,
       "width": 300.0,
       "height": 300.0,

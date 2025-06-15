@@ -102,6 +102,10 @@ public:
 				endSkillEvent();
 			}
 		}
+		else if(_currentAnimation->state == AnimateState::Dying) {
+			ProjectileExplosionComplete event(10);
+			_localEvent->publish<ProjectileExplosionComplete&>(event);
+		}
 	}
 
 	void OnAnimateStart() {

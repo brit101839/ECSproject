@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "EventSystem.h"
 #include "ECS/ColliderComponent.h"
+#include "ECS/ProjectileComponent.h"
 
 class CollisionManager {
 private:
@@ -64,14 +65,35 @@ public:
 		return collidertree.query(area);
 	}
 
+	void hittingObstacle(ColliderPtr collider, Entity* player) {
+		std::cout << "collision: " << collider->tag << std::endl;
+		std::cout << "position:" << player->getComponent<TransformComponent>().position.x << ", " << player->getComponent<TransformComponent>().position.y << std::endl;
+		Vector2D mtv = Collision::calculateMTV(player->getComponent<ColliderComponent>().getBoundingBox(), collider->boundingBox);
+		player->getComponent<TransformComponent>().position += mtv;
+		// player->getComponent<TransformComponent>().update(window);
+	}
+
+	void hittingSpell(ColliderPtr collider, Entity* player) {
+		std::cout << "spell on hit: " << collider->tag << std::endl;
+		std::cout << "position:" << player->getComponent<TransformComponent>().position.x << ", " << player->getComponent<TransformComponent>().position.y << std::endl;
+		if(!collider->entity->hasComponent<ProjectileComponent>()) {
+			std::cerr << "hitting spell without projectile component!" << std::endl;
+			return;
+		}
+		collider->entity->getComponent<ProjectileComponent>().explosion();
+		
+	}
+
 	void checkCollisions(Entity* player, const quadtree::Box<float>& area, GLFWwindow* window) {
 		for (auto cc : query(area)) {
 			if (cc->tag != "player" && Collision::AABB(player->getComponent<ColliderComponent>().getBoundingBox(), cc->boundingBox)) {
-				std::cout << "collision: " << cc->tag << std::endl;
-				std::cout << "position:" << player->getComponent<TransformComponent>().position.x << ", " << player->getComponent<TransformComponent>().position.y << std::endl;
-				Vector2D mtv = Collision::calculateMTV(player->getComponent<ColliderComponent>().getBoundingBox(), cc->boundingBox);
-				player->getComponent<TransformComponent>().position += mtv;
-				// player->getComponent<TransformComponent>().update(window);
+				if (cc->type == ColliderType::mapObstacle) {
+					hittingObstacle(cc, player);
+				}
+				else if(cc->type == ColliderType::spell) {
+					hittingSpell(cc, player);
+				}
+
 			}
 		}
 		// std::cout << "collider in screen: " << query(area).size() << std::endl;

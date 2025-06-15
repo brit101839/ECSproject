@@ -28,7 +28,7 @@ public:
     }
 
     void componentSetting(CollisionManager* mCollisionM) {
-        _entity->addcomponent<LocalEventComponent>();
+        _entity->addcomponent<LocalEventComponent>(_globalEventManager);
 
         auto trans = _entity->addcomponent<TransformComponent>(Vector2D(4500.0f, -2340.0f), Vector2D(0.0f, 0.0f), 500.0f, 100.0f, 100.0f);
         

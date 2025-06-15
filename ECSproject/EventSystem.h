@@ -12,6 +12,15 @@ public:
     virtual ~Event() = default;
 };
 
+class DestroyEntityEvent : public Event {
+public:
+    Entity* entity;
+
+    DestroyEntityEvent(Entity* entity) 
+        : entity(entity) {
+	}
+};
+
 class AttackCheckingEvent : public Event {
 public:
     std::string attacker;
@@ -90,6 +99,15 @@ public:
 
     RemoveColliderEvent(const std::shared_ptr<Collider> c)
         :collider(c) {
+    }
+};
+
+class ProjectileExplosionComplete : public Event {
+public:
+    int damage;
+
+    ProjectileExplosionComplete(int damage)
+        :damage(damage){
     }
 };
 

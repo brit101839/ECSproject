@@ -13,10 +13,10 @@ struct Collider {
 	quadtree::Box<float> box;
 	ColliderType type;
 	std::string tag;
-	Entity* entity; // optional fallback to ECS
+	Entity* entity = nullptr; // optional fallback to ECS
 
-	Collider(const std::string& tag, ColliderType t = ColliderType::mapObstacle, Entity* e = nullptr)
-		: tag(tag), type(t), entity(e) {
+	Collider(const std::string& tag, ColliderType t = ColliderType::mapObstacle)
+		: tag(tag), type(t) {
 	}
 
 	Collider(const BoundingBox& bb, const quadtree::Box<float>& b, const std::string& tag, ColliderType t = ColliderType::mapObstacle, Entity* e = nullptr)

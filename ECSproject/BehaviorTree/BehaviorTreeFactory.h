@@ -66,7 +66,7 @@ public:
         auto direction = (playerPos - context.getTransform()->position).normalize();
         context.getTransform()->setDirection(direction);
         context.getSprite()->setAnimate(direction.x >= 0 ? "walkR" : "walkL");
-        std::cout << "tracking" << context.getDist() << std::endl;
+        // std::cout << "tracking" << context.getDist() << std::endl;
         return BehaviorResult::RUNNING;
     }
 };

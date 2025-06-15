@@ -131,7 +131,7 @@ Game::Game()
 
     Box<float> interBox{ {-10000.0f, -10000.0f} , {20000.0f, 20000.0f} };
     _colliderManager = new CollisionManager(interBox, _globalEventManager);
-	_projectileManager = std::make_shared<ProjectileManager>();
+	_projectileManager = std::make_shared<ProjectileManager>(_globalEventManager);
     _spawnSystem = std::make_shared<SpawnSystem>(manager, *_projectileManager, _globalEventManager);
 
     initEntityGroup();
