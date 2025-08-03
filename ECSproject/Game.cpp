@@ -117,8 +117,8 @@ Game::Game()
 
     setupGL();
 
-    _spriteShader.init("shader/sprite.vs", "shader/sprite.fs");
-    _textShader.init("shader/text.vs", "shader/text.fs");
+    _spriteShader.init("../ECSproject/shader/sprite.vs", "../ECSproject/shader/sprite.fs");
+    _textShader.init("../ECSproject/shader/text.vs", "../ECSproject/shader/text.fs");
 
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(SRC_WIDTH), 0.0f, static_cast<float>(SRC_HEIGHT));
     _textShader.use();

@@ -121,7 +121,7 @@ public:
 	}
 
 	void OnInjuried() {
-		beginAttackTime = glfwGetTime();
+		beginAttackTime = (float) glfwGetTime();
 		_OnAttack = true;
 	}
 

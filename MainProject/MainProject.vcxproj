@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{80d2ee89-f936-45dd-b550-25a67eda30a6}</ProjectGuid>
-    <RootNamespace>ECSproject</RootNamespace>
+    <ProjectGuid>{afb4a36e-12bf-475d-a14f-1ca7806d3b3f}</ProjectGuid>
+    <RootNamespace>MainProject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -93,8 +93,6 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -104,14 +102,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ECSproject;C:\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\x64\Debug;C:\dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ECSproject.lib;glfw3.lib;freetype.lib;behaviortree_cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -122,93 +120,23 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ECSproject;C:\dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\x64\Debug;C:\dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ECSproject.lib;glfw3.lib;freetype.lib;behaviortree_cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BehaviorTree\BehaviorTreeFactory.h" />
-    <ClCompile Include="ECS\Collision.cpp" />
-    <ClCompile Include="ECS\DefenseComponent.cpp" />
-    <ClCompile Include="ECS\ECS.cpp" />
-    <ClCompile Include="ECS\KeyboardController.cpp" />
-    <ClCompile Include="ECS\StatsComponent.cpp" />
-    <ClCompile Include="ECS\TileComponent.cpp" />
-    <ClCompile Include="Enemy\EnemyManager.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="readTileMap\readTileMap_json.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="stb.cpp" />
-    <ClCompile Include="textureManager.cpp" />
-    <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="vector2D\Vector2D.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackPack.h" />
-    <ClInclude Include="BehaviorTree\FightingTree.h" />
-    <ClInclude Include="BehaviorTree\tinybehaviortree.h" />
-    <ClInclude Include="BoundingBox.h" />
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="CollisionManager.h" />
-    <ClInclude Include="ECS\AIComponent.h" />
-    <ClInclude Include="AnimateSet.h" />
-    <ClInclude Include="ECS\AIContext.h" />
-    <ClInclude Include="ECS\Animation.h" />
-    <ClInclude Include="ECS\AttackComponent.h" />
-    <ClInclude Include="ECS\CameraComponent.h" />
-    <ClInclude Include="ECS\Collision.h" />
-    <ClInclude Include="ECS\ColliderComponent.h" />
-    <ClInclude Include="ECS\Components.h" />
-    <ClInclude Include="ECS\DefenseComponent.h" />
-    <ClInclude Include="ECS\ECS.h" />
-    <ClInclude Include="ECS\HealthBarComponet.h" />
-    <ClInclude Include="ECS\LocalEventComponent.h" />
-    <ClInclude Include="ECS\ProjectileComponent.h" />
-    <ClInclude Include="ECS\SkillComponent.h" />
-    <ClInclude Include="ECS\StatsComponent.h" />
-    <ClInclude Include="ECS\TextRenderComponent.h" />
-    <ClInclude Include="ECS\TileComponent.h" />
-    <ClInclude Include="ECS\TransformComponent.h" />
-    <ClInclude Include="ECS\SpriteComponent.h" />
-    <ClInclude Include="Enemy\Enemy.h" />
-    <ClInclude Include="Enemy\EnemyFactory.h" />
-    <ClInclude Include="Enemy\EnemyManager.h" />
-    <ClInclude Include="EventSystem.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="ECS\KeyboardController.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="ProjectileManager.h" />
-    <ClInclude Include="readTileMap\readTileMap_json.h" />
-    <ClInclude Include="RenderQuadtreeManager.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="shader\Shader.h" />
-    <ClInclude Include="Skill\Skill.h" />
-    <ClInclude Include="Skill\SpawnSystem.h" />
-    <ClInclude Include="Skill\MagicProjectile.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="StateMaching\AIStates.h" />
-    <ClInclude Include="StateMaching\StateMaching.h" />
-    <ClInclude Include="TextRender.h" />
-    <ClInclude Include="textureManager.h" />
-    <ClInclude Include="UIManager.h" />
-    <ClInclude Include="vector2D\Vector2D.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Enemy\enemy_config.json">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </None>
+    <ProjectReference Include="..\ECSproject\ECSproject.vcxproj">
+      <Project>{80d2ee89-f936-45dd-b550-25a67eda30a6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
