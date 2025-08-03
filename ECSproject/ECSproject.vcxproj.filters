@@ -66,6 +66,9 @@
     <ClCompile Include="BehaviorTree\BehaviorTreeFactory.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorTree\BehaviorTreeFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -213,6 +216,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ECS\ProjectileComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\TreeBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
