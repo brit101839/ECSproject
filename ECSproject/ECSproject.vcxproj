@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="BehaviorTree\BehaviorTreeFactory.cpp" />
     <ClCompile Include="BehaviorTree\BehaviorTreeFactory.h" />
+    <ClCompile Include="BehaviorTree\FightingTree.cpp" />
     <ClCompile Include="ECS\Collision.cpp" />
     <ClCompile Include="ECS\DefenseComponent.cpp" />
     <ClCompile Include="ECS\ECS.cpp" />

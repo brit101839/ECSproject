@@ -16,18 +16,24 @@ BehaviorTree<AIstate&, AIContext&> BehaviorTreeFactory::buildTree()
 			};*/
 
 	FightingTreeFactory fightingTreeFactory;
-	auto fightingTree = fightingTreeFactory.buildTree();
 
-	auto tree = BehaviorTree<AIstate&, AIContext&>();
+	BehaviorTree<AIstate&, AIContext&> tree = BehaviorTree<AIstate&, AIContext&>();
 
 	tree.setRoot(TreeBuilder::FallbackNodeList(
 		TreeBuilder::SequenceNodeList(
+			// try get in fighting state
 			TreeBuilder::FallbackNodeList(
+				// if is fighting continous, Success
 				TreeBuilder::PeelState(std::make_unique<IsFighting>()),
+				// if not try get in fighting state
 				TreeBuilder::PeelContext(std::make_unique<TryFighting>())
 			),
-			TreeBuilder::PeelState(std::make_unique<SetFighingState>()),
-			TreeBuilder::PeelContext(std::move(fightingTree)),
+
+			// if into fighting state, execute fighting tree
+			TreeBuilder::PeelState(std::make_unique<SetFighingState>()),	// set fighting state
+			std::move(fightingTreeFactory.buildTree()),						// run fighting tree
+
+			// if can't fighting, the fighting flow end. Run the following behavior
 			TreeBuilder::Invert(TreeBuilder::PeelContext(std::make_unique<TryFighting>()))
 		),
 		TreeBuilder::SequenceNodeList(

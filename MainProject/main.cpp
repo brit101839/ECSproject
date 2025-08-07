@@ -38,5 +38,9 @@ int main(int argc, char** argv)
     }
 
     glfwTerminate();
+
+	std::cout << "Press Enter to exit...";
+	std::cin.get(); // waits for user input
+
     return 0;
 }
