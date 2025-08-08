@@ -16,21 +16,7 @@ public:
 
 class TryExitFighting : public BehaviorNode<AIstate&, AIContext&> {
 public:
-    BehaviorResult tick(AIstate& state, AIContext& context) override {
-		if (context.getAttack()->attacking) {
-			// std::cout << "should not exit fighting" << std::endl;
-			return BehaviorResult::RUNNING;
-		}
-		else if (context.getSkill()->usingSkill) {
-			return BehaviorResult::RUNNING;
-		}
-		else if (context.getDist() < 100.f) {
-			return BehaviorResult::FAILURE;
-		}
-		// state.fighting = false;
-		// std::cout << "should exit fighting" << std::endl;
-		return BehaviorResult::SUCCESS;
-	}
+	BehaviorResult tick(AIstate& state, AIContext& context) override;
 };
 
 class TryFighting : public BehaviorNode<AIContext&> {

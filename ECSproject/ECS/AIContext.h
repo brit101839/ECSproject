@@ -7,39 +7,40 @@
 
 enum class AIPreferBehavior
 {
-    NormalAttackOnly, SkillOnly
+	NormalAttackOnly, SkillOnly
 };
 
 enum class EnemyState
 {
-    patrol, tracking, fighting, skillfight, normalAttack, backing, dying
+	patrol, tracking, fighting, skillfight, normalAttack, backing, dying
 };
 
 struct AIstate {
-    bool fighting = false;
-    // bool attacking = false;
-    float attackCooldown = 0.f;
+	bool fighting = false;
+	// bool attacking = false;
+	float attackCooldown = 0.f;
 };
 
 class AIContext {
 private:
-    AIPreferBehavior _behavior;
-    Entity* _entity;
-    Vector2D _defaultPos;
-    const TransformComponent& _playerTrans;
+	AIPreferBehavior _behavior;
+	Entity* _entity;
+	Vector2D _defaultPos;
+	const TransformComponent& _playerTrans;
 
 public:
-    AIContext(Entity* entity, const TransformComponent& playerTrans, AIPreferBehavior behavior)
-        : _entity(entity), _playerTrans(playerTrans), _behavior(behavior) {
-        _defaultPos = _entity->getComponent<TransformComponent>().position;
-    }
+	AIContext(Entity* entity, const TransformComponent& playerTrans, AIPreferBehavior behavior)
+	// constructure
+		: _entity(entity), _playerTrans(playerTrans), _behavior(behavior) {
+		_defaultPos = _entity->getComponent<TransformComponent>().position;
+	}
 
-    const AIPreferBehavior& getBehavior() const { return _behavior; }
-    TransformComponent* getTransform() const { return &_entity->getComponent<TransformComponent>(); }
-    SpriteComponent* getSprite() const { return &_entity->getComponent<SpriteComponent>(); }
-    AttackComponent* getAttack() const { return &_entity->getComponent<AttackComponent>(); }
-    SkillCompnent* getSkill() const { return &_entity->getComponent<SkillCompnent>(); }
-    Vector2D getDefaultPos() const { return _defaultPos; }
-    const Vector2D& getPlayerPos() const { return _playerTrans.position; }
-    const GLfloat getDist() const { return getTransform()->position.distanceTo(getPlayerPos()); }
+	const AIPreferBehavior& getBehavior() const { return _behavior; }
+	TransformComponent* getTransform() const { return &_entity->getComponent<TransformComponent>(); }
+	SpriteComponent* getSprite() const { return &_entity->getComponent<SpriteComponent>(); }
+	AttackComponent* getAttack() const { return &_entity->getComponent<AttackComponent>(); }
+	SkillCompnent* getSkill() const { return &_entity->getComponent<SkillCompnent>(); }
+	Vector2D getDefaultPos() const { return _defaultPos; }
+	const Vector2D& getPlayerPos() const { return _playerTrans.position; }
+	const GLfloat getDist() const { return getTransform()->position.distanceTo(getPlayerPos()); }
 };

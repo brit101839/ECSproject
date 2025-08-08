@@ -67,5 +67,5 @@ public:
 
 class FightingTreeFactory {
 public:
-	std::unique_ptr<BehaviorNode<AIstate&, AIContext&>> buildTree( void );
+	std::unique_ptr<BehaviorNode<AIstate&, AIContext&>> buildFightingTree( void );
 };

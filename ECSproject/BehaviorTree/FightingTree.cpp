@@ -1,7 +1,7 @@
 #include "TreeBuilder.h"
 #include "FightingTree.h"
 
-std::unique_ptr<BehaviorNode<AIstate&, AIContext&>> buildTree(void)
+std::unique_ptr<BehaviorNode<AIstate&, AIContext&>> FightingTreeFactory::buildFightingTree(void)
 {
 	std::unique_ptr<FallbackNode<AIstate&, AIContext&>> rootNode = TreeBuilder::FallbackNodeList(
 		TreeBuilder::SequenceNodeList(
