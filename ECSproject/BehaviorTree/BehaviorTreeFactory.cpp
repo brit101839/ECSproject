@@ -1,4 +1,5 @@
 #include "TreeBuilder.h"
+#include "BaseNode.h"
 #include "FightingTree.h"
 #include "BehaviorTreeFactory.h"
 
@@ -15,52 +16,96 @@ BehaviorResult TryExitFighting::tick(AIstate& state, AIContext& context)
 		return BehaviorResult::FAILURE;
 	}
 	// state.fighting = false;
-	// std::cout << "should exit fighting" << std::endl;
+	std::cout << "should exit fighting" << std::endl;
 	return BehaviorResult::SUCCESS;
+}
+
+BehaviorResult SetFighingState::tick(AIstate& state, AIContext& context)
+{
+	state.fighting = true;
+	context.getTransform()->speed = 0;
+
+	// std::cout << "enter fighting" << std::endl;
+
+	return BehaviorResult::SUCCESS;
+}
+
+BehaviorResult SetExitFightingState::tick(AIstate& state, AIContext& context)
+{
+	state.fighting = false;
+	context.getTransform()->setToDefaultSpeed();
+
+	// std::cout << "exit fighting" << std::endl;
+
+	return BehaviorResult::SUCCESS;
+}
+
+BehaviorResult TryBacking::tick( AIContext& context )
+{
+	Vector2D defaultPos = context.getDefaultPos();
+	auto dist = context.getTransform()->position.distanceTo(defaultPos);
+	if (dist < 80.f) return BehaviorResult::FAILURE;
+	return BehaviorResult::SUCCESS;
+}
+
+BehaviorResult Backing::tick( AIContext& context )
+{
+	Vector2D defaultPos = context.getDefaultPos();
+	auto dist = context.getTransform()->position.distanceTo(defaultPos);
+
+	if (context.getDist() < 100.f) return BehaviorResult::FAILURE;
+	else if (dist < 80.f) return BehaviorResult::SUCCESS;
+
+	context.getTransform()->setDirection((defaultPos - context.getTransform()->position).normalize());
+
+	if (context.getTransform()->getVelocity().x >= 0) { context.getSprite()->setAnimate("walkR"); }
+	else { context.getSprite()->setAnimate("walkL"); }
+	// std::cout << "backing" << context.getTransform()->position.distanceTo(defaultPos) << std::endl;
+	return BehaviorResult::RUNNING;
 }
 
 BehaviorTree<AIstate&, AIContext&> BehaviorTreeFactory::buildTree()
 {
-	/*auto wrapPeelAIstate = [](std::unique_ptr<BehaviorNode<AIstate&>>&& child) {
-			auto peelAIstate = std::make_unique<PeelAIstate>();
-			peelAIstate->setChild(std::move(child));
-			return std::move(peelAIstate);
-			};
-		auto wrapPeelAIContext = [](std::unique_ptr<BehaviorNode<AIContext&>>&& child) {
-			auto peelAIContext = std::make_unique<PeelAIContext>();
-			peelAIContext->setChild(std::move(child));
-			return std::move(peelAIContext);
-			};*/
-
 	FightingTreeFactory fightingTreeFactory;
 
 	BehaviorTree<AIstate&, AIContext&> tree = BehaviorTree<AIstate&, AIContext&>();
 
 	tree.setRoot(TreeBuilder::FallbackNodeList(
+		// ===== Fighting sequence =====
 		TreeBuilder::SequenceNodeList(
-			// try get in fighting state
-			TreeBuilder::FallbackNodeList(
-				// if is fighting continous, Success
-				TreeBuilder::PeelState(std::make_unique<IsFighting>()),
-				// if not try get in fighting state
-				TreeBuilder::PeelContext(std::make_unique<TryFighting>())
+			// ==== Sequence of enter fighting ====
+			TreeBuilder::SequenceNodeList(
+				// try get in fighting state
+				TreeBuilder::FallbackNodeList(
+					// if is fighting continous, Success
+					TreeBuilder::PeelState(std::make_unique<IsFighting>()),
+					// if not try get in fighting state
+					TreeBuilder::PeelContext(std::make_unique<TryFighting>())
+				),
+
+				// if into fighting state, execute fighting tree
+				std::make_unique<SetFighingState>(),					// set fighting state
+				std::move(fightingTreeFactory.buildFightingTree())		// run fighting tree
 			),
 
-			// if into fighting state, execute fighting tree
-			TreeBuilder::PeelState(std::make_unique<SetFighingState>()),	// set fighting state
-			std::move(fightingTreeFactory.buildFightingTree()),						// run fighting tree
-
-			// if can't fighting, the fighting flow end. Run the following behavior
-			TreeBuilder::Invert(TreeBuilder::PeelContext(std::make_unique<TryFighting>()))
+			// ==== Sequence of exit fighting ====
+			TreeBuilder::SequenceNodeList(
+				// if can't fighting, the fighting flow end. Run the following behavior
+				std::make_unique<TryExitFighting>(),					// Try exit fighting mode
+				std::make_unique<SetExitFightingState>()				// set exit fighting state
+			)
 		),
+
 		TreeBuilder::SequenceNodeList(
 			TreeBuilder::PeelContext(std::make_unique<TryTracking>()),
 			TreeBuilder::PeelContext(std::make_unique<Tracking>())
 		),
+
 		TreeBuilder::SequenceNodeList(
 			TreeBuilder::PeelContext(std::make_unique<TryBacking>()),
 			TreeBuilder::PeelContext(std::make_unique<Backing>())
 		),
+
 		TreeBuilder::PeelContext(std::make_unique<Patrol>())
 	));
 

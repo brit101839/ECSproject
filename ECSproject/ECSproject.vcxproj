@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviorTree\BaseNode.cpp" />
     <ClCompile Include="BehaviorTree\BehaviorTreeFactory.cpp" />
     <ClCompile Include="BehaviorTree\BehaviorTreeFactory.h" />
     <ClCompile Include="BehaviorTree\FightingTree.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackPack.h" />
+    <ClInclude Include="BehaviorTree\BaseNode.h" />
     <ClInclude Include="BehaviorTree\FightingTree.h" />
     <ClInclude Include="BehaviorTree\tinybehaviortree.h" />
     <ClInclude Include="BehaviorTree\TreeBuilder.h" />
