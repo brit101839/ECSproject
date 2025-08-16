@@ -5,6 +5,7 @@
 
 // #include "Components.h"
 #include "TransformComponent.h"
+#include "MovementComponent.h"
 #include "SpriteComponent.h"
 #include "AttackComponent.h"
 #include "DefenseComponent.h"
@@ -15,6 +16,7 @@ class KeyboardController : public Component
 private:
 
 	TransformComponent* _transform;
+	MovementComponent* _movement;
 	SpriteComponent* _sprite;
 	AttackComponent* _atc;
 	DefenseComponent* _def;
@@ -24,6 +26,7 @@ public:
 	void init() override
 	{
 		_transform = &entity->getComponent<TransformComponent>();
+		_movement = &entity->getComponent<MovementComponent>();
 		_sprite = &entity->getComponent<SpriteComponent>();
 		_atc = &entity->getComponent<AttackComponent>();
 		_def = &entity->getComponent<DefenseComponent>();

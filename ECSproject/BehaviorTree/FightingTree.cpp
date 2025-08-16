@@ -30,7 +30,7 @@ BehaviorResult CanUseParallelRangeSkill::tick(AIContext& context)
 
 BehaviorResult UsingSkill::tick(AIContext& context)
 {
-	context.getTransform()->setDirection(Vector2D(0.f, 0.f));
+	context.getMovement()->stop();
 	context.getSkill()->UseSkill();
 	return BehaviorResult::SUCCESS;
 }

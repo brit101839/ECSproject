@@ -38,6 +38,7 @@ public:
 
 	const AIPreferBehavior& getBehavior() const { return _behavior; }
 	TransformComponent* getTransform() const { return &_entity->getComponent<TransformComponent>(); }
+	MovementComponent* getMovement() const { return &_entity->getComponent<MovementComponent>(); }
 	SpriteComponent* getSprite() const { return &_entity->getComponent<SpriteComponent>(); }
 	StatsComponent* getState() const { return &_entity->getComponent<StatsComponent>(); }
 	AttackComponent* getAttack() const { return &_entity->getComponent<AttackComponent>(); }

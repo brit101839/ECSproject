@@ -25,7 +25,7 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 	Vector2D inputDir = Vector2D(0.f, 0.f);
 
 	if (_atc->attacking) {
-		_transform->setDirection(Vector2D(0.f, 0.f));
+		_movement->stop();
 		return;
 	}
 
@@ -34,11 +34,12 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-		_transform->setDirection(Vector2D(0.f, 0.f));
+		_movement->stop();
 		_def->startDodge();
 		if (entity->getComponent<SpriteComponent>().getFlip()) inputDir.x = -1.0f;
 		else inputDir.x = 1.0f;
-		_transform->setDirection(inputDir);
+		_movement->setDirection(inputDir);
+		_movement->setToDefaultSpeed();
 		return;
 	}
 
@@ -63,7 +64,8 @@ void KeyboardController::onKeyboard(GLFWwindow* window)
 		_sprite->setAnimate("walkR");
 	}
 
-	_transform->setDirection(inputDir);
+	_movement->setDirection(inputDir);
+	_movement->setToDefaultSpeed();
 }
 
 void KeyboardController::update(GLFWwindow* window, double deltaTime)

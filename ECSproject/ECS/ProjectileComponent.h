@@ -3,7 +3,7 @@
 #include "ECS.h"
 #include "LocalEventComponent.h"
 #include "SpriteComponent.h"
-#include "TransformComponent.h"
+#include "MovementComponent.h"
 
 class ProjectileComponent : public Component {
 private:
@@ -39,6 +39,6 @@ public:
 
 	void explosion() {
 		_sprite->setAnimate("explosion");
-		entity->getComponent<TransformComponent>().speed = 0.0f;
+		entity->getComponent<MovementComponent>().stop();
 	}
 };

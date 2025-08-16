@@ -23,7 +23,7 @@ BehaviorResult TryExitFighting::tick(AIstate& state, AIContext& context)
 BehaviorResult SetFighingState::tick(AIstate& state, AIContext& context)
 {
 	state.fighting = true;
-	context.getTransform()->speed = 0;
+	context.getMovement()->stop();
 
 	// std::cout << "enter fighting" << std::endl;
 
@@ -33,7 +33,7 @@ BehaviorResult SetFighingState::tick(AIstate& state, AIContext& context)
 BehaviorResult SetExitFightingState::tick(AIstate& state, AIContext& context)
 {
 	state.fighting = false;
-	context.getTransform()->setToDefaultSpeed();
+	context.getMovement()->setToDefaultSpeed();
 
 	// std::cout << "exit fighting" << std::endl;
 
@@ -56,9 +56,11 @@ BehaviorResult GoHome::tick( AIContext& context )
 	if (context.getDist() < 100.f) return BehaviorResult::FAILURE;
 	else if (dist < 80.f) return BehaviorResult::SUCCESS;
 
-	context.getTransform()->setDirection((defaultPos - context.getTransform()->position).normalize());
+	context.getMovement()->setToDefaultSpeed();
 
-	if (context.getTransform()->getVelocity().x >= 0) { context.getSprite()->setAnimate("walkR"); }
+	context.getMovement()->setDirection((defaultPos - context.getTransform()->position).normalize());
+
+	if (context.getMovement()->getDirection().x >= 0) { context.getSprite()->setAnimate("walkR"); }
 	else { context.getSprite()->setAnimate("walkL"); }
 	// std::cout << "backing" << context.getTransform()->position.distanceTo(defaultPos) << std::endl;
 	return BehaviorResult::RUNNING;

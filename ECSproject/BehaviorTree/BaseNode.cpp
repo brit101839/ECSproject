@@ -11,9 +11,11 @@ BehaviorResult Tracking::tick(AIContext& context)
 	if (context.getDist() > 400.f) return BehaviorResult::FAILURE;
 	else if (context.getDist() < 100.f) return BehaviorResult::SUCCESS;
 
+	context.getMovement()->setToDefaultSpeed();
+
 	Vector2D playerPos = context.getPlayerPos();
 	Vector2D direction = (playerPos - context.getTransform()->position).normalize();
-	context.getTransform()->setDirection(direction);
+	context.getMovement()->setDirection(direction);
 	context.getSprite()->setAnimate(direction.x >= 0 ? "walkR" : "walkL");
 	// std::cout << "tracking" << context.getDist() << std::endl;
 	return BehaviorResult::RUNNING;
@@ -31,7 +33,7 @@ BehaviorResult KeepDistance::tick(AIContext& context)
 	if (dist > (desiredDistance - tolerance) && dist < (desiredDistance + tolerance))
 		return BehaviorResult::SUCCESS;
 
-	context.getTransform()->setToDefaultSpeed();
+	context.getMovement()->setToDefaultSpeed();
 
 	Vector2D playerPos = context.getPlayerPos();
 	Vector2D selfPos = context.getTransform()->position;
@@ -55,7 +57,7 @@ BehaviorResult KeepDistance::tick(AIContext& context)
 	// context.getTransform()->position = selfPos;
 
 	// Update facing direction and animation
-	context.getTransform()->setDirection(direction);
+	context.getMovement()->setDirection(direction);
 	context.getSprite()->setAnimate(direction.x >= 0 ? "walkR" : "walkL");
 
 	return BehaviorResult::RUNNING;
@@ -63,7 +65,7 @@ BehaviorResult KeepDistance::tick(AIContext& context)
 
 BehaviorResult Patrol::tick(AIContext& context) 
 {
-	context.getTransform()->setDirection(Vector2D(0.f, 0.f));
+	context.getMovement()->stop();
 	context.getSprite()->setAnimate("idle");
 
 	return BehaviorResult::SUCCESS;

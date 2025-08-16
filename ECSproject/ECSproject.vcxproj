@@ -149,6 +149,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="ECS\MovementComponent.cpp" />
     <ClCompile Include="readTileMap\readTileMap_json.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="ECS\KeyboardController.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="ECS\MovementComponent.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="readTileMap\readTileMap_json.h" />

@@ -30,7 +30,8 @@ public:
     void componentSetting(CollisionManager* mCollisionM) {
         _entity->addcomponent<LocalEventComponent>(_globalEventManager);
 
-        auto trans = _entity->addcomponent<TransformComponent>(Vector2D(4500.0f, -2340.0f), Vector2D(0.0f, 0.0f), 500.0f, 100.0f, 100.0f);
+        auto trans = _entity->addcomponent<TransformComponent>(Vector2D(4500.0f, -2340.0f), 100.0f, 100.0f);
+		_entity->addcomponent<MovementComponent>(500.0f, Vector2D(0.0f, 0.0f));
         
         auto& playerSprite = _entity->addcomponent<SpriteComponent>("C:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true, 32.f, 32.f);
         // _entity->addcomponent<SkillCompnent>("fire ball", _spawnSys);

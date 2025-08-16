@@ -11,7 +11,7 @@ TileComponent::TileComponent(Vector2D position, GLfloat width, GLfloat height, i
 
 void TileComponent::init()
 {
-	entity->addcomponent<TransformComponent>(_position, Vector2D(), 0.0f, _width, _height);
+	entity->addcomponent<TransformComponent>(_position, _width, _height);
 	transform = &entity->getComponent<TransformComponent>();
 
 	// TextureManager& textureManager = TextureManager::getTnstance();
