@@ -17,7 +17,24 @@ public:
 	BehaviorResult tick(AIContext& context) override;
 };
 
+class KeepDistance : public BehaviorNode<AIContext&> {
+public:
+	BehaviorResult tick(AIContext& context) override;
+};
+
 class Patrol : public BehaviorNode<AIContext&> {
+public:
+	BehaviorResult tick(AIContext& context) override;
+};
+
+class setExhaustion : public BehaviorNode<AIContext&>
+{
+public:
+	BehaviorResult tick(AIContext& context) override;
+};
+
+class Exhaustion : public BehaviorNode<AIContext&>
+{
 public:
 	BehaviorResult tick(AIContext& context) override;
 };

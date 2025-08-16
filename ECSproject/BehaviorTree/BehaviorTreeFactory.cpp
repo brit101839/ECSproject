@@ -40,7 +40,7 @@ BehaviorResult SetExitFightingState::tick(AIstate& state, AIContext& context)
 	return BehaviorResult::SUCCESS;
 }
 
-BehaviorResult TryBacking::tick( AIContext& context )
+BehaviorResult TryGoHome::tick( AIContext& context )
 {
 	Vector2D defaultPos = context.getDefaultPos();
 	auto dist = context.getTransform()->position.distanceTo(defaultPos);
@@ -48,7 +48,7 @@ BehaviorResult TryBacking::tick( AIContext& context )
 	return BehaviorResult::SUCCESS;
 }
 
-BehaviorResult Backing::tick( AIContext& context )
+BehaviorResult GoHome::tick( AIContext& context )
 {
 	Vector2D defaultPos = context.getDefaultPos();
 	auto dist = context.getTransform()->position.distanceTo(defaultPos);
@@ -64,7 +64,7 @@ BehaviorResult Backing::tick( AIContext& context )
 	return BehaviorResult::RUNNING;
 }
 
-BehaviorTree<AIstate&, AIContext&> BehaviorTreeFactory::buildTree()
+BehaviorTree<AIstate&, AIContext&> BehaviorTreeFactory::buildMasterTree()
 {
 	FightingTreeFactory fightingTreeFactory;
 
@@ -102,8 +102,8 @@ BehaviorTree<AIstate&, AIContext&> BehaviorTreeFactory::buildTree()
 		),
 
 		TreeBuilder::SequenceNodeList(
-			TreeBuilder::PeelContext(std::make_unique<TryBacking>()),
-			TreeBuilder::PeelContext(std::make_unique<Backing>())
+			TreeBuilder::PeelContext(std::make_unique<TryGoHome>()),
+			TreeBuilder::PeelContext(std::make_unique<GoHome>())
 		),
 
 		TreeBuilder::PeelContext(std::make_unique<Patrol>())

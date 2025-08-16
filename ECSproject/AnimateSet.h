@@ -59,19 +59,19 @@ public:
 		if (_currentAnimation && !_currentAnimation->canInterrupt) {
 			if (name == "attack_1") {
 				if (_currentAnimation == &animations.at("attack_1")) {
-					if (animations.find("attack_2") == animations.end()) _nextAnimate = "attack_1";
+					if (animations.find("attack_2") == animations.end()) _nextAnimate = "idle";
 					else _nextAnimate = "attack_2";
 				}
 				else if (_currentAnimation == &animations.at("attack_2")) {
-					if(animations.find("attack_3") == animations.end()) _nextAnimate = "attack_1";
+					if(animations.find("attack_3") == animations.end()) _nextAnimate = "idle";
 					else _nextAnimate = "attack_3";
 				}
 				else if (_currentAnimation == &animations.at("attack_3")) {
-					if (animations.find("attack_4") == animations.end()) _nextAnimate = "attack_1";
+					if (animations.find("attack_4") == animations.end()) _nextAnimate = "idle";
 					else _nextAnimate = "attack_4";
 				}
 				else {
-					_nextAnimate = "attack_1";
+					_nextAnimate = "idle";
 				}
 			}
 			return;
@@ -92,9 +92,13 @@ public:
 			endDodgeEvent();
 		}
 		else if (_currentAnimation->state == AnimateState::Attacking) {
-			if (animations.at(_nextAnimate).state != AnimateState::Attacking) {
+			if (animations.at(_nextAnimate).state != AnimateState::Attacking && animations.at(_nextAnimate).state != AnimateState::FinalAttack) {
+				std::cerr << "trigger end attack" << std::endl;
 				endAttackEvent();
 			}
+		}
+		else if (_currentAnimation->state == AnimateState::FinalAttack) {
+			endAttackAndRest();
 		}
 		else if (_currentAnimation->state == AnimateState::usingSkill)
 		{
@@ -152,6 +156,11 @@ public:
 
 	void endAttackEvent() {
 		AttackStepEvent event(AttackStep::endAttack);
+		_localEvent->publish<AttackStepEvent>(event);
+	}
+
+	void endAttackAndRest() {
+		AttackStepEvent event(AttackStep::endAttackAndRest);
 		_localEvent->publish<AttackStepEvent>(event);
 	}
 

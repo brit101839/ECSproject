@@ -4,6 +4,7 @@
 #include "SpriteComponent.h"
 #include "AttackComponent.h"
 #include "SkillComponent.h"
+#include "StatsComponent.h"
 
 enum class AIPreferBehavior
 {
@@ -38,6 +39,7 @@ public:
 	const AIPreferBehavior& getBehavior() const { return _behavior; }
 	TransformComponent* getTransform() const { return &_entity->getComponent<TransformComponent>(); }
 	SpriteComponent* getSprite() const { return &_entity->getComponent<SpriteComponent>(); }
+	StatsComponent* getState() const { return &_entity->getComponent<StatsComponent>(); }
 	AttackComponent* getAttack() const { return &_entity->getComponent<AttackComponent>(); }
 	SkillCompnent* getSkill() const { return &_entity->getComponent<SkillCompnent>(); }
 	Vector2D getDefaultPos() const { return _defaultPos; }

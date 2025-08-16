@@ -79,7 +79,7 @@ public:
 
 	void endAttack(Event& event) {
 		auto& attackStepEvent = static_cast<AttackStepEvent&>(event);
-		if (attackStepEvent.attackStep == AttackStep::endAttack) {
+		if (attackStepEvent.attackStep == AttackStep::endAttack || attackStepEvent.attackStep == AttackStep::endAttackAndRest) {
 			attacking = false;
 		}
 	}

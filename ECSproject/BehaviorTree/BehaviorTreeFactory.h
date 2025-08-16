@@ -37,17 +37,17 @@ public:
 	BehaviorResult tick(AIstate& state, AIContext& context) override;
 };
 
-class TryBacking : public BehaviorNode<AIContext&> {
+class TryGoHome : public BehaviorNode<AIContext&> {
 public:
 	BehaviorResult tick(AIContext& context) override;
 };
 
-class Backing : public BehaviorNode<AIContext&> {
+class GoHome : public BehaviorNode<AIContext&> {
 public:
 	BehaviorResult tick(AIContext& context) override;
 };
 
 class BehaviorTreeFactory {
 public:
-	BehaviorTree<AIstate&, AIContext&> buildTree();
+	BehaviorTree<AIstate&, AIContext&> buildMasterTree();
 };

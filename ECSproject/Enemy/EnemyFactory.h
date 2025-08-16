@@ -12,6 +12,7 @@ using json = nlohmann::json;
 
 AnimateState parseState(const std::string& stateStr) {
     if (stateStr == "Attacking") return AnimateState::Attacking;
+	if (stateStr == "FinalAttacking") return AnimateState::FinalAttack;
     if (stateStr == "useSkill") return AnimateState::usingSkill;
     if (stateStr == "Dying") return AnimateState::Dying;
     if (stateStr == "Died") return AnimateState::Died;
@@ -36,8 +37,12 @@ Animation parseAnimation(const json& animJson) {
 }
 
 Animation parseAttackAnimation(const json& animJson) {
-    AnimateState state = AnimateState::Attacking;
-    if (animJson.value("state", "") == "useSkill") state = AnimateState::usingSkill;
+	AnimateState state = AnimateState::Attacking;
+
+	if (animJson.value("state", "") == "Attacking") state = AnimateState::Attacking;
+	else if (animJson.value("state", "") == "FinalAttacking") state = AnimateState::FinalAttack;
+	else if (animJson.value("state", "") == "useSkill") state = AnimateState::usingSkill;
+
     return Animation(
         animJson.value("row", 0),
         animJson.value("frames", 1),
@@ -82,7 +87,7 @@ public:
                     spriteData["cutWidth"], spriteData["cutHeight"], spriteData.value("offsetX", 0.f));
 
                 for (auto& [name, anim] : enemyData["animations"].items()) {
-                    if (anim.value("state", "") == "Attacking" || anim.value("state", "") == "useSkill") {
+                    if (anim.value("state", "") == "Attacking" || anim.value("state", "") == "FinalAttacking" || anim.value("state", "") == "useSkill") {
                         sprite.addAnimation(name, parseAttackAnimation(anim));
                     }
                     else {

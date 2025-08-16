@@ -28,7 +28,7 @@ public:
 	void init() override {
 		_aiContext = new AIContext(entity, _playerTrans, _behavior);
 
-		_tree = std::make_unique<BehaviorTree<AIstate&, AIContext&>>(_BTFactoty.buildTree());
+		_tree = std::make_unique<BehaviorTree<AIstate&, AIContext&>>(_BTFactoty.buildMasterTree());
 
 		/*auto tryScenario = [&](AIstate state, AIContext context) {
 			_tree.get()->tickRoot(state, context);

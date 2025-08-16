@@ -2,6 +2,11 @@
 #include "HealthBarComponet.h"
 #include "AIComponent.h"
 
+void StatsComponent::update(GLFWwindow* window, double deltaTime)
+{
+	_restingTime = ((_restingTime - deltaTime) > 0) ? _restingTime - deltaTime : 0.0f;
+}
+
 void StatsComponent::takeDamage(int damage)
 {
 	_health -= std::max(0, damage - _defense);

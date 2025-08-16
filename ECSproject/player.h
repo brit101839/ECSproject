@@ -39,9 +39,9 @@ public:
         playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
         playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
         playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
-        playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, makeAttackDetail(2, 10)));
-        playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, makeAttackDetail(1, 10)));
-        playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, makeAttackDetail(3, 20)));
+        playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, makeAttackDetail(2, 10), AnimateState::Attacking));
+        playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, makeAttackDetail(1, 10), AnimateState::Attacking));
+        playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, makeAttackDetail(3, 20), AnimateState::FinalAttack ));
         playerSprite.addAnimation("dodge", Animation(12, 5, 10, false, false, AnimateState::Dodging));
         playerSprite.setAnimate("idle");
 

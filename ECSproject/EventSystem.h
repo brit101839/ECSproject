@@ -59,7 +59,7 @@ public:
 
 enum class AttackStep
 {
-    startAttack, Checking, endAttack
+    startAttack, Checking, endAttack, endAttackAndRest
 };
 
 class AttackStepEvent : public Event {

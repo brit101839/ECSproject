@@ -6,7 +6,7 @@
 
 enum class SkillType
 {
-	ParallelRange, Range, Melee
+	ParallelRange, Range, Close
 };
 
 class Skill {
@@ -40,7 +40,7 @@ public:
 class MeleeAttack : public Skill {
 public:
 	MeleeAttack(EventSystem* localEventSys, std::shared_ptr<SpawnSystem> spawnSys, TransformComponent* trans, SpriteComponent* sprite)
-		: Skill(localEventSys, spawnSys, trans, sprite, SkillType::Melee) {}
+		: Skill(localEventSys, spawnSys, trans, sprite, SkillType::Close) {}
 	// using Skill::Skill;
 
 	void execute() override {
