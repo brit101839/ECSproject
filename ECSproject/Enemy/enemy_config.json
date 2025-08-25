@@ -1,477 +1,90 @@
 {
   "enemies": [
     {
-      "name": "Minotaur",
-      "behavior": "NormalAttackOnly",
-      "hp": 100,
-      "atk": 10,
-      "def": 1,
-      "speed": 350.0,
-      "width": 300.0,
-      "height": 300.0,
-      "sprite": {
-        "path": "C:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png",
-        "animated": true,
-        "cutWidth": 96.0,
-        "cutHeight": 96.0
-      },
+      "name": "Minotaur", "behavior": "NormalAttackOnly", "hp": 100, "atk": 10, "def": 1, "speed": 350.0, "width": 300.0, "height": 300.0,
+      "sprite": { "path": "C:/dependencies/resource/Dungeon/Minotaur - Sprite Sheet.png", "animated": true, "cutWidth": 96.0, "cutHeight": 96.0 },
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 5,
-          "speed": 10,
-          "flip": true
-        },
-        "walkR": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": false
-        },
-        "walkL": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": true
-        },
-        "attack_1": {
-          "row": 5,
-          "frames": 6,
-          "speed": 10,
-          "flip": false,
-          "state": "Attacking",
-          "attackFrame": 4,
-          "damage": 5
-        },
-        "attack_2": {
-          "row": 3,
-          "frames": 9,
-          "speed": 10,
-          "flip": false,
-          "state": "Attacking",
-          "attackFrame": 2,
-          "damage": 15
-        },
-        "attack_3": {
-          "row": 4,
-          "frames": 5,
-          "speed": 10,
-          "flip": false,
-          "state": "Attacking",
-          "attackFrame": 2,
-          "damage": 10
-        },
-        "attack_4": {
-          "row": 6,
-          "frames": 9,
-          "speed": 10,
-          "flip": false,
-          "state": "FinalAttacking",
-          "attackFrame": 5,
-          "damage": 15
-        },
-        "dying": {
-          "row": 9,
-          "frames": 6,
-          "speed": 5,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Dying"
-        },
-        "died": {
-          "row": 9,
-          "frames": 6,
-          "speed": 5,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Died"
-        }
+        "idle": { "row": 0, "frames": 5, "speed": 10, "flip": true },
+        "walkR": { "row": 1, "frames": 8, "speed": 10, "flip": false },
+        "walkL": { "row": 1, "frames": 8, "speed": 10, "flip": true },
+        "attack_1": { "row": 5, "frames": 6, "speed": 10, "flip": false, "state": "Attacking", "attackFrame": 4, "damage": 5 },
+        "attack_2": { "row": 3, "frames": 9, "speed": 10, "flip": false, "state": "Attacking", "attackFrame": 2, "damage": 15 },
+        "attack_3": { "row": 4, "frames": 5, "speed": 10, "flip": false, "state": "Attacking", "attackFrame": 2, "damage": 10 },
+        "attack_4": { "row": 6, "frames": 9, "speed": 10, "flip": false, "state": "FinalAttacking", "attackFrame": 5, "damage": 15 },
+        "dying": { "row": 9, "frames": 6, "speed": 5, "flip": false, "canInterrupt": false, "state": "Dying" },
+        "died": { "row": 9, "frames": 6, "speed": 5, "flip": false, "canInterrupt": false, "state": "Died" }
       }
     },
     {
-      "name": "Cacodaemon",
-      "behavior": "SkillOnly",
-      "hp": 100,
-      "atk": 10,
-      "def": 1,
-      "speed": 300.0,
-      "width": 300.0,
-      "height": 300.0,
-      "sprite": {
-        "path": "C:/dependencies/resource/Dungeon/Cacodaemon Sprite Sheet.png",
-        "animated": true,
-        "cutWidth": 64.0,
-        "cutHeight": 64.0
-      },
+      "name": "Cacodaemon", "behavior": "SkillOnly", "hp": 100, "atk": 10, "def": 1, "speed": 300.0, "width": 300.0, "height": 300.0,
+      "sprite": { "path": "C:/dependencies/resource/Dungeon/Cacodaemon Sprite Sheet.png", "animated": true, "cutWidth": 64.0, "cutHeight": 64.0 },
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 6,
-          "speed": 8,
-          "flip": true
-        },
-        "walkR": {
-          "row": 0,
-          "frames": 6,
-          "speed": 8,
-          "flip": false
-        },
-        "walkL": {
-          "row": 0,
-          "frames": 6,
-          "speed": 8,
-          "flip": true
-        },
-        "useSkill": {
-          "row": 1,
-          "frames": 6,
-          "speed": 8,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "useSkill",
-          "attackFrame": 3,
-          "damage": 15
-        },
-
-        "dying": {
-          "row": 3,
-          "frames": 8,
-          "speed": 5,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Dying"
-        },
-        "died": {
-          "row": 3,
-          "frames": 8,
-          "speed": 5,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Died"
-        }
+        "idle": { "row": 0, "frames": 6, "speed": 8, "flip": true },
+        "walkR": { "row": 0, "frames": 6, "speed": 8, "flip": false },
+        "walkL": { "row": 0, "frames": 6, "speed": 8, "flip": true },
+        "useSkill": { "row": 1, "frames": 6, "speed": 8, "flip": false, "canInterrupt": false, "state": "useSkill", "attackFrame": 3, "damage": 15 },
+        "dying": { "row": 3, "frames": 8, "speed": 5, "flip": false, "canInterrupt": false, "state": "Dying" },
+        "died": { "row": 3, "frames": 8, "speed": 5, "flip": false, "canInterrupt": false, "state": "Died" }
       }
     },
     {
-      "name": "Ratflok Axe",
-      "behavior": "NormalAttackOnly",
-      "hp": 100,
-      "atk": 10,
-      "def": 1,
-      "speed": 350,
-      "width": 200.0,
-      "height": 100.0,
-      "sprite": {
-        "path": "C:\\dependencies\\resource\\Dungeon\\Ratfolk Axe Sprite Sheet.png",
-        "animated": true,
-        "cutWidth": 64.0,
-        "cutHeight": 32.0
-      },
+      "name": "Ratflok Axe", "behavior": "NormalAttackOnly", "hp": 100, "atk": 10, "def": 1, "speed": 350, "width": 200.0, "height": 100.0,
+      "sprite": { "path": "C:/dependencies/resource/Dungeon/Ratfolk Axe Sprite Sheet.png", "animated": true, "cutWidth": 64.0, "cutHeight": 32.0 },
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 4,
-          "speed": 10,
-          "flip": true
-        },
-        "walkR": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": false
-        },
-        "walkL": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": true
-        },
-        "attack_1": {
-          "row": 2,
-          "frames": 126,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 3,
-          "damage": 10
-        },
-        "dying": {
-          "row": 4,
-          "frames": 5,
-          "speed": 5,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Dying"
-        },
-        "died": {
-          "row": 4,
-          "frames": 5,
-          "speed": 5,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Died"
-        }
+        "idle": { "row": 0, "frames": 4, "speed": 10, "flip": true },
+        "walkR": { "row": 1, "frames": 8, "speed": 10, "flip": false },
+        "walkL": { "row": 1, "frames": 8, "speed": 10, "flip": true },
+        "attack_1": { "row": 2, "frames": 126, "speed": 10, "flip": false, "canInterrupt": false, "state": "Attacking", "attackFrame": 3, "damage": 10 },
+        "dying": { "row": 4, "frames": 5, "speed": 5, "flip": false, "canInterrupt": false, "state": "Dying" },
+        "died": { "row": 4, "frames": 5, "speed": 5, "flip": false, "canInterrupt": false, "state": "Died" }
       }
     },
     {
-      "name": "Night Borne",
-      "behavior": "NormalAttackOnly",
-      "hp": 100,
-      "atk": 10,
-      "def": 1,
-      "speed": 380,
-      "width": 400.0,
-      "height": 400.0,
-      "sprite": {
-        "path": "C:\\dependencies\\resource\\enemy\\NightBorne\\NightBorne.png",
-        "animated": true,
-        "cutWidth": 80.0,
-        "cutHeight": 80.0
-      },
+      "name": "Night Borne", "behavior": "NormalAttackOnly", "hp": 100, "atk": 10, "def": 1, "speed": 380, "width": 400.0, "height": 400.0,
+      "sprite": { "path": "C:/dependencies/resource/enemy/NightBorne/NightBorne.png", "animated": true, "cutWidth": 80.0, "cutHeight": 80.0 },
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 9,
-          "speed": 10,
-          "flip": false
-        },
-        "walkR": {
-          "row": 1,
-          "frames": 6,
-          "speed": 10,
-          "flip": false
-        },
-        "walkL": {
-          "row": 1,
-          "frames": 6,
-          "speed": 10,
-          "flip": true
-        },
-        "attack_1": {
-          "row": 2,
-          "frames": 12,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 9,
-          "damage": 20
-        },
-        "dying": {
-          "row": 4,
-          "frames": 23,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Dying"
-        },
-        "died": {
-          "row": 4,
-          "frames": 23,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Died"
-        }
+        "idle": { "row": 0, "frames": 9, "speed": 10, "flip": false },
+        "walkR": { "row": 1, "frames": 6, "speed": 10, "flip": false },
+        "walkL": { "row": 1, "frames": 6, "speed": 10, "flip": true },
+        "attack_1": { "row": 2, "frames": 12, "speed": 10, "flip": false, "canInterrupt": false, "state": "Attacking", "attackFrame": 9, "damage": 20 },
+        "dying": { "row": 4, "frames": 23, "speed": 10, "flip": false, "canInterrupt": false, "state": "Dying" },
+        "died": { "row": 4, "frames": 23, "speed": 10, "flip": false, "canInterrupt": false, "state": "Died" }
       }
     },
     {
-      "name": "Necromancer",
-      "behavior": "NormalAttackOnly",
-      "hp": 100,
-      "atk": 10,
-      "def": 1,
-      "speed": 300,
-      "width": 640.0,
-      "height": 512.0,
-      "sprite": {
-        "path": "C:\\dependencies\\resource\\enemy\\Necromancer_creativekind-Sheet.png",
-        "animated": true,
-        "cutWidth": 160.0,
-        "cutHeight": 128.0
-      },
+      "name": "Necromancer", "behavior": "NormalAttackOnly", "hp": 100, "atk": 10, "def": 1, "speed": 300, "width": 640.0, "height": 512.0,
+      "sprite": { "path": "C:/dependencies/resource/enemy/Necromancer_creativekind-Sheet.png", "animated": true, "cutWidth": 160.0, "cutHeight": 128.0 },
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 8,
-          "speed": 10,
-          "flip": false
-        },
-        "walkR": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": false
-        },
-        "walkL": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": true
-        },
-        "attack_1": {
-          "row": 2,
-          "frames": 13,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 8,
-          "damage": 20
-        },
-        "attack_2": {
-          "row": 3,
-          "frames": 13,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 8,
-          "damage": 10
-        },
-        "attack_3": {
-          "row": 4,
-          "frames": 17,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 8,
-          "damage": 15
-        },
-        "dying": {
-          "row": 6,
-          "frames": 6,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Dying"
-        },
-        "died": {
-          "row": 4,
-          "frames": 6,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Died"
-        }
+        "idle": { "row": 0, "frames": 8, "speed": 10, "flip": false },
+        "walkR": { "row": 1, "frames": 8, "speed": 10, "flip": false },
+        "walkL": { "row": 1, "frames": 8, "speed": 10, "flip": true },
+        "attack_1": { "row": 2, "frames": 13, "speed": 10, "flip": false, "canInterrupt": false, "state": "Attacking", "attackFrame": 8, "damage": 20 },
+        "attack_2": { "row": 3, "frames": 13, "speed": 10, "flip": false, "canInterrupt": false, "state": "Attacking", "attackFrame": 8, "damage": 10 },
+        "attack_3": { "row": 4, "frames": 17, "speed": 10, "flip": false, "canInterrupt": false, "state": "Attacking", "attackFrame": 8, "damage": 15 },
+        "dying": { "row": 6, "frames": 6, "speed": 10, "flip": false, "canInterrupt": false, "state": "Dying" },
+        "died": { "row": 4, "frames": 6, "speed": 10, "flip": false, "canInterrupt": false, "state": "Died" }
       }
     },
     {
-      "name": "BringOfDeath",
-      "behavior": "NormalAttackOnly",
-      "hp": 500,
-      "atk": 10,
-      "def": 1,
-      "speed": 300,
-      "width": 840.0,
-      "height": 558.0,
-      "sprite": {
-        "path": "C:\\dependencies\\resource\\enemy\\Bringer-Of-Death\\SpriteSheet\\Bringer-of-Death-SpritSheet.png",
-        "animated": true,
-        "cutWidth": 140.0,
-        "cutHeight": 93.0,
-        "offsetX":  -240.0
-      },
+      "name": "BringOfDeath", "behavior": "NormalAttackOnly", "hp": 500, "atk": 10, "def": 1, "speed": 300, "width": 840.0, "height": 558.0,
+      "sprite": { "path": "C:/dependencies/resource/enemy/Bringer-Of-Death/role_sheet.png", "animated": true, "cutWidth": 140.0, "cutHeight": 93.0, "offsetX": -240.0 },
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 8,
-          "speed": 10,
-          "flip": false
-        },
-        "walkR": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": true
-        },
-        "walkL": {
-          "row": 1,
-          "frames": 8,
-          "speed": 10,
-          "flip": false
-        },
-        "attack_1": {
-          "row": 2,
-          "frames": 8,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 4,
-          "damage": 20
-        },
-        "attack_2": {
-          "row": 3,
-          "frames": 8,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 7,
-          "damage": 1
-        },
-        "attack_3": {
-          "row": 4,
-          "frames": 8,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Attacking",
-          "attackFrame": 5,
-          "damage": 1
-        },
-        "dying": {
-          "row": 4,
-          "frames": 7,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Dying"
-        },
-        "died": {
-          "row": 4,
-          "frames": 7,
-          "speed": 10,
-          "flip": false,
-          "canInterrupt": false,
-          "state": "Died"
-        }
+        "idle": { "row": 0, "frames": 8, "speed": 10, "flip": false },
+        "walkR": { "row": 1, "frames": 8, "speed": 10, "flip": true },
+        "walkL": { "row": 1, "frames": 8, "speed": 10, "flip": false },
+        "attack_1": { "row": 2, "frames": 10, "speed": 10, "flip": false, "canInterrupt": false, "state": "Attacking", "attackFrame": 4, "damage": 20 },
+        "attack_2": { "row": 5, "frames": 9, "speed": 10, "flip": false, "canInterrupt": false, "state": "FinalAttacking", "attackFrame": 5, "damage": 30 },
+        "dying": { "row": 4, "frames": 10, "speed": 10, "flip": false, "canInterrupt": false, "state": "Dying" },
+        "died": { "row": 4, "frames": 10, "speed": 10, "flip": false, "canInterrupt": false, "state": "Died" }
       }
     },
     {
-      "name": "Orc",
-      "behavior": "NormalAttackOnly",
-      "hp": 200,
-      "speed": 1.5,
+      "name": "Orc", "behavior": "NormalAttackOnly", "hp": 200, "speed": 1.5,
       "animations": {
-        "idle": {
-          "row": 0,
-          "frames": 5,
-          "speed": 8,
-          "loop": true
-        },
-        "walkR": {
-          "row": 1,
-          "frames": 6,
-          "speed": 8,
-          "loop": false
-        },
-        "attack_1": {
-          "row": 4,
-          "frames": 7,
-          "speed": 12,
-          "loop": false,
-          "state": "Attacking"
-        },
-        "dying": {
-          "row": 8,
-          "frames": 5,
-          "speed": 5,
-          "loop": false,
-          "state": "Dying"
-        }
+        "idle": { "row": 0, "frames": 5, "speed": 8, "loop": true },
+        "walkR": { "row": 1, "frames": 6, "speed": 8, "loop": false },
+        "attack_1": { "row": 4, "frames": 7, "speed": 12, "loop": false, "state": "Attacking" },
+        "dying": { "row": 8, "frames": 5, "speed": 5, "loop": false, "state": "Dying" }
       }
     }
   ]

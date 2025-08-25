@@ -8,7 +8,7 @@
 #include "../textureManager.h"
 #include "TransformComponent.h"
 #include "LocalEventComponent.h"
-#include "../AnimateSet.h"
+#include "../Animator.h"
 #include "../shader/Shader.h"
 #include "../EventSystem.h"
 
@@ -24,7 +24,7 @@ private:
 	TransformComponent* _transform;
 	GLuint _texture;
 	std::unique_ptr<Sprite> _sprite;
-	std::unique_ptr<AnimationSet> _animationSet;
+	std::unique_ptr<Animator> _animationSet;
 	
 	std::string _currentAnimation;
 	GLfloat _cutWidth, _cutHeight;
@@ -86,7 +86,7 @@ public:
 			_spriteType = SpriteType::Animate;
 			if (entity->hasComponent<LocalEventComponent>()) {
 				EventSystem* e = &entity->getComponent<LocalEventComponent>().getEventSystem();
-				_animationSet = std::make_unique<AnimationSet>(e);
+				_animationSet = std::make_unique<Animator>(e);
 			}
 			else {
 				std::cerr << "event manager not inject successfully" << std::endl;
@@ -110,7 +110,7 @@ public:
 		_animationSet->setAnimation(animName);
 	}
 
-	AnimationSet* getAnimationSet() {
+	Animator* getAnimationSet() {
 		if (_animationSet) {
 			return _animationSet.get();
 		}

@@ -82,7 +82,7 @@ std::unique_ptr<BehaviorNode<AIstate&, AIContext&>> FightingTreeFactory::buildFi
 		),
 		TreeBuilder::SequenceNodeList(
 			// Take a rest
-			TreeBuilder::PeelContext(std::make_unique<KeepDistance>()),
+			// TreeBuilder::PeelContext(std::make_unique<KeepDistance>()),
 			TreeBuilder::PeelContext(std::make_unique<Patrol>() ),
 			// TreeBuilder::PeelContext(std::make_unique<setExhaustion>()),
 			TreeBuilder::PeelContext(std::make_unique<Exhaustion>())
