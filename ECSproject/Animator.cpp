@@ -1,7 +1,9 @@
-﻿#include "Sprite.h"
+﻿#include <memory>
+#include "Sprite.h"
 #include "Animator.h"
 
-Animator::Animator(EventSystem* eventManager) : _localEvent(eventManager) {
+Animator::Animator(EventSystem* eventManager) : _localEvent(eventManager)
+{
 	if (_localEvent) {
 		_localEvent->subscribe<AttackStepEvent>([this](Event& event) {
 			startAttackEvent(event); });
@@ -13,107 +15,110 @@ Animator::Animator(EventSystem* eventManager) : _localEvent(eventManager) {
 	else {
 		std::cerr << "event manager not inject successfully" << std::endl;
 	}
+
+	_nextAnimate = std::make_unique<TAnimateBuffer>("null", nullptr, false);
 }
 
 void Animator::addAnimation(const std::string& name, const Animation& anim) {
-	animations[name] = anim;
-	// animations[name] = std::move(anim);
+	m_animations[name] = anim;
 }
 
-const Animation& Animator::getAnimation(const std::string & name) const {
-	if (animations.find(name) == animations.end()) {
+const Animation* Animator::getAnimation(const std::string & name) {
+	if (m_animations.find(name) == m_animations.end()) {
 		std::cerr << "animation not found: " << name << std::endl;
-		return animations.at("idle");
+		return &m_animations.at("idle");
 	}
 
-	return animations.at(name);
+	Animation* newAnimation = &m_animations.at(name);
+
+	return newAnimation;
 }
 
 void Animator::setAnimation(const std::string& name) {
 	if (name == "dying") {
-		_nextAnimate = "died";
-		if (_currentAnimation->state != AnimateState::Dying && _currentAnimation->state != AnimateState::Died) {
-			if (animations.find(name) != animations.end()) {
-				_currentAnimation = &animations[name];
-				if (!_currentAnimation->canInterrupt) {
-					_currentFrame = 0;
-				}
-			}
+		pushNextAnimate("died", true);
+		if (_currentAnimation->anim->state != AnimateState::Dying && _currentAnimation->anim->state != AnimateState::Died) {
+			_currentAnimation = makeAnimateBuffer(name, true);
 		}
 		return;
 	}
+
+	if (_nextAnimate->isFull == true) {
+		return;
+	}
+
 	// playing cannot interrupt animate
-	if (_currentAnimation && !_currentAnimation->canInterrupt) {
+	if (_currentAnimation && _currentAnimation->anim->canInterrupt == false) {
 		if (name == "attack_1") {
-			if (_currentAnimation == &animations.at("attack_1")) {
-				if (animations.find("attack_2") == animations.end()) _nextAnimate = "idle";
-				else _nextAnimate = "attack_2";
+			std::cout << "trigger attack" << std::endl;
+			if (_currentAnimation->name == "attack_1") {
+				if (m_animations.find("attack_2") == m_animations.end()) pushNextAnimate("idle", false);
+				else pushNextAnimate("attack_2", true);
 			}
-			else if (_currentAnimation == &animations.at("attack_2")) {
-				if (animations.find("attack_3") == animations.end()) _nextAnimate = "idle";
-				else _nextAnimate = "attack_3";
+			else if (_currentAnimation->name == "attack_2") {
+				if (m_animations.find("attack_3") == m_animations.end()) pushNextAnimate("idle", false);
+				else pushNextAnimate("attack_3", true);
 			}
-			else if (_currentAnimation == &animations.at("attack_3")) {
-				if (animations.find("attack_4") == animations.end()) _nextAnimate = "idle";
-				else _nextAnimate = "attack_4";
+			else if (_currentAnimation->name == "attack_3") {
+				if (m_animations.find("attack_4") == m_animations.end()) pushNextAnimate("idle", false);
+				else pushNextAnimate("attack_4", true);
 			}
 			else {
-				_nextAnimate = "idle";
+				pushNextAnimate("idle", false);
 			}
 		}
 		return;
 	}
 
-	// playing can interrupt animate
-	if (animations.find(name) != animations.end()) {
-		_currentAnimation = &animations[name];
-		onAnimateStart();
-		if (name == "walkL" || name == "walkR" || name == "idle") { _flip = _currentAnimation->flip; }
-		if (!_currentAnimation->canInterrupt) {
-			_currentFrame = 0;
-		}
-	}
+	_currentAnimation = makeAnimateBuffer(name, true);
+	if (name == "walkL" || name == "walkR" || name == "idle") { _flip = _currentAnimation->anim->flip; }
+	onAnimateStart();
 }
 
 void Animator::onAnimateEnd() {
-	if (_currentAnimation->state == AnimateState::Dodging) {
+	if (_currentAnimation->anim->state == AnimateState::Dodging) {
 		endDodgeEvent();
 	}
-	else if (_currentAnimation->state == AnimateState::Attacking) {
-		if (animations.at(_nextAnimate).state != AnimateState::Attacking && animations.at(_nextAnimate).state != AnimateState::FinalAttack) {
+	else if (_currentAnimation->anim->state == AnimateState::Attacking) {
+		if (_nextAnimate->anim->state != AnimateState::Attacking && _nextAnimate->anim->state != AnimateState::FinalAttack) {
 			std::cerr << "trigger end attack" << std::endl;
 			endAttackEvent();
 		}
 	}
-	else if (_currentAnimation->state == AnimateState::FinalAttack) {
+	else if (_currentAnimation->anim->state == AnimateState::FinalAttack) {
 		endAttackAndRest();
 	}
-	else if (_currentAnimation->state == AnimateState::usingSkill)
+	else if (_currentAnimation->anim->state == AnimateState::usingSkill)
 	{
-		if (animations.at(_nextAnimate).state != AnimateState::usingSkill) {
+		if (_nextAnimate->anim->state != AnimateState::usingSkill) {
 			endSkillEvent();
 		}
 	}
-	else if (_currentAnimation->state == AnimateState::Dying) {
+	else if (_currentAnimation->anim->state == AnimateState::Dying) {
 		ProjectileExplosionComplete event(10);
 		_localEvent->publish<ProjectileExplosionComplete&>(event);
 	}
 }
 
 void Animator::onAnimateStart() {
-	_nextAnimate = "idle";
+
+	if (_currentAnimation->anim->canInterrupt == false) {
+		_currentFrame = 0;
+	}
+
+	pushNextAnimate("idle", false);
 	/*AttackStepEvent event("normal attack");*/
-	switch (_currentAnimation->state)
+	switch (_currentAnimation->anim->state)
 	{
 	case AnimateState::Attacking:
 		// if (attackingCheck) { attackingCheck(); }
 		/*_componentEventManager->publish<AttackStepEvent&>(event);*/
 		break;
 	case AnimateState::Dying:
-		_nextAnimate = "died";
+		pushNextAnimate("died", true);
 		break;
 	case AnimateState::Died:
-		_nextAnimate = "died";
+		pushNextAnimate("died", true);
 		break;
 	default:
 		break;
@@ -137,8 +142,12 @@ void Animator::startAttackEvent(Event& event) {
 	auto& animateEvent = static_cast<AttackStepEvent&>(event);
 	// Handle the attack event
 	if (animateEvent.attackStep == AttackStep::startAttack) {
-		// std::cout << "attack event: " << animateEvent.attackStep << std::endl;
-		setAnimation("attack_1");
+		// std::cout << "attack event: " << int(animateEvent.attackStep) << std::endl;
+
+		if (_nextAnimate->isFull == false) {
+			// set new buffer only when buffer is empty
+			setAnimation("attack_1");
+		}
 	}
 }
 
@@ -166,37 +175,37 @@ void Animator::endDodgeEvent() {
 
 void Animator::update(Sprite* sprite) {
 	if (_currentAnimation) {
-		float frameInterval = 1.0f / _currentAnimation->speed; // 每帧持续时间
-		int totalFrames = _currentAnimation->frames; // 动画总帧数
-		int framesPerRow = _currentAnimation->frames; // 每行的帧数
+		float frameInterval = 1.0f / _currentAnimation->anim->speed; // 每帧持续时间
+		int totalFrames = _currentAnimation->anim->frames; // 动画总帧数
+		int framesPerRow = _currentAnimation->anim->frames; // 每行的帧数
 
 		double currentTime = glfwGetTime();
 
-		if (_currentAnimation->state == AnimateState::Died) {
-			sprite->updateAnimateVertex(totalFrames - 1, _currentAnimation->tileY, framesPerRow);
+		if (_currentAnimation->anim->state == AnimateState::Died) {
+			sprite->updateAnimateVertex(totalFrames - 1, _currentAnimation->anim->tileY, framesPerRow);
 			_lastFrameTime = currentTime;
 			return;
 		}
 		// std::cout << _currentAnimation->speed << "/" << _currentFrame << "/" << currentTime - _lastFrameTime << "/" << currentTime << std::endl;
 		if (currentTime - _lastFrameTime > frameInterval) {
-			if (!_currentAnimation->canInterrupt && _currentFrame + 1 >= totalFrames) {
+			if (!_currentAnimation->anim->canInterrupt && _currentFrame + 1 >= totalFrames) {
 				onAnimateEnd();
-				_currentAnimation = &animations[_nextAnimate];
+				_currentAnimation = popNextAnimate();
 				onAnimateStart();
 			}
 			_currentFrame = (_currentFrame + 1) % totalFrames; // 循环播放
-			sprite->updateAnimateVertex(_currentFrame, _currentAnimation->tileY, framesPerRow);
+			sprite->updateAnimateVertex(_currentFrame, _currentAnimation->anim->tileY, framesPerRow);
 			_lastFrameTime = currentTime;
 
-			if (_currentAnimation->state == AnimateState::Attacking) {
-				if (_currentFrame == _currentAnimation->atcDetail.get()->attackFrame) {
-					AttackDamageEvent event("normal attack", _currentAnimation->atcDetail.get()->damage);
+			if (_currentAnimation->anim->state == AnimateState::Attacking) {
+				if (_currentFrame == _currentAnimation->anim->atcDetail->attackFrame) {
+					AttackDamageEvent event("normal attack", _currentAnimation->anim->atcDetail->damage);
 					_localEvent->publish<AttackDamageEvent&>(event);
 					// std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << ")" << std::endl;
 				}
 			}
-			else if (_currentAnimation->state == AnimateState::usingSkill) {
-				if (_currentFrame == _currentAnimation->atcDetail.get()->attackFrame) {
+			else if (_currentAnimation->anim->state == AnimateState::usingSkill) {
+				if (_currentFrame == _currentAnimation->anim->atcDetail->attackFrame) {
 					SkillStepEvent event(SkillStep::SkillTrigger);
 					_localEvent->publish<SkillStepEvent&>(event);
 					// std::cout << "current/ attack frame: (" << _currentFrame << "/ " << _currentAnimation->atcDetail->attackFrame << ")" << std::endl;
@@ -206,4 +215,29 @@ void Animator::update(Sprite* sprite) {
 		// sprite->setFlip(_currentAnimation->flip);
 		sprite->setFlip(_flip);
 	}
+}
+
+std::unique_ptr<Animator::TAnimateBuffer> Animator::makeAnimateBuffer(std::string name, bool isFull)
+{
+	return std::make_unique<TAnimateBuffer>(name, getAnimation(name), true);
+}
+
+void Animator::pushNextAnimate(const std::string& name, bool isFull)
+{
+	if (getAnimation(name) == nullptr) {
+		return;
+	}
+	_nextAnimate = std::make_unique<TAnimateBuffer>(name, getAnimation(name), isFull);
+}
+
+std::unique_ptr<Animator::TAnimateBuffer> Animator::popNextAnimate(void)
+{
+	std::unique_ptr<TAnimateBuffer> temp = std::move(_nextAnimate);
+	_nextAnimate = makeAnimateBuffer("idle", false);
+	return temp;
+}
+
+Animator::TAnimateBuffer::TAnimateBuffer(std::string name, const Animation* anim, bool isFull)
+	: name(name), anim(anim), isFull(isFull)
+{
 }

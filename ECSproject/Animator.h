@@ -9,30 +9,13 @@
 class Sprite;
 
 class Animator {
-private:
-
-	struct TAnimateBuffer 
-	{
-		std::string name;
-		Animation* anim;
-		bool isEmpty = true;
-	};
-
-	std::unordered_map<std::string, Animation> animations;
-	Animation* _currentAnimation = nullptr;
-	double _lastFrameTime = 0.f;
-	int _currentFrame = 0;
-	std::string _nextAnimate = "idle";
-	bool _flip = false;
-	EventSystem* _localEvent;
-
 public:
 
 	Animator(EventSystem* eventManager);
 
 	void addAnimation(const std::string& name, const Animation& anim);
 
-	const Animation& getAnimation(const std::string& name) const;
+	const Animation* getAnimation(const std::string& name);
 
 	void setAnimation(const std::string& name);
 
@@ -54,8 +37,33 @@ public:
 
 	void endDodgeEvent();
 
-	bool getFrameInterrupt() { return _currentAnimation->canInterrupt; }
-	AnimateState getAnimateState() { return _currentAnimation->state; }
+	bool getFrameInterrupt() { return _currentAnimation->anim->canInterrupt; }
+	AnimateState getAnimateState() { return _currentAnimation->anim->state; }
 
 	void update(Sprite* sprite);
+
+private:
+
+	struct TAnimateBuffer
+	{
+		std::string name;
+		const Animation* anim = nullptr;
+		bool isFull = false;
+
+		TAnimateBuffer(std::string name, const Animation* anim, bool isFull);
+	};
+
+	std::unique_ptr<TAnimateBuffer> makeAnimateBuffer(std::string name, bool isFull);
+
+	void pushNextAnimate(const std::string& name, bool isFull);
+
+	std::unique_ptr<TAnimateBuffer> popNextAnimate( void );
+
+	std::unordered_map<std::string, Animation> m_animations;
+	std::unique_ptr<TAnimateBuffer> _currentAnimation;
+	double _lastFrameTime = 0.f;
+	int _currentFrame = 0;
+	std::unique_ptr<TAnimateBuffer> _nextAnimate;
+	bool _flip = false;
+	EventSystem* _localEvent;
 };
