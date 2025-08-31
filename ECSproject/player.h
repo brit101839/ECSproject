@@ -2,7 +2,7 @@
 
 #include "ECS/ECS.h"
 #include "ECS/Components.h"
-#include "ECS/Animation.h"
+#include "Animation.h"
 #include "CollisionManager.h"
 #include "EventSystem.h"
 // #include "Enemy/EnemyManager.h"
@@ -36,14 +36,14 @@ public:
         auto& playerSprite = _entity->addcomponent<SpriteComponent>("C:/dependencies/resource/Dungeon/Adventurer Sprite Sheet v1.5.png", true, 32.f, 32.f);
         // _entity->addcomponent<SkillCompnent>("fire ball", _spawnSys);
         
-        playerSprite.addAnimation("idle", Animation(0, 13, 10, false));
-        playerSprite.addAnimation("walkL", Animation(1, 8, 10, true));
-        playerSprite.addAnimation("walkR", Animation(1, 8, 10, false));
-        playerSprite.addAnimation("walkUp", Animation(11, 8, 10, false));
-        playerSprite.addAnimation("attack_1", Animation(2, 8, 10, false, makeAttackDetail(2, 10), AnimateState::Attacking));
-        playerSprite.addAnimation("attack_2", Animation(3, 8, 10, false, makeAttackDetail(1, 10), AnimateState::Attacking));
-        playerSprite.addAnimation("attack_3", Animation(4, 10, 10, false, makeAttackDetail(3, 20), AnimateState::FinalAttack ));
-        playerSprite.addAnimation("dodge", Animation(12, 5, 10, false, false, AnimateState::Dodging));
+        playerSprite.addAnimation("idle", TAnimation("idle", 0, 13, 10, false));
+        playerSprite.addAnimation("walkL", TAnimation("walkL", 1, 8, 10, true));
+        playerSprite.addAnimation("walkR", TAnimation("walkR", 1, 8, 10, false));
+        playerSprite.addAnimation("walkUp", TAnimation("walkUp", 11, 8, 10, false));
+        playerSprite.addAnimation("attack_1", TAnimation("attack_1", 2, 8, 10, false, makeAttackDetail(2, 10), AnimateState::Attacking));
+        playerSprite.addAnimation("attack_2", TAnimation("attack_2", 3, 8, 10, false, makeAttackDetail(1, 10), AnimateState::Attacking));
+        playerSprite.addAnimation("attack_3", TAnimation("attack_3", 4, 10, 10, false, makeAttackDetail(3, 20), AnimateState::FinalAttack ));
+        playerSprite.addAnimation("dodge", TAnimation("dodge", 12, 5, 10, false, false, AnimateState::Dodging));
         playerSprite.setAnimate("idle");
 
         BoundingBox bound{ trans.position, 40.0f, 40.0f };

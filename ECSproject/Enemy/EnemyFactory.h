@@ -4,7 +4,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <filesystem>
-#include "../ECS/Animation.h"
+#include "../Animation.h"
 #include "../ECS/ECS.h"
 #include "Enemy.h"
 
@@ -25,8 +25,9 @@ AIPreferBehavior parseAIBehavior(const std::string& behavior) {
 	if (behavior == "SkillOnly") return AIPreferBehavior::SkillOnly;
 }
 
-Animation parseAnimation(const json& animJson) {
-	return Animation(
+TAnimation parseAnimation(const std::string name, const json& animJson) {
+	return TAnimation(
+		name,
 		animJson.value("row", 0),  // 預設 row = 0
 		animJson.value("frames", 1),  // 預設 frames = 1
 		animJson.value("speed", 10),  // 預設 speed = 10
@@ -36,14 +37,15 @@ Animation parseAnimation(const json& animJson) {
 	);
 }
 
-Animation parseAttackAnimation(const json& animJson) {
+TAnimation parseAttackAnimation(const std::string name, const json& animJson) {
 	AnimateState state = AnimateState::Attacking;
 
 	if (animJson.value("state", "") == "Attacking") state = AnimateState::Attacking;
 	else if (animJson.value("state", "") == "FinalAttacking") state = AnimateState::FinalAttack;
 	else if (animJson.value("state", "") == "useSkill") state = AnimateState::usingSkill;
 
-	return Animation(
+	return TAnimation(
+		name,
 		animJson.value("row", 0),
 		animJson.value("frames", 1),
 		animJson.value("speed", 10),
@@ -91,10 +93,10 @@ public:
 
 				for (auto& [name, anim] : enemyData["animations"].items()) {
 					if (anim.value("state", "") == "Attacking" || anim.value("state", "") == "FinalAttacking" || anim.value("state", "") == "useSkill") {
-						sprite.addAnimation(name, parseAttackAnimation(anim));
+						sprite.addAnimation(name, parseAttackAnimation(name, anim));
 					}
 					else {
-						sprite.addAnimation(name, parseAnimation(anim));
+						sprite.addAnimation(name, parseAnimation(name, anim));
 					}
 				}
 				sprite.setAnimate("idle"); // 預設為 idle 動畫

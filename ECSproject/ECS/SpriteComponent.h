@@ -101,7 +101,7 @@ public:
 		_sprite->setOffsetX(_offsetX);
 	}
 
-	void addAnimation(const std::string& name, const Animation& anim) {
+	void addAnimation(const std::string& name, const TAnimation& anim) {
 		_animationSet->addAnimation(name, anim);
 	}
 

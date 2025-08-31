@@ -125,7 +125,7 @@
     <ClInclude Include="readTileMap\readTileMap_json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ECS\Animation.h">
+    <ClInclude Include="Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shader\Shader.h">

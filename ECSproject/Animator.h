@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "ECS/Animation.h"
+#include "Animation.h"
 #include <unordered_map>
 #include <string>
 #include <functional>
@@ -13,9 +13,9 @@ public:
 
 	Animator(EventSystem* eventManager);
 
-	void addAnimation(const std::string& name, const Animation& anim);
+	void addAnimation(const std::string& name, const TAnimation& anim);
 
-	const Animation* getAnimation(const std::string& name);
+	const std::shared_ptr<TAnimation> getAnimation(const std::string& name);
 
 	void setAnimation(const std::string& name);
 
@@ -37,33 +37,31 @@ public:
 
 	void endDodgeEvent();
 
-	bool getFrameInterrupt() { return _currentAnimation->anim->canInterrupt; }
-	AnimateState getAnimateState() { return _currentAnimation->anim->state; }
+	bool getFrameInterrupt() { return _currentAnimation->canInterrupt; }
+	AnimateState getAnimateState() { return _currentAnimation->state; }
 
 	void update(Sprite* sprite);
 
 private:
 
-	struct TAnimateBuffer
-	{
-		std::string name;
-		const Animation* anim = nullptr;
-		bool isFull = false;
-
-		TAnimateBuffer(std::string name, const Animation* anim, bool isFull);
-	};
-
-	std::unique_ptr<TAnimateBuffer> makeAnimateBuffer(std::string name, bool isFull);
-
 	void pushNextAnimate(const std::string& name, bool isFull);
 
-	std::unique_ptr<TAnimateBuffer> popNextAnimate( void );
+	std::shared_ptr<TAnimation> popNextAnimate( void );
 
-	std::unordered_map<std::string, Animation> m_animations;
-	std::unique_ptr<TAnimateBuffer> _currentAnimation;
+private:
+
+	EventSystem* _localEvent;
+
+	bool _isNextAnimateBufferFull = false;
+
+	std::unordered_map<std::string, TAnimation> m_animations;
+
+	std::shared_ptr<TAnimation> _currentAnimation;
+
+	std::shared_ptr<TAnimation> _nextAnimate;
+
 	double _lastFrameTime = 0.f;
 	int _currentFrame = 0;
-	std::unique_ptr<TAnimateBuffer> _nextAnimate;
 	bool _flip = false;
-	EventSystem* _localEvent;
+	
 };

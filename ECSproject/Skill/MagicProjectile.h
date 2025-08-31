@@ -36,8 +36,8 @@ public:
 		entity->addcomponent<MovementComponent>(400.0f, velocity);
 		entity->addcomponent<LocalEventComponent>(gEventSys);
 		auto& sprite = entity->addcomponent<SpriteComponent>("C:/dependencies/resource/skill/Fire Effect 1/Firebolt.png", true, 48.f, 48.f);
-		sprite.addAnimation("idle", Animation(0, 4, 10, flip));
-		sprite.addAnimation("explosion", Animation(1, 6, 10, flip, false, AnimateState::Dying));
+		sprite.addAnimation("idle", TAnimation("idle", 0, 4, 10, flip));
+		sprite.addAnimation("explosion", TAnimation("explosion", 1, 6, 10, flip, false, AnimateState::Dying));
 		sprite.setAnimate("idle");
 
 		BoundingBox bound{ position + posOffset, 120.0f, 50.0f };
@@ -62,7 +62,7 @@ public:
 		entity->addcomponent<MovementComponent>(400.0f, velocity);
 		entity->addcomponent<LocalEventComponent>(gEventSys);
 		auto& sprite = entity->addcomponent<SpriteComponent>("C:/dependencies/resource/skill/Ice Effect 01/Ice VFX 1/IceVFX 1 Repeatable.png", true, 48.f, 32.f);
-		sprite.addAnimation("idle", Animation(0, 10, 10, flip));
+		sprite.addAnimation("idle", TAnimation("idle", 0, 10, 10, flip));
 		sprite.setAnimate("idle");
 
 		BoundingBox bound{ position + posOffset, 200.0f, 100.0f };
